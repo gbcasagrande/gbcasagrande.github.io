@@ -25,10 +25,10 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
             display: flex; 
             flex-direction: column; 
-            justify-content: flex-start; 
-            align-items: flex-start; 
+            justify-content: center; /* Alinhamento vertical ao centro */
+            align-items: flex-start; /* Alinhamento à esquerda */
             text-align: left; 
-            overflow: hidden; /* Prevenir overflow do conteúdo */
+            overflow: hidden; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin-top: 20px; 
         }
@@ -40,7 +40,7 @@
         .name { font-weight: bold; color: #14171a; display: flex; align-items: center; gap: 4px; }
         .verified { width: 18px; height: 18px; }
         .username { color: #657786; font-size: 14px; margin-left: 4px; }
-        .tweet-content { margin-top: 12px; font-size: 20px; color: #14171a; text-align: left; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; flex-grow: 1; }
+        .tweet-content { margin-top: 12px; font-size: 20px; color: #14171a; text-align: left; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; }
         .image-preview { max-width: 100%; height: auto; margin-top: 10px; border-radius: 8px; object-fit: contain; }
         .download-button { margin-top: 20px; padding: 10px 16px; font-size: 16px; border: none; border-radius: 8px; background-color: #1da1f2; color: #fff; cursor: pointer; transition: background-color 0.3s ease; }
         .download-button:hover { background-color: #1a91da; }
