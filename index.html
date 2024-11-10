@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo de Tweet Moderno e Responsivo</title>
+    <title>Tweet Fake</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; height: 100vh; background-color: #f7f9fa; padding: 20px; }
@@ -51,7 +51,7 @@
 </head>
 <body>
 <div class="form-container">
-    <h2>Editar Tweet</h2>
+    <h2>Crie postagens no estilo do X (Twitter)</h2>
     <form id="editForm">
         <label for="profileImage">Imagem de Perfil:</label>
         <input type="file" id="profileImage" accept="image/*" onchange="loadAvatar(event)">
@@ -77,17 +77,17 @@
             </div>
             <div class="name-container">
                 <div class="name">
-                    <span id="nameDisplay">Usuario</span>
-                    <img src="verified.png" alt="Verificado" class="verified" id="verifiedBadge" style="display:none;">
+                    <span id="nameDisplay">Seu Nome</span>
+                    <img src="verified.png" alt="Verificado" class="verified" id="verifiedBadge">
                 </div>
                 <span class="username" id="usernameDisplay" style="display: none;">@usuario</span>
             </div>
         </div>
     </div>
-    <div class="tweet-content" id="tweetContent">A sua frase, funciona com emoji 🎉</div>
+    <div class="tweet-content" id="tweetContent">A sua frase ira aparecer aqui 🎉</div>
 </div>
 
-<button class="download-button" onclick="downloadTweetAsImage()">Baixar como PNG</button>
+<button class="download-button" onclick="downloadTweetAsImage()">Baixar</button>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
