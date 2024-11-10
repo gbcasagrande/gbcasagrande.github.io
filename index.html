@@ -42,7 +42,6 @@
         .verified { width: 18px; height: 18px; }
         .username { color: #657786; font-size: 14px; margin-left: 4px; }
         .tweet-content { margin-top: 12px; font-size: 20px; color: #14171a; text-align: left; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; }
-        .image-preview { max-width: 100%; height: auto; margin-top: 10px; border-radius: 8px; object-fit: contain; }
         .download-button { margin-top: 20px; padding: 10px 16px; font-size: 16px; border: none; border-radius: 8px; background-color: #1da1f2; color: #fff; cursor: pointer; transition: background-color 0.3s ease; }
         .download-button:hover { background-color: #1a91da; }
         #uploadInput { display: none; }
@@ -64,8 +63,6 @@
         <label for="tweetMessage">Mensagem:</label>
         <textarea id="tweetMessage" placeholder="Escreva sua mensagem..." rows="4" oninput="updateTweet()"></textarea>
         <p class="error-message" id="errorMessage">A mensagem não pode ter mais de 10 linhas.</p>
-        <label for="tweetImage">Adicionar Imagem ao Tweet:</label>
-        <input type="file" id="tweetImage" accept="image/*" onchange="previewImage(event)">
     </form>
 </div>
 
@@ -85,7 +82,6 @@
         </div>
     </div>
     <div class="tweet-content" id="tweetContent">A sua frase, funciona com emoji 🎉</div>
-    <img id="tweetImagePreview" class="image-preview" style="display:none;" />
 </div>
 
 <button class="download-button" onclick="downloadTweetAsImage()">Baixar como PNG</button>
@@ -139,19 +135,6 @@
 
         const verifiedBadge = document.getElementById('verifiedBadge');
         verifiedBadge.style.display = isVerified ? 'inline' : 'none';
-    }
-
-    function previewImage(event) {
-        const file = event.target.files[0];
-        const imagePreview = document.getElementById('tweetImagePreview');
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
     }
 </script>
 </body>
