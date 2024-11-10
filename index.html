@@ -15,6 +15,7 @@
         .form-container input[type="checkbox"] { width: auto; margin-right: 8px; }
         .form-container input:focus, .form-container textarea:focus { border-color: #1da1f2; }
         .form-container textarea { resize: none; }
+        .error-message { color: red; font-size: 14px; margin-top: -10px; margin-bottom: 10px; display: none; }
         .tweet-container { 
             width: 400px; 
             height: 400px;
@@ -62,6 +63,7 @@
         <input type="text" id="usernameInput" placeholder="@usuario" oninput="updateTweet()">
         <label for="tweetMessage">Mensagem:</label>
         <textarea id="tweetMessage" placeholder="Escreva sua mensagem..." rows="4" oninput="updateTweet()"></textarea>
+        <p class="error-message" id="errorMessage">A mensagem não pode ter mais de 10 linhas.</p>
         <label for="tweetImage">Adicionar Imagem ao Tweet:</label>
         <input type="file" id="tweetImage" accept="image/*" onchange="previewImage(event)">
     </form>
@@ -91,7 +93,7 @@
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
     function downloadTweetAsImage() {
-        updateTweet(); // Certifique-se de atualizar o tweet antes de capturar a imagem
+        updateTweet();
 
         const tweetElement = document.getElementById("tweet");
         html2canvas(tweetElement).then(canvas => {
@@ -118,15 +120,23 @@
         const usernameInput = document.getElementById('usernameInput').value;
         const tweetMessage = document.getElementById('tweetMessage').value;
         const isVerified = document.getElementById('verified').checked;
+        const errorMessage = document.getElementById('errorMessage');
+
+        const lineCount = tweetMessage.split('\n').length;
+
+        if (lineCount > 10) {
+            errorMessage.style.display = 'block';
+            return;
+        } else {
+            errorMessage.style.display = 'none';
+        }
 
         document.getElementById('nameDisplay').textContent = nameInput;
         document.getElementById('usernameDisplay').textContent = '@' + usernameInput;
 
-        // Converter quebras de linha em <br> e atualizar o conteúdo do tweet
         const formattedMessage = tweetMessage.replace(/\n/g, '<br>');
         document.getElementById('tweetContent').innerHTML = formattedMessage;
 
-        // Exibe ou oculta o selo de verificação
         const verifiedBadge = document.getElementById('verifiedBadge');
         verifiedBadge.style.display = isVerified ? 'inline' : 'none';
     }
