@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senhas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Gerador de Senhas </h2>
+
+        <input type="text" id="senhaGerada" class="input-field" readonly placeholder="Sua senha aparecerá aqui">
+
+        <div class="slider-group">
+            <label for="comprimento">Quantidade (<span id="valorComprimento">15</span>)</label>
+            <input type="range" id="comprimento" min="10" max="50" value="15" oninput="atualizarValor()">
+        </div>
+
+        <div class="checkbox-group">
+            <label><input type="checkbox" id="incluirNumeros" checked> Números</label>
+            <label><input type="checkbox" id="incluirLetras" checked> Letras</label>
+            <label><input type="checkbox" id="incluirMaiusculas" checked> Maiúsculas</label>
+            <label><input type="checkbox" id="incluirMinusculas" checked> Minúsculas</label>
+            <label><input type="checkbox" id="incluirSimbolos"> Símbolos</label>
+        </div>
+
+        <div class="checkbox-group">
+            <label><input type="checkbox" id="usarPalavra" onchange="togglePalavraOpcao()"> Palavra-chave</label>
+        </div>
+
+        <div class="palavra-opcao" id="palavraOpcao">
+            <label for="palavra">Qual palavra deseja inserir?</label>
+            <input type="text" id="palavra" class="input-field" placeholder="Digite uma palavra">
+
+            <label for="posicaoPalavra">Posição</label>
+            <select id="posicaoPalavra" class="input-field">
+                <option value="inicio">Início</option>
+                <option value="meio">Meio</option>
+                <option value="fim" selected>Fim</option>
+            </select>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="gerarSenha()">Gerar Senha</button>
+            <button class="btn btn-secondary" onclick="copiarSenha()">Copiar Senha</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
