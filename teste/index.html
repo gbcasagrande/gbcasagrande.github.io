@@ -12,19 +12,22 @@
         <form id="editForm">
             <label for="profileImage">Imagem de Perfil:</label>
             <input type="file" id="profileImage" accept="image/*" onchange="loadAvatar(event)">
-            <br>
+            
             <label>Escolha o tipo de verificado:</label>
             <div>
-                <input type="radio" id="verified1" name="verifiedType" value="verified.png" checked onchange="updateTweet()">
+                <input type="radio" id="notVerified" name="verifiedType" value="notVerified" checked onchange="updateTweet()">
+                <label for="notVerified">Sem Verificação</label>
+
+                <input type="radio" id="verified1" name="verifiedType" value="verified.png" onchange="updateTweet()">
                 <label for="verified1">
                     <img src="verified.png" alt="Verificado 1" class="verified" style="width: 18px; height: 18px;">
                 </label>
-                <br>
+                
                 <input type="radio" id="verified2" name="verifiedType" value="verified2.png" onchange="updateTweet()">
                 <label for="verified2">
                     <img src="verified2.png" alt="Verificado 2" class="verified" style="width: 18px; height: 18px;">
                 </label>
-                <br>
+                
                 <input type="radio" id="verified3" name="verifiedType" value="verified3.png" onchange="updateTweet()">
                 <label for="verified3">
                     <img src="verified3.png" alt="Verificado 3" class="verified" style="width: 18px; height: 18px;">
@@ -67,4 +70,4 @@
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="script.js"></script>
 </body>
-                </html>
+            </html>
