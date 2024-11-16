@@ -49,8 +49,12 @@ function updateTweet() {
 
     // Atualizar verificado
     const verifiedBadge = document.getElementById('verifiedBadge');
-    verifiedBadge.src = verifiedType;
-    verifiedBadge.style.display = 'inline';
+    if (verifiedType === "notVerified") {
+        verifiedBadge.style.display = 'none';
+    } else {
+        verifiedBadge.src = verifiedType;
+        verifiedBadge.style.display = 'inline';
+    }
 }
 
 function clearMessage() {
@@ -59,4 +63,4 @@ function clearMessage() {
     document.getElementById('usernameInput').value = '';
     document.querySelector('input[name="verifiedType"]:checked').checked = false;
     updateTweet();
-        }
+            }
