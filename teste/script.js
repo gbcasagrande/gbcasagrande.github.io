@@ -1,66 +1,75 @@
-function downloadTweetAsImage() {
-    updateTweet();
+function updateTweet() {
+    const name = document.getElementById('nameInput').value;
+    const username = document.getElementById('usernameInput').value;
+    const message = document.getElementById('tweetMessage').value;
 
-    const tweetElement = document.getElementById("tweet");
-    html2canvas(tweetElement).then(canvas => {
-        const link = document.createElement("a");
-        link.href = canvas.toDataURL("image/png");
-        link.download = "tweet.png";
+    const nameDisplay = document.getElementById('nameDisplay');
+    const usernameDisplay = document.getElementById('usernameDisplay');
+    const tweetContent = document.getElementById('tweetContent');
+    const verifiedBadge = document.getElementById('verifiedBadge');
+
+    // Atualizar nome e nome de usuário
+    nameDisplay.textContent = name || "Seu Nome";
+    usernameDisplay.textContent = username ? `@${username}` : "@usuario";
+
+    // Atualizar conteúdo do tweet
+    tweetContent.textContent = message || "A sua frase irá aparecer aqui 🎉";
+
+    // Lidar com o selo de verificação
+    const verifiedOption = document.querySelector('input[name="verifiedType"]:checked').value;
+    if (verifiedOption === "none") {
+        // Ocultar selo se "Sem Selo" for selecionado
+        verifiedBadge.style.display = "none";
+    } else {
+        // Exibir selo e atualizar sua imagem
+        verifiedBadge.style.display = "inline";
+        verifiedBadge.src = verifiedOption;
+    }
+
+    // Validar se a mensagem não excede 10 linhas
+    const lines = message.split('\n').length;
+    const errorMessage = document.getElementById('errorMessage');
+    if (lines > 10) {
+        errorMessage.style.display = 'block';
+    } else {
+        errorMessage.style.display = 'none';
+    }
+}
+
+// Função para limpar a mensagem
+function clearMessage() {
+    document.getElementById('nameInput').value = '';
+    document.getElementById('usernameInput').value = '';
+    document.getElementById('tweetMessage').value = '';
+    updateTweet();
+}
+
+// Função para fazer o download da postagem como imagem
+function downloadTweetAsImage() {
+    html2canvas(document.querySelector("#tweet")).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'tweet.png';
+        link.href = canvas.toDataURL();
         link.click();
     });
 }
 
+// Função para carregar a imagem de perfil (caso o usuário faça upload)
 function loadAvatar(event) {
     const avatarImage = document.getElementById('avatarImage');
     const file = event.target.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        avatarImage.src = e.target.result;
+    }
+    
     if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            avatarImage.src = e.target.result;
-        };
         reader.readAsDataURL(file);
     }
 }
 
-function updateTweet() {
-    const nameInput = document.getElementById('nameInput').value;
-    const usernameInput = document.getElementById('usernameInput').value;
-    const tweetMessage = document.getElementById('tweetMessage').value;
-    const verifiedType = document.querySelector('input[name="verifiedType"]:checked').value;
-    const errorMessage = document.getElementById('errorMessage');
-
-    const lineCount = tweetMessage.split('\n').length;
-
-    if (lineCount > 10) {
-        errorMessage.style.display = 'block';
-        return;
-    } else {
-        errorMessage.style.display = 'none';
-    }
-
-    // Atualizar nome e usuário
-    document.getElementById('nameDisplay').textContent = nameInput || "Seu Nome";
-    document.getElementById('usernameDisplay').textContent = usernameInput ? `@${usernameInput}` : "";
-    document.getElementById('usernameDisplay').style.display = usernameInput ? 'inline' : 'none';
-
-    // Atualizar mensagem
-    const formattedMessage = tweetMessage.replace(/\n/g, '<br>');
-    document.getElementById('tweetContent').innerHTML = formattedMessage || "A sua frase irá aparecer aqui 🎉";
-
-    // Atualizar verificado
-    const verifiedBadge = document.getElementById('verifiedBadge');
-    if (verifiedType === "notVerified") {
-        verifiedBadge.style.display = 'none';
-    } else {
-        verifiedBadge.src = verifiedType;
-        verifiedBadge.style.display = 'inline';
-    }
-}
-
-function clearMessage() {
-    document.getElementById('tweetMessage').value = '';
-    document.getElementById('nameInput').value = '';
-    document.getElementById('usernameInput').value = '';
-    document.querySelector('input[name="verifiedType"]:checked').checked = false;
+// Inicialização da função updateTweet na carga da página
+window.onload = function() {
     updateTweet();
-            }
+};
