@@ -40,7 +40,9 @@ body {
     color: #333;
 }
 
-.form-container input, .form-container textarea, .form-container button {
+.form-container input,
+.form-container textarea,
+.form-container button {
     width: 100%;
     padding: 12px;
     font-size: 16px;
@@ -54,12 +56,21 @@ body {
     padding: 0;
 }
 
-.form-container input[type="checkbox"] {
+.form-container input[type="checkbox"],
+.form-container input[type="radio"] {
     width: auto;
     margin-right: 8px;
+    vertical-align: middle; /* Alinha os ícones e os checkboxes */
 }
 
-.form-container input:focus, .form-container textarea:focus {
+.form-container div {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Remove o espaço entre os ícones e os checkboxes */
+}
+
+.form-container input:focus,
+.form-container textarea:focus {
     border-color: #1da1f2;
 }
 
@@ -192,4 +203,4 @@ body {
 
 #uploadInput {
     display: none;
-  }
+}
