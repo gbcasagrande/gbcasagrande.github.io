@@ -5,31 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Consulta de CFOP</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      padding: 20px;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    input, button {
-      margin: 5px 0;
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f4f4f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #007BFF;
+    }
+    label {
+      font-size: 16px;
+      margin-bottom: 5px;
+      display: block;
+    }
+    input {
+      width: 100%;
       padding: 10px;
       font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      color: #fff;
+      background: #007BFF;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
     }
     #result {
       margin-top: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 5px;
     }
     .error {
-      color: red;
+      color: #d9534f;
+    }
+    .success {
+      color: #28a745;
     }
   </style>
 </head>
 <body>
-  <h1>Consulta de CFOP</h1>
-  <label for="cfop">Digite o código CFOP:</label>
-  <input type="text" id="cfop" placeholder="Ex: 1101">
-  <button onclick="buscarCFOP()">Buscar</button>
-  
-  <div id="result"></div>
+  <div class="container">
+    <h1>Consulta de CFOP</h1>
+    <label for="cfop">Digite o código CFOP:</label>
+    <input type="text" id="cfop" placeholder="Ex: 1101">
+    <button onclick="buscarCFOP()">Buscar</button>
+    
+    <div id="result"></div>
+  </div>
   
   <script>
     async function buscarCFOP() {
@@ -66,7 +120,7 @@
 
         if (descricao) {
           resultDiv.innerHTML = `
-            <h2>Detalhes do CFOP ${cfop}</h2>
+            <h2 class="success">Detalhes do CFOP ${cfop}</h2>
             <p><strong>Descrição:</strong> ${descricao}</p>
           `;
         } else {
@@ -78,4 +132,4 @@
     }
   </script>
 </body>
-                     </html>
+</html>
