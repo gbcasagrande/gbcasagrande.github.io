@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta de CFOP</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+    }
+    input, button {
+      margin: 5px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 20px;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Consulta de CFOP</h1>
+  <label for="cfop">Digite o código CFOP:</label>
+  <input type="text" id="cfop" placeholder="Ex: 1101">
+  <button onclick="buscarCFOP()">Buscar</button>
+  
+  <div id="result"></div>
+  
+  <script>
+    async function buscarCFOP() {
+      const cfop = document.getElementById('cfop').value.trim();
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = ''; // Limpa resultados anteriores
+      
+      if (!cfop) {
+        resultDiv.innerHTML = '<p class="error">Por favor, insira um CFOP válido.</p>';
+        return;
+      }
+
+      try {
+        // Faz a requisição ao arquivo dados.txt
+        const response = await fetch('dados.txt');
+        
+        if (!response.ok) {
+          throw new Error('Erro ao carregar o arquivo de dados.');
+        }
+
+        // Lê o conteúdo do arquivo
+        const data = await response.text();
+        const linhas = data.split('\n');
+        let descricao = null;
+
+        // Procura pelo CFOP na lista
+        for (const linha of linhas) {
+          const [codigo, ...descricaoArray] = linha.split(/\s+/);
+          if (codigo.trim() === cfop) {
+            descricao = descricaoArray.join(' ').trim();
+            break;
+          }
+        }
+
+        if (descricao) {
+          resultDiv.innerHTML = `
+            <h2>Detalhes do CFOP ${cfop}</h2>
+            <p><strong>Descrição:</strong> ${descricao}</p>
+          `;
+        } else {
+          resultDiv.innerHTML = `<p class="error">CFOP ${cfop} não encontrado.</p>`;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `<p class="error">Erro: ${error.message}</p>`;
+      }
+    }
+  </script>
+</body>
+                     </html>
