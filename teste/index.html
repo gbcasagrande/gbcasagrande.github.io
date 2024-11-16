@@ -3,68 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tweet Fake</title>
+    <title>Crie Postagens no Estilo do X</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="form-container">
-    <h2>Crie postagens no estilo do X (Twitter)</h2>
-    <form id="editForm">
-        <label for="profileImage">Imagem de Perfil:</label>
-        <input type="file" id="profileImage" accept="image/*" onchange="loadAvatar(event)">
-        <br><br>
-        
-        <div id="verification-options">
-            <label for="verified1">
-                <input type="radio" id="verified1" name="verified" value="verified1" onchange="updateTweet()">
-                <img src="verified.png" alt="Verificado 1" class="verified">
-            </label>
-            <br>
-            <label for="verified2">
-                <input type="radio" id="verified2" name="verified" value="verified2" onchange="updateTweet()">
-                <img src="verified2.png" alt="Verificado 2" class="verified">
-            </label>
-            <br>
-            <label for="verified3">
-                <input type="radio" id="verified3" name="verified" value="verified3" onchange="updateTweet()">
-                <img src="verified3.png" alt="Verificado 3" class="verified">
-            </label>
-        </div>
-        
-        <label for="name">Nome:</label>
-        <input type="text" id="nameInput" placeholder="Nome" oninput="updateTweet()">
-        
-        <label for="username">Nome de usuário:</label>
-        <input type="text" id="usernameInput" placeholder="Usuário" oninput="updateTweet()">
-        
-        <label for="tweetMessage">Mensagem:</label>
-        <textarea id="tweetMessage" placeholder="Escreva sua mensagem..." rows="4" oninput="updateTweet()"></textarea>
-        
-        <p class="error-message" id="errorMessage">A mensagem não pode ter mais de 10 linhas.</p>
-    </form>
-    <button class="clear-button" onclick="clearMessage()">Limpar</button>
-</div>
-
-<div class="tweet-container" id="tweet">
-    <div class="header">
-        <div class="profile-info">
-            <div class="avatar">
-                <img src="user.jpeg" alt="Avatar" id="avatarImage">
+    <div class="form-container">
+        <h2>Crie postagens no estilo do X (Twitter)</h2>
+        <form id="editForm">
+            <label for="profileImage">Imagem de Perfil:</label>
+            <input type="file" id="profileImage" accept="image/*" onchange="loadAvatar(event)">
+            
+            <label>Escolha o tipo de verificado:</label>
+            <div>
+                <input type="radio" id="verified1" name="verifiedType" value="verified.png" checked onchange="updateTweet()">
+                <label for="verified1">
+                    <img src="verified.png" alt="Verificado 1" class="verified" style="width: 18px; height: 18px;">
+                </label>
+                
+                <input type="radio" id="verified2" name="verifiedType" value="verified2.png" onchange="updateTweet()">
+                <label for="verified2">
+                    <img src="verified2.png" alt="Verificado 2" class="verified" style="width: 18px; height: 18px;">
+                </label>
+                
+                <input type="radio" id="verified3" name="verifiedType" value="verified3.png" onchange="updateTweet()">
+                <label for="verified3">
+                    <img src="verified3.png" alt="Verificado 3" class="verified" style="width: 18px; height: 18px;">
+                </label>
             </div>
-            <div class="name-container">
-                <div class="name">
-                    <span id="nameDisplay">Seu Nome</span>
-                    <img src="verified.png" alt="Verificado" class="verified" id="verifiedBadge">
-                </div>
-                <span class="username" id="usernameDisplay" style="display: none;">@usuario</span>
-            </div>
-        </div>
+            
+            <label for="name">Nome:</label>
+            <input type="text" id="nameInput" placeholder="Nome" oninput="updateTweet()">
+            
+            <label for="username">Nome de usuário:</label>
+            <input type="text" id="usernameInput" placeholder="Usuário" oninput="updateTweet()">
+            
+            <label for="tweetMessage">Mensagem:</label>
+            <textarea id="tweetMessage" placeholder="Escreva sua mensagem..." rows="4" oninput="updateTweet()"></textarea>
+            <p class="error-message" id="errorMessage">A mensagem não pode ter mais de 10 linhas.</p>
+        </form>
+        <button class="clear-button" onclick="clearMessage()">Limpar</button>
     </div>
-    <div class="tweet-content" id="tweetContent">A sua frase ira aparecer aqui 🎉</div>
-</div>
 
-<button class="download-button" onclick="downloadTweetAsImage()">Baixar</button>
+    <div class="tweet-container" id="tweet">
+        <div class="header">
+            <div class="profile-info">
+                <div class="avatar">
+                    <img src="user.jpeg" alt="Avatar" id="avatarImage">
+                </div>
+                <div class="name-container">
+                    <div class="name">
+                        <span id="nameDisplay">Seu Nome</span>
+                        <img src="verified.png" alt="Verificado" class="verified" id="verifiedBadge">
+                    </div>
+                    <span class="username" id="usernameDisplay" style="display: none;">@usuario</span>
+                </div>
+            </div>
+        </div>
+        <div class="tweet-content" id="tweetContent">A sua frase irá aparecer aqui 🎉</div>
+    </div>
 
-<script src="script.js"></script>
+    <button class="download-button" onclick="downloadTweetAsImage()">Baixar</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
 </body>
-    </html>
+                </html>
