@@ -53,10 +53,6 @@ function updateTweet() {
     verifiedBadge.style.display = 'inline';
 }
 
-function generateTweet() {
-    updateTweet();  // Atualiza os dados do tweet com base nos valores do formulário
-}
-
 function clearMessage() {
     document.getElementById('tweetMessage').value = '';
     document.getElementById('nameInput').value = '';
