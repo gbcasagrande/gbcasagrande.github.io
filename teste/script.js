@@ -17,8 +17,9 @@ function updateTweet() {
 
     // Lidar com o selo de verificação
     const verifiedOption = document.querySelector('input[name="verifiedType"]:checked').value;
+    
     if (verifiedOption === "none") {
-        // Ocultar selo se "Sem Selo" for selecionado
+        // Ocultar completamente o selo se "Sem Selo" for selecionado
         verifiedBadge.style.display = "none";
     } else {
         // Exibir selo e atualizar sua imagem
