@@ -134,11 +134,11 @@
 
         if (descricao) {
           resultDiv.innerHTML = `
-            <h3 class="success">CFOP ${cfop}</h3>
-            <p><H4>${descricao}.</H4></p>
+            <h3 class="success">CFOP ${cfop}</h3><br>
+            <p>${descricao}.</p>
           `;
         } else {
-          resultDiv.innerHTML = `<p class="error">CFOP ${cfop} não encontrado.</p>`;
+          resultDiv.innerHTML = `<p class="error">CFOP ${cfop} ❌️ não encontrado.</p>`;
         }
       } catch (error) {
         resultDiv.innerHTML = `<p class="error">Erro: ${error.message}</p>`;
