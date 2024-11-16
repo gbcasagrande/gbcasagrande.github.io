@@ -29,6 +29,12 @@
                 <label for="verified3">
                     <img src="verified3.png" alt="Verificado 3" class="verified" style="width: 18px; height: 18px;">
                 </label>
+
+                <!-- Nova opção "Sem Selo" -->
+                <input type="radio" id="noVerified" name="verifiedType" value="none" onchange="updateTweet()">
+                <label for="noVerified">
+                    <span>Sem Selo</span>
+                </label>
             </div>
             
             <label for="name">Nome:</label>
@@ -67,4 +73,4 @@
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="script.js"></script>
 </body>
-                    </html>
+</html>
