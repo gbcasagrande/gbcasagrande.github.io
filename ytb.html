@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecionar para vídeo em formato</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label, input, button {
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #downloadBtnContainer {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #downloadBtn {
+            padding: 10px 20px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #downloadBtn:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Redirecionar para vídeo em formato</h1>
+
+    <!-- Formulário para inserir o link do vídeo -->
+    <form id="videoForm">
+        <label for="videoUrl">URL do vídeo do YouTube:</label>
+        <input type="url" id="videoUrl" name="videoUrl" required placeholder="Insira o link do vídeo">
+        <div>
+            <!-- Botões para escolher o formato -->
+            <button type="button" id="mp3Button" onclick="generateLink('mp3')">mp3</button>
+            <button type="button" id="mp4Button" onclick="generateLink('mp4')">mp4</button>
+        </div>
+    </form>
+
+    <div id="downloadBtnContainer">
+        <!-- Botão de baixar será exibido aqui -->
+        <button id="downloadBtn" onclick="openDownloadLink()">Baixar</button>
+    </div>
+
+    <script>
+        let generatedLink = '';
+
+        function generateLink(ftype) {
+            const videoUrl = document.getElementById('videoUrl').value;
+            if (!videoUrl) {
+                alert("Por favor, insira o link do vídeo.");
+                return;
+            }
+
+            // Gera o link com base no tipo escolhido
+            generatedLink = `https://api.vevioz.com/apis/single/${ftype}?url=${encodeURIComponent(videoUrl)}`;
+
+            // Exibe o botão de download
+            document.getElementById('downloadBtnContainer').style.display = 'block';
+        }
+
+        function openDownloadLink() {
+            // Abre o link gerado em uma nova janela
+            window.open(generatedLink, '_blank');
+        }
+    </script>
+</body>
+
+  </html>
