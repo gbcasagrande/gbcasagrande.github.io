@@ -8,11 +8,18 @@ function calculateFuel() {
           capacity = +document.getElementById('capacity').value,
           previousAmount = +document.getElementById('previousAmount').value || 0;
 
-    // Calcula o volume em litros
-    let A = (r ** 2 * Math.acos((r - h) / r)) - ((r - h) * Math.sqrt(2 * r * h - h ** 2)),
-        volume = (A * L) / 1000, 
-        percentage = (volume / capacity) * 100,
-        litersUsed = previousAmount - volume;
+    // Calcula o volume com base na altura (utiliza a fórmula do volume do combustível no tanque)
+    const calculateVolume = (height) => {
+        let A = (r ** 2 * Math.acos((r - height) / r)) - ((r - height) * Math.sqrt(2 * r * height - height ** 2));
+        return (A * L) / 1000; // Retorna o volume em litros
+    };
+
+    const volumeCurrent = calculateVolume(h);
+    const volumePrevious = calculateVolume(previousHeight);
+
+    // Calcula a porcentagem do volume atual
+    let percentage = (volumeCurrent / capacity) * 100;
+    let litersConsumed = volumePrevious - volumeCurrent;  // Litros consumidos entre as duas alturas
 
     const resultDiv = document.getElementById('result');
 
@@ -30,11 +37,11 @@ function calculateFuel() {
         return;
     }
 
-    let resultMessage = `Seu tanque está em <b>${percentage.toFixed(2)}%</b> com <b>${volume.toFixed(2)}</b> Litros.`;
+    let resultMessage = `Seu tanque está em <b>${percentage.toFixed(2)}%</b> com <b>${volumeCurrent.toFixed(2)}</b> Litros.`;
     
     // Se a quantidade anterior foi fornecida
     if (previousAmount > 0) {
-        resultMessage += `<br>Foi consumido <b>${litersUsed.toFixed(2)}</b> litros desde a última medição.`;
+        resultMessage += `<br>Foi consumido <b>${litersConsumed.toFixed(2)}</b> litros entre a altura anterior e a altura atual.`;
         
         const previousTime = document.getElementById('previousTime').value;
         const currentTime = document.getElementById('currentTime').value;
@@ -43,7 +50,7 @@ function calculateFuel() {
             const currentDateTime = new Date(`1970-01-01T${currentTime}:00`);
             const hoursDifference = (currentDateTime - previousDateTime) / (1000 * 60 * 60);
             if (hoursDifference > 0) {
-                const averageConsumptionPerHour = litersUsed / hoursDifference;
+                const averageConsumptionPerHour = litersConsumed / hoursDifference;
                 resultMessage += `<br>Teve um consumo médio de <b>${averageConsumptionPerHour.toFixed(2)}</b> L/h `;
                 resultMessage += `em <b>${hoursDifference.toFixed(2)}</b> horas.`;
             }
@@ -60,7 +67,7 @@ function calculateFuel() {
     resultDiv.className = 'result success';
     resultDiv.style.display = 'block';
 
-    updateCharts(percentage, volume, r, h);
+    updateCharts(percentage, volumeCurrent, r, h);
 }
 
 function clearForm() {
