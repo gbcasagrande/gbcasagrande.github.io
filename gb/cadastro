@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+        .container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .status {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #4CAF50;
+            display: none;
+        }
+        .status img {
+            width: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .username-check {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #f00;
+            display: none;
+        }
+        .username-check.valid {
+            color: #4CAF50;
+        }
+        .shortcut {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .shortcut a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .shortcut a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        const usuariosExistentes = ['joao123', 'maria2024', 'pedro_tech'];
+
+        function verificarUsuario() {
+            const usuarioInput = document.getElementById('usuario');
+            const statusUsuario = document.querySelector('.username-check');
+
+            if (usuariosExistentes.includes(usuarioInput.value.trim())) {
+                statusUsuario.style.display = 'block';
+                statusUsuario.textContent = 'Este nome de usuário já está em uso.';
+                statusUsuario.classList.remove('valid');
+            } else {
+                statusUsuario.style.display = 'block';
+                statusUsuario.textContent = 'Nome de usuário disponível!';
+                statusUsuario.classList.add('valid');
+            }
+        }
+
+        function mostrarStatus(event) {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value.trim();
+            const usuario = document.getElementById('usuario').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('senha').value.trim();
+            const statusUsuario = document.querySelector('.username-check');
+
+            if (nome && usuario && email && senha && statusUsuario.classList.contains('valid')) {
+                const status = document.querySelector('.status');
+                status.style.display = 'block';
+                status.innerHTML = '<img src="https://img.icons8.com/color/48/000000/verified-account.png" alt="Verificado">Cadastro realizado com sucesso!';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro</h1>
+        <form onsubmit="mostrarStatus(event)">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="usuario">Usuário:</label>
+                <input type="text" id="usuario" name="usuario" oninput="verificarUsuario()" required>
+                <div class="username-check"></div>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" required>
+            </div>
+            <button type="submit" class="btn">Cadastrar</button>
+        </form>
+        <div class="status"></div>
+        <div class="shortcut">
+            Já tem uma conta? <a href="login.html">Acesse aqui o Login</a>.
+        </div>
+    </div>
+</body>
+</html>
