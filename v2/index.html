@@ -12,15 +12,16 @@
     <form id="editForm">
         <label for="profileImage">Imagem de Perfil:</label>
         <input type="file" id="profileImage" accept="image/*" onchange="loadAvatar(event)">
-        <br> <br> 
+        <p><br></p>
         <input type="checkbox" id="verified" onchange="updateTweet()" checked>
         <label for="verified">Verificado</label>
-        
+        <p><br></p>
         <br> <label for="name">Nome/Apelido</label>
+       <p><br></p>
         <input type="text" id="nameInput" placeholder="John Doe" oninput="updateTweet()">
         <label for="username">Username (opcional)</label>
         <input type="text" id="usernameInput" placeholder="@johndoe" oninput="updateTweet()">
-        
+        <p><br></p>
         <label for="tweetMessage">Mensagem</label>
         
         <!-- Atalhos de formatação -->
