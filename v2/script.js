@@ -1,12 +1,41 @@
-function downloadTweetAsImage() {
-    updateTweet();
+function insertBold() {
+    const textarea = document.getElementById("tweetMessage");
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    
+    const beforeCursor = textarea.value.substring(0, start);
+    const afterCursor = textarea.value.substring(end);
 
+    const insertion = "**" + "**"; // Inserção padrão para negrito
+
+    // Atualiza o valor do textarea com os ** no cursor
+    textarea.value = beforeCursor + insertion + afterCursor;
+
+    // Ajuste para posicionar o cursor no meio dos asteriscos
+    const newCursorPosition = start + 2;
+    textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+
+    // Atualiza a mensagem no painel de visualização
+    updateTweet();
+}
+
+function downloadTweetAsImage() {
     const tweetElement = document.getElementById("tweet");
+
+    // Removendo bordas arredondadas temporariamente
+    tweetElement.style.borderRadius = "0";
+    const avatarImage = document.getElementById('avatarImage');
+    avatarImage.style.borderRadius = "0";
+
     html2canvas(tweetElement).then(canvas => {
         const link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
         link.download = "tweet.png";
         link.click();
+
+        // Restaurando bordas após a captura
+        tweetElement.style.borderRadius = "16px";
+        avatarImage.style.borderRadius = "50%";
     });
 }
 
@@ -27,10 +56,10 @@ function updateTweet() {
     const usernameInput = document.getElementById('usernameInput').value;
     const tweetMessage = document.getElementById('tweetMessage').value;
     const isVerified = document.getElementById('verified').checked;
-    const errorMessage = document.getElementById('errorMessage');
 
     const lineCount = tweetMessage.split('\n').length;
 
+    const errorMessage = document.getElementById('errorMessage');
     if (lineCount > 10) {
         errorMessage.style.display = 'block';
         return;
@@ -41,14 +70,7 @@ function updateTweet() {
     document.getElementById('nameDisplay').textContent = nameInput;
     document.getElementById('usernameDisplay').textContent = '@' + usernameInput;
 
-    const usernameDisplay = document.getElementById('usernameDisplay');
-    if (usernameInput) {
-        usernameDisplay.style.display = 'inline';
-    } else {
-        usernameDisplay.style.display = 'none';
-    }
-
-    const formattedMessage = formatMessage(tweetMessage);
+    const formattedMessage = tweetMessage.replace(/\n/g, '<br>');
     document.getElementById('tweetContent').innerHTML = formattedMessage;
 
     const verifiedBadge = document.getElementById('verifiedBadge');
@@ -59,34 +81,3 @@ function clearMessage() {
     document.getElementById('tweetMessage').value = '';
     updateTweet();
 }
-
-function formatMessage(message) {
-    return message
-        .replace(/\*(.*?)\*/g, '<strong>$1</strong>')    // Negrito
-        .replace(/_(.*?)_/g, '<u>$1</u>')               // Sublinhado
-        .replace(/~(.*?)~/g, '<s>$1</s>');              // Riscado
-}
-
-function addFormatting(symbol) {
-    const textarea = document.getElementById('tweetMessage');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    const selectedText = textarea.value.substring(start, end);
-    const formattedText = symbol + selectedText + symbol;
-
-    textarea.setRangeText(formattedText, start, end, 'end');
-    textarea.focus();
-    updateTweet();
-}
-
-function changeFontSize(action) {
-    const tweetContent = document.getElementById('tweetContent');
-    const currentSize = parseFloat(window.getComputedStyle(tweetContent).fontSize);
-
-    if (action === 'increase') {
-        tweetContent.style.fontSize = (currentSize + 2) + 'px';
-    } else if (action === 'decrease' && currentSize > 10) {
-        tweetContent.style.fontSize = (currentSize - 2) + 'px';
-    }
-                }
