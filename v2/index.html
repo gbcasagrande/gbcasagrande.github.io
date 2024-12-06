@@ -4,61 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tweet Fake</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="form-container">
-    <h2>Crie postagens no estilo do X (Twitter)</h2>
-    <form id="editForm">
-        <label for="profileImage">Imagem de Perfil:</label>
-        <input type="file" id="profileImage" accept="image/*" onchange="loadAvatar(event)">
-        <br> <br> 
-        <input type="checkbox" id="verified" onchange="updateTweet()" checked>
-        <label for="verified">Verificado</label>
-        
-        <br> <label for="name">Nome:</label>
-        <input type="text" id="nameInput" placeholder="Nome" oninput="updateTweet()">
-        <label for="username">Nome de usuário:</label>
-        <input type="text" id="usernameInput" placeholder="Usuário" oninput="updateTweet()">
-        
-        <label for="tweetMessage">Mensagem:</label>
-        
-        <!-- Atalhos de formatação -->
-        <div class="formatting-buttons">
-            <button type="button" onclick="addFormatting('*')">Negrito</button>
-            <button type="button" onclick="addFormatting('_')">Sublinhado</button>
-            <button type="button" onclick="addFormatting('~')">Riscado</button>
-            <button type="button" onclick="changeFontSize('increase')">Aumentar Fonte</button>
-            <button type="button" onclick="changeFontSize('decrease')">Diminuir Fonte</button>
-        </div>
-        
-        <textarea id="tweetMessage" placeholder="Escreva sua mensagem..." rows="4" oninput="updateTweet()"></textarea>
-        <p class="error-message" id="errorMessage">A mensagem não pode ter mais de 10 linhas.</p>
-    </form>
-    <button class="clear-button" onclick="clearMessage()">Limpar</button>
-</div>
+    <div class="form-container">
+        <h2>Crie postagens no estilo do X (Twitter)</h2>
+        <form id="editForm">
+            <!-- Botão para inserir negrito com cursor posicionado no meio -->
+            <button type="button" onclick="insertBold()">Negrito</button>
 
-<div class="tweet-container" id="tweet">
-    <div class="header">
-        <div class="profile-info">
-            <div class="avatar">
-                <img src="user.jpeg" alt="Avatar" id="avatarImage">
-            </div>
-            <div class="name-container">
-                <div class="name">
-                    <span id="nameDisplay">Seu Nome</span>
-                    <img src="verified.png" alt="Verificado" class="verified" id="verifiedBadge">
-                </div>
-                <span class="username" id="usernameDisplay" style="display: none;">@usuario</span>
-            </div>
-        </div>
+            <!-- Campo para a mensagem -->
+            <label for="tweetMessage">Mensagem:</label>
+            <textarea
+                id="tweetMessage"
+                placeholder="Escreva sua mensagem..."
+                rows="4"
+                oninput="updateTweet()"
+            ></textarea>
+            
+            <p class="error-message" id="errorMessage">A mensagem não pode ter mais de 10 linhas.</p>
+        </form>
+        <button class="clear-button" onclick="clearMessage()">Limpar</button>
     </div>
-    <div class="tweet-content" id="tweetContent" style="font-size: 20px;">A sua frase irá aparecer aqui 🎉</div>
-</div>
 
-<button class="download-button" onclick="downloadTweetAsImage()">Baixar</button>
+    <!-- Container para a prévia do Tweet -->
+    <div class="tweet-container" id="tweet">
+        <div class="header">
+            <div class="profile-info">
+                <div class="avatar">
+                    <img src="user.jpeg" alt="Avatar" id="avatarImage">
+                </div>
+                <div class="name-container">
+                    <div class="name">
+                        <span id="nameDisplay">Seu Nome</span>
+                        <img src="verified.png" alt="Verificado" class="verified" id="verifiedBadge">
+                    </div>
+                    <span class="username" id="usernameDisplay" style="display: none;">@usuario</span>
+                </div>
+            </div>
+        </div>
+        <div class="tweet-content" id="tweetContent">A sua frase irá aparecer aqui 🎉</div>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="script.js"></script>
+    <!-- Botão para baixar como imagem -->
+    <button class="download-button" onclick="downloadTweetAsImage()">Baixar</button>
+
+    <script src="script.js"></script>
 </body>
-  </html>
+    </html>
