@@ -16,12 +16,12 @@
         <input type="checkbox" id="verified" onchange="updateTweet()" checked>
         <label for="verified">Verificado</label>
         
-        <br> <label for="name">Nome:</label>
-        <input type="text" id="nameInput" placeholder="Nome" oninput="updateTweet()">
-        <label for="username">Nome de usuário:</label>
-        <input type="text" id="usernameInput" placeholder="Usuário" oninput="updateTweet()">
+        <br> <label for="name">Nome/Apelido</label>
+        <input type="text" id="nameInput" placeholder="John Doe" oninput="updateTweet()">
+        <label for="username">Username (opcional)</label>
+        <input type="text" id="usernameInput" placeholder="@johndoe" oninput="updateTweet()">
         
-        <label for="tweetMessage">Mensagem:</label>
+        <label for="tweetMessage">Mensagem</label>
         
         <!-- Atalhos de formatação -->
         <div class="formatting-buttons">
@@ -33,7 +33,7 @@
         </div>
         
         <textarea id="tweetMessage" placeholder="Escreva sua mensagem..." rows="4" oninput="updateTweet()"></textarea>
-        <p class="error-message" id="errorMessage">A mensagem não pode ter mais de 10 linhas.</p>
+        <p class="error-message" id="errorMessage">Se a vida te der limões, faça uma limonada... ou melhor, um gin tônica com eles! 🍋✨ #VidaCriativa #HappyHour</p>
     </form>
     <button class="clear-button" onclick="clearMessage()">Limpar</button>
 </div>
