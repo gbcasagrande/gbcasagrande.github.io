@@ -13,10 +13,12 @@
         <label for="profileImage"></label>
         <input type="file" id="profileImage" accept="image/*" onchange="loadAvatar(event)">
         <p><br></p>
-        <input type="checkbox" id="verified" onchange="updateTweet()" checked>
-        <label for="verified">Verified</label>
+        
         <br> <label for="name">Nome/Apelido</label>
-        <label for="verified">Verified</label>
+         <label for="verified">Verified</label>
+        
+        <input type="checkbox" id="verified" onchange="updateTweet()" checked>
+        
         <input type="text" id="nameInput" placeholder="John Doe" oninput="updateTweet()">
         <label for="username">Username (opcional)</label>
         <input type="text" id="usernameInput" placeholder="@johndoe" oninput="updateTweet()">
