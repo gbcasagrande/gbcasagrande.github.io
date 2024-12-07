@@ -77,6 +77,10 @@
             height: auto;
             border-radius: 10px;
         }
+        #downloadBtn {
+            margin-top: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -98,6 +102,7 @@
         <button onclick="generateQRCode()">Gerar QR Code</button>
 
         <div id="qrcode"></div>
+        <button id="downloadBtn" onclick="downloadQRCode()">Baixar QR Code</button>
     </div>
 
     <script>
@@ -132,6 +137,7 @@
         function generateQRCode() {
             const input = document.getElementById("input").value.trim();
             const qrcodeDiv = document.getElementById("qrcode");
+            const downloadBtn = document.getElementById("downloadBtn");
 
             if (!input) {
                 alert("Por favor, insira um valor!");
@@ -169,7 +175,23 @@
             const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrContent)}&size=200x200`;
 
             // Atualiza a imagem do QR Code
-            qrcodeDiv.innerHTML = `<img src="${apiUrl}" alt="QR Code gerado">`;
+            qrcodeDiv.innerHTML = `<img id="qrcodeImage" src="${apiUrl}" alt="QR Code gerado">`;
+
+            // Exibe o botão de download
+            downloadBtn.style.display = "block";
+        }
+
+        function downloadQRCode() {
+            const qrImage = document.getElementById("qrcodeImage");
+            if (!qrImage) {
+                alert("Por favor, gere um QR Code antes de fazer o download.");
+                return;
+            }
+
+            const link = document.createElement("a");
+            link.download = "qrcode.png";
+            link.href = qrImage.src;
+            link.click();
         }
     </script>
 </body>
