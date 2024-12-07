@@ -10,11 +10,11 @@
 <div class="form-container">
     <h2>Transforme suas ideias em tweets virais! 🚀✨ Gerador fácil, rápido e divertido. Experimente!</h2>
     <form id="editForm">
-        <label for="profileImage">Imagem de Perfil:</label>
+        <label for="profileImage">Imagem de Perfil</label>
         <input type="file" id="profileImage" accept="image/*" onchange="loadAvatar(event)">
         <p><br></p>
         <input type="checkbox" id="verified" onchange="updateTweet()" checked>
-        <label for="verified">Verificado</label>
+        <label for="verified">Verified</label>
         <br> <label for="name">Nome/Apelido</label>
         <input type="text" id="nameInput" placeholder="John Doe" oninput="updateTweet()">
         <label for="username">Username (opcional)</label>
@@ -36,8 +36,9 @@
 
 </p>
     </form>
-    <button type="button" onclick="clearMessage()">reset</button>
-</div>
+<div class="formatting-buttons">
+    <button type="button" onclick="clearMessage()">clean</button>
+</div></div>
 
 <div class="tweet-container" id="tweet">
     <div class="header">
