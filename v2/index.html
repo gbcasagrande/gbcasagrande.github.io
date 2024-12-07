@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fake Tweet Tools</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        function verifyPassword() {
+            const password = prompt("Digite a senha para acessar a página:");
+            const correctPassword = "minhaSenhaSegura"; // Defina a senha desejada aqui
+
+            if (password !== correctPassword) {
+                alert("Senha incorreta! Você será redirecionado.");
+                window.location.href = "https://www.google.com"; // Redirecione para outra página se a senha estiver errada
+            }
+        }
+
+        window.onload = verifyPassword;
+    </script>
 </head>
 <body>
 <div class="form-container">
