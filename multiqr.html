@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de QR Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(120deg, #ff7eb3, #ff758c, #ff6a61);
+            background-size: 200% 200%;
+            animation: gradient 8s ease infinite;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: #fff;
+            color: #333;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ff6a61;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+        select, input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background: #ff6a61;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #e55950;
+        }
+        #qrcode {
+            margin: 20px 0;
+            padding: 10px;
+            background: #f4f4f4;
+            border-radius: 10px;
+        }
+        .btn-container {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        .btn-container button {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerador de QR Code</h1>
+        <label for="type">Selecione o tipo de QR Code:</label>
+        <select id="type" onchange="toggleInputFields()">
+            <option value="text">Texto</option>
+            <option value="link">Link</option>
+            <option value="phone">Telefone</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="wifi">Wi-Fi</option>
+            <option value="location">Localização</option>
+        </select>
+
+        <label for="input">Insira o conteúdo:</label>
+        <input type="text" id="input" placeholder="Digite o texto aqui" />
+
+        <div class="btn-container">
+            <button onclick="generateQRCode()">Gerar QR Code</button>
+            <button id="downloadBtn" style="display: none;" onclick="downloadQRCode()">Salvar como PNG</button>
+        </div>
+
+        <div id="qrcode"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        function toggleInputFields() {
+            const type = document.getElementById("type").value;
+            const input = document.getElementById("input");
+
+            switch (type) {
+                case "text":
+                    input.placeholder = "Digite o texto";
+                    break;
+                case "link":
+                    input.placeholder = "Insira o URL (https://...)";
+                    break;
+                case "phone":
+                    input.placeholder = "Insira o número de telefone";
+                    break;
+                case "whatsapp":
+                    input.placeholder = "Insira o número WhatsApp com código";
+                    break;
+                case "wifi":
+                    input.placeholder = "SSID:Senha (separados por dois pontos)";
+                    break;
+                case "location":
+                    input.placeholder = "Lat, Long (Exemplo: -23.5505, -46.6333)";
+                    break;
+                default:
+                    input.placeholder = "Digite o conteúdo";
+            }
+        }
+
+        function generateQRCode() {
+            const type = document.getElementById("type").value;
+            const inputValue = document.getElementById("input").value.trim();
+            const qrCodeDiv = document.getElementById("qrcode");
+            const downloadBtn = document.getElementById("downloadBtn");
+
+            let qrContent;
+
+            if (!inputValue) {
+                alert("Por favor, insira um valor!");
+                return;
+            }
+
+            switch (type) {
+                case "text":
+                    qrContent = inputValue;
+                    break;
+                case "link":
+                    qrContent = inputValue.startsWith("http") ? inputValue : `https://${inputValue}`;
+                    break;
+                case "phone":
+                    qrContent = `tel:${inputValue}`;
+                    break;
+                case "whatsapp":
+                    qrContent = `https://wa.me/${inputValue}`;
+                    break;
+                case "wifi":
+                    const [ssid, password] = inputValue.split(":");
+                    qrContent = `WIFI:S:${ssid};T:WPA;P:${password};;`;
+                    break;
+                case "location":
+                    const [lat, long] = inputValue.split(",");
+                    qrContent = `geo:${lat},${long}`;
+                    break;
+                default:
+                    qrContent = inputValue;
+            }
+
+            qrCodeDiv.innerHTML = ""; // Limpa o QR Code anterior
+            downloadBtn.style.display = "none"; // Esconde o botão de download
+
+            // Gera o QR Code no canvas
+            QRCode.toCanvas(qrCodeDiv, qrContent, function (error, canvas) {
+                if (error) console.error(error);
+
+                // Mostra o botão de download após gerar o QR Code
+                downloadBtn.style.display = "inline-block";
+                downloadBtn.setAttribute("data-canvas-id", canvas.id); // Associa o canvas ao botão
+            });
+        }
+
+        function downloadQRCode() {
+            const canvas = document.querySelector("#qrcode canvas");
+            if (!canvas) {
+                alert("Por favor, gere um QR Code antes de fazer o download.");
+                return;
+            }
+
+            const link = document.createElement("a");
+            link.download = "qrcode.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }
+    </script>
+</body>
+  </html>
