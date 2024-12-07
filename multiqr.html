@@ -68,18 +68,14 @@
             background: #e55950;
         }
         #qrcode {
-            margin: 20px 0;
+            margin: 20px auto;
             padding: 10px;
-            background: #f4f4f4;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
             border-radius: 10px;
-        }
-        .btn-container {
-            display: flex;
-            gap: 10px;
-            justify-content: space-between;
-        }
-        .btn-container button {
-            flex: 1;
         }
     </style>
 </head>
@@ -87,7 +83,7 @@
     <div class="container">
         <h1>Gerador de QR Code</h1>
         <label for="type">Selecione o tipo de QR Code:</label>
-        <select id="type" onchange="toggleInputFields()">
+        <select id="type" onchange="updatePlaceholder()">
             <option value="text">Texto</option>
             <option value="link">Link</option>
             <option value="phone">Telefone</option>
@@ -99,17 +95,13 @@
         <label for="input">Insira o conteúdo:</label>
         <input type="text" id="input" placeholder="Digite o texto aqui" />
 
-        <div class="btn-container">
-            <button onclick="generateQRCode()">Gerar QR Code</button>
-            <button id="downloadBtn" style="display: none;" onclick="downloadQRCode()">Salvar como PNG</button>
-        </div>
+        <button onclick="generateQRCode()">Gerar QR Code</button>
 
         <div id="qrcode"></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script>
-        function toggleInputFields() {
+        function updatePlaceholder() {
             const type = document.getElementById("type").value;
             const input = document.getElementById("input");
 
@@ -138,68 +130,47 @@
         }
 
         function generateQRCode() {
-            const type = document.getElementById("type").value;
-            const inputValue = document.getElementById("input").value.trim();
-            const qrCodeDiv = document.getElementById("qrcode");
-            const downloadBtn = document.getElementById("downloadBtn");
+            const input = document.getElementById("input").value.trim();
+            const qrcodeDiv = document.getElementById("qrcode");
 
-            let qrContent;
-
-            if (!inputValue) {
+            if (!input) {
                 alert("Por favor, insira um valor!");
                 return;
             }
 
+            const type = document.getElementById("type").value;
+            let qrContent;
+
             switch (type) {
                 case "text":
-                    qrContent = inputValue;
+                    qrContent = input;
                     break;
                 case "link":
-                    qrContent = inputValue.startsWith("http") ? inputValue : `https://${inputValue}`;
+                    qrContent = input.startsWith("http") ? input : `https://${input}`;
                     break;
                 case "phone":
-                    qrContent = `tel:${inputValue}`;
+                    qrContent = `tel:${input}`;
                     break;
                 case "whatsapp":
-                    qrContent = `https://wa.me/${inputValue}`;
+                    qrContent = `https://wa.me/${input}`;
                     break;
                 case "wifi":
-                    const [ssid, password] = inputValue.split(":");
+                    const [ssid, password] = input.split(":");
                     qrContent = `WIFI:S:${ssid};T:WPA;P:${password};;`;
                     break;
                 case "location":
-                    const [lat, long] = inputValue.split(",");
+                    const [lat, long] = input.split(",");
                     qrContent = `geo:${lat},${long}`;
                     break;
                 default:
-                    qrContent = inputValue;
+                    qrContent = input;
             }
 
-            qrCodeDiv.innerHTML = ""; // Limpa o QR Code anterior
-            downloadBtn.style.display = "none"; // Esconde o botão de download
+            const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrContent)}&size=200x200`;
 
-            // Gera o QR Code no canvas
-            QRCode.toCanvas(qrCodeDiv, qrContent, function (error, canvas) {
-                if (error) console.error(error);
-
-                // Mostra o botão de download após gerar o QR Code
-                downloadBtn.style.display = "inline-block";
-                downloadBtn.setAttribute("data-canvas-id", canvas.id); // Associa o canvas ao botão
-            });
-        }
-
-        function downloadQRCode() {
-            const canvas = document.querySelector("#qrcode canvas");
-            if (!canvas) {
-                alert("Por favor, gere um QR Code antes de fazer o download.");
-                return;
-            }
-
-            const link = document.createElement("a");
-            link.download = "qrcode.png";
-            link.href = canvas.toDataURL("image/png");
-            link.click();
+            // Atualiza a imagem do QR Code
+            qrcodeDiv.innerHTML = `<img src="${apiUrl}" alt="QR Code gerado">`;
         }
     </script>
 </body>
-  </html>
+</html>
