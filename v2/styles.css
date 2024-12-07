@@ -103,7 +103,7 @@ body {
     width: 400px;
     height: 400px;
     border: 1px solid #e1e8ed;
-    border-radius: 16px;
+    border-radius: 0; /* Garantir bordas quadradas */
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
