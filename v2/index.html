@@ -16,13 +16,14 @@
         
         <br> <label for="name">Nome/Apelido</label>
         <p>
+        
+        <input type="text" id="nameInput" placeholder="John Doe" oninput="updateTweet()">
+            
             <label for="verified">Verified</label>
         
         <input type="checkbox" id="verified" onchange="updateTweet()" checked>
         </p>
          
-        
-        <input type="text" id="nameInput" placeholder="John Doe" oninput="updateTweet()">
         <label for="username">Username (opcional)</label>
         <input type="text" id="usernameInput" placeholder="@johndoe" oninput="updateTweet()">
         <p><br></p>
