@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Combustível - Almoxarifado Biofuga</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #1e3a8a;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 80%; /* Diminuído para 80% da largura */
+            padding: 8px; /* Tamanho de padding menor */
+            margin-bottom: 15px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        input:focus {
+            border-color: #2563eb;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            font-size: 1.2em;
+            background-color: #f8f9fa;
+            display: none;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .social-links {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+        .social-links a {
+            color: #2563eb;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+        .social-links img {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Controle de Combustível - Almoxarifado Biofuga</h1>
+        <form onsubmit="calculateFuel(event)">
+            <label for="height">Altura do líquido (h) em cm:</label>
+            <input type="number" id="height" placeholder="Ex: 123" required>
+
+            <label for="lastMeasurement">Quantidade de litros na última medição (opcional):</label>
+            <input type="number" id="lastMeasurement" placeholder="Ex: 5000">
+
+            <!-- Valores predefinidos e ocultos -->
+            <input type="hidden" id="radius" value="80">
+            <input type="hidden" id="length" value="300">
+            <input type="hidden" id="capacity" value="6000">
+
+            <button type="submit">Calcular</button>
+        </form>
+
+        <div class="result" id="result">
+            <p id="output"></p>
+        </div>
+
+        <!-- Legenda reformulada -->
+        <div class="footer">
+            <p><em>Desenvolvido com ChatGPT por Gabriel Casagrande para o cálculo de combustível no tanque de diesel da Biofuga. Este tanque possui raio de 80 cm, comprimento de 3 metros e capacidade total de 6000 litros.</em></p>
+        </div>
+
+        <!-- Ícones de e-mail e LinkedIn -->
+        <div class="social-links">
+            <a href="mailto:gabrielcasagrande@protonmail.com">
+                <img src="https://cdn-icons-png.flaticon.com/512/3178/3178283.png" alt="E-mail">
+            </a>
+            <a href="https://www.linkedin.com/in/gabriel-casagrande-10582b347" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function calculateFuel(event) {
+            event.preventDefault();
+
+            // Obtém os valores
+            const r = parseFloat(document.getElementById('radius').value);
+            const L = parseFloat(document.getElementById('length').value);
+            const h = parseFloat(document.getElementById('height').value);
+            const capacity = parseFloat(document.getElementById('capacity').value);
+            const lastMeasurement = parseFloat(document.getElementById('lastMeasurement').value);
+
+            if (isNaN(h) || h > 2 * r || h <= 0) {
+                alert(`Por favor, insira uma altura válida entre 0 e ${2 * r} cm.`);
+                return;
+            }
+
+            // Cálculo do volume do combustível
+            const A = (r * r * Math.acos((r - h) / r)) - ((r - h) * Math.sqrt(2 * r * h - h * h));
+            const volume = (A * L) / 1000; // Convertendo para litros
+
+            // Cálculo da porcentagem
+            const percentage = (volume / capacity) * 100;
+
+            // Mensagem do resultado
+            let resultMessage = `Seu tanque está com <strong>${volume.toFixed(2)} litros</strong> de diesel, atualmente está em <strong>${percentage.toFixed(2)}%</strong>.`;
+
+            // Cálculo do consumo, se aplicável
+            if (!isNaN(lastMeasurement) && lastMeasurement > 0) {
+                const consumption = lastMeasurement - volume;
+                resultMessage += ` Foi gasto <strong>${Math.abs(consumption).toFixed(2)} litros</strong> desde a última medição.`;
+            }
+
+            // Adiciona a informação sobre os geradores
+            const totalWithGenerators = volume + 600; // Adicionando 600 litros
+            resultMessage += `<br><br>Com mais 600 litros no reservatório dos geradores, você tem um total de <strong>${totalWithGenerators.toFixed(2)} litros</strong> de combustível.`;
+
+            // Exibe o resultado com borda
+            document.getElementById('output').innerHTML = resultMessage;
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block'; // Mostra a área de resultado
+        }
+    </script>
+</body>
+  </html>
