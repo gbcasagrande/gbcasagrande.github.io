@@ -11,6 +11,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* Adicionado para centralizar verticalmente */
             min-height: 100vh; /* Permite rolagem quando necessário */
             background: #0d1117;
             color: #c9d1d9;
@@ -156,12 +157,12 @@
     </div>
 
     <div class="container">
-        <img class="tools-icon" src="https://cdn-icons-png.flaticon.com/128/18472/18472616.png" alt="Outras Ferramentas">
+        <img class="tools-icon" src="https://cdn-icons-png.flaticon.com/128/18472/18472616.png" alt="logo">
         <h1>Gerador de QR Code</h1>
         <form id="qrForm">
             <select id="type" onchange="toggleFields()">
-                <option value="text">🔤 Texto ou Link</option>
-                <option value="wifi">🛜 Wi-Fi</option>
+                <option value="text">Texto ou Link</option>
+                <option value="wifi">Wi-Fi</option>
             </select>
 
             <div id="textFields">
@@ -234,4 +235,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
