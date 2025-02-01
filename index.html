@@ -3,35 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Links Rápidos </title>
+    <title>Links Rápidos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* Estilo geral */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Nunito', sans-serif;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: #fff;
+            background: #0d1117;
+            color: #c9d1d9;
             margin: 0;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: #161b22;
             padding: 30px;
             border-radius: 15px;
             text-align: center;
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            border: 1px solid #30363d;
         }
 
         h1 {
             margin-bottom: 20px;
             font-size: 24px;
+            font-weight: 700;
         }
 
         ul {
@@ -46,25 +48,66 @@
         a {
             display: block;
             text-decoration: none;
-            color: #fff;
+            color: #c9d1d9;
             font-size: 18px;
             font-weight: bold;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
+            background: #21262d;
+            border-radius: 12px;
             transition: 0.3s;
+            border: 1px solid #30363d;
         }
 
         a:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: #30363d;
         }
 
         /* Rodapé */
         .footer {
-            margin-top: 20px;
+            margin-top: 30px;
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
+            color: #8b949e;
             text-align: center;
+        }
+
+        .footer span {
+            color: #58a6ff;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .footer span:hover {
+            text-decoration: underline;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        /* Ícones sociais */
+        .social-icons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .social-icons span {
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .social-icons img {
+            width: 30px;
+            height: 30px;
+            transition: 0.3s;
+            border: none; /* Garantindo que não tenha borda */
+            background: none; /* Garantindo que não tenha fundo */
+        }
+
+        .social-icons img:hover {
+            opacity: 0.7;
         }
     </style>
 </head>
@@ -82,7 +125,16 @@
             <li><a href="/cfop">🧾 Consultar CFOP</a></li>
         </ul>
         <div class="footer">
-            Todas as ferramentas foram desenvolvidas com uso do ChatGPT. Por GB.
+            <p>Desenvolvido por <strong>GB</strong> &bull; 2025</p>
+            <p><span onclick="window.open('http://gbcasagrande.github.io', '_blank');">gbcasagrande.github.io</span></p>
+            <div class="social-icons">
+                <span onclick="window.open('https://instagram.com/gbcasagrande', '_blank');">
+                    <img src="https://cdn-icons-png.flaticon.com/128/15713/15713420.png" alt="Instagram">
+                </span>
+                <span onclick="window.location.href = 'mailto:gabrielcasagrande@pm.me';">
+                    <img src="https://cdn-icons-png.flaticon.com/128/9068/9068642.png" alt="E-mail">
+                </span>
+            </div>
         </div>
     </div>
 </body>
