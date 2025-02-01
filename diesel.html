@@ -3,44 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Diesel ⛽️</title>
+    <title>Links Rápidos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Estilo geral */
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #ffffff;
-            color: #333;
+            font-family: 'Nunito', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background: #0d1117;
+            color: #c9d1d9;
+            margin: 0;
             text-align: center;
         }
+
         .container {
-            width: 100%;
+            background: #161b22;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 90%;
             max-width: 600px;
-            padding: 20px;
-            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            border: 1px solid #30363d;
         }
+
         h1 {
-            color: #1e3a8a;
-            font-size: 1.8em;
             margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #58a6ff; /* Cor do título */
         }
+
         input {
-            width: 80%; /* Diminuído para 80% da largura */
-            padding: 8px; /* Tamanho de padding menor */
+            width: 80%;
+            padding: 8px;
             margin-bottom: 15px;
             border: 2px solid #ccc;
             border-radius: 8px;
             font-size: 1em;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
+
         input:focus {
             border-color: #2563eb;
             outline: none;
         }
+
         button {
             width: 100%;
             padding: 10px;
@@ -53,45 +65,109 @@
             cursor: pointer;
             transition: background 0.3s ease;
         }
+
         button:hover {
             background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
         }
+
         .result {
-            margin-top: 20px;
+            margin-top: 30px; /* Aumentando o espaço superior */
             padding: 20px;
             font-size: 1.2em;
-            background-color: #f8f9fa;
+            background-color: #161b22; /* Cor de fundo igual ao layout */
+            color: #ffffff; /* Cor do texto branco */
             display: none;
-            border: 2px solid #ccc;
+            border: 2px solid #30363d; /* Borda ajustada */
             border-radius: 8px;
         }
+
+        /* Rodapé */
         .footer {
             margin-top: 30px;
-            font-size: 0.9em;
-            color: #666;
+            font-size: 14px;
+            color: #8b949e;
+            text-align: center;
         }
-        .social-links {
-            margin-top: 20px;
-            font-size: 1.5em;
-        }
-        .social-links a {
-            color: #2563eb;
+
+        .footer span {
+            color: #58a6ff;
+            font-weight: bold;
+            cursor: pointer;
             text-decoration: none;
-            margin: 0 10px;
         }
-        .social-links a:hover {
+
+        .footer span:hover {
             text-decoration: underline;
         }
-        .social-links img {
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        /* Ícones sociais */
+        .social-icons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .social-icons span {
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .social-icons img {
             width: 30px;
             height: 30px;
+            transition: 0.3s;
+            border: none; /* Garantindo que não tenha borda */
+            background: none; /* Garantindo que não tenha fundo */
+        }
+
+        .social-icons img:hover {
+            opacity: 0.7;
+        }
+
+        /* Novo estilo para o ícone ao lado de "Home" */
+        .tools-icon {
             vertical-align: middle;
+            margin-right: 8px;
+            width: 30px; /* Aumentado em 50% */
+            height: 30px; /* Aumentado em 50% */
+        }
+
+        /* Estilo do ícone "Home" no topo */
+        .tools-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px; /* Ajustando a margem superior */
+            width: 100%;
+        }
+
+        /* Estilo do texto "Home" */
+        .tools-text {
+            color: #58a6ff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 40px; /* Aumentando o espaço acima do texto */
+        }
+
+        .tools-text:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <!-- Link "Home" no topo -->
+    <div class="tools-container">
+        <a href="/" class="tools-text"># inicio</a>
+    </div>
 
     <div class="container">
+        <img class="tools-icon" src="https://cdn-icons-png.flaticon.com/128/18472/18472616.png" alt="Outras Ferramentas">
         <h1>Controle de Diesel ⛽️</h1>
         <form onsubmit="calculateFuel(event)">
             <label for="height">Altura de Diesel na régua:</label>
@@ -112,17 +188,18 @@
             <p id="output"></p>
         </div>
 
-        <!-- Legenda reformulada -->
+        <!-- Rodapé -->
         <div class="footer">
-            <p><em>Desenvolvido com ChatGPT por Gb / Cilindro definido para cálculo possui raio de 80 cm, comprimento de 3 metros e capacidade total de 6000 litros.</em></p>
-        </div>
-
-        <!-- Ícones de e-mail e LinkedIn -->
-        <div class="social-links">
-            <a href="mailto:gabrielcasagrande@protonmail.com">
-                <img src="https://cdn-icons-png.flaticon.com/512/3178/3178283.png" alt="E-mail">
-            </a>
-        
+            <p>Desenvolvido por <strong>GB</strong> &bull; 2025</p>
+            <p><span onclick="window.open('http://gbcasagrande.github.io', '_blank');">gbcasagrande.github.io</span></p>
+            <div class="social-icons">
+                <span onclick="window.open('https://instagram.com/gbcasagrande', '_blank');">
+                    <img src="https://cdn-icons-png.flaticon.com/128/15713/15713420.png" alt="Instagram">
+                </span>
+                <span onclick="window.location.href = 'mailto:gabrielcasagrande@pm.me';">
+                    <img src="https://cdn-icons-png.flaticon.com/128/9068/9068642.png" alt="E-mail">
+                </span>
+            </div>
         </div>
     </div>
 
@@ -169,4 +246,4 @@
         }
     </script>
 </body>
-  </html>
+</html>
