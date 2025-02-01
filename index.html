@@ -1,75 +1,89 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indexador de Links</title>
+    <title>Links Rápidos </title>
     <style>
+        /* Estilo geral */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
             margin: 0;
-            background-color: #f4f4f9;
         }
 
         .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
             width: 90%;
-        }
-
-        .logo {
-            margin-bottom: 20px;
-        }
-
-        .logo img {
-            max-width: 20%; /* Reduz o tamanho pela metade */
-            height: auto;  /* Mantém a proporção */
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         h1 {
-            color: #333;
             margin-bottom: 20px;
+            font-size: 24px;
         }
 
-        .link-list {
-            list-style-type: none;
+        ul {
+            list-style: none;
             padding: 0;
         }
 
-        .link-list li {
+        li {
             margin: 10px 0;
         }
 
-        .link-list a {
-            color: #007bff;
+        a {
+            display: block;
             text-decoration: none;
+            color: #fff;
             font-size: 18px;
+            font-weight: bold;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: 0.3s;
         }
 
-        .link-list a:hover {
-            text-decoration: underline;
+        a:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Rodapé */
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">
-            <img src="logo.png" alt="Logo">
-        </div>
-        <h1>Ferramentas Online</h1>
-        <ul class="link-list">
-            <li><a href="senha" target="_blank">Gerador de Senhas</a></li>
-            <li><a href="tt" target="_blank">Fake Tweet</a></li>
-            <li><a href="qr" target="_blank">Gerador de QR Code</a></li>
+        <h1>Atalhos Rápidos 🔗</h1>
+        <ul>
+            <li><a href="/diesel">⛽️ Calculadora de Diesel</a></li>
+            <li><a href="/multiqr">💻 Gerar QR Code V2</a></li>
+            <li><a href="/qr">💻 Gerar QR Code V1</a></li>
+            <li><a href="/senha">🔒 Gerar Senha Segura</a></li>
+            <li><a href="/tt">🐦 Post Twitter/X</a></li>
+            <li><a href="/v2">🐦 Post Twitter/X V2</a></li>
+            <li><a href="/teste">👽 Teste</a></li>
+            <li><a href="/cfop">🧾 Consultar CFOP</a></li>
         </ul>
+        <div class="footer">
+            Todas as ferramentas foram desenvolvidas com uso do ChatGPT. Por GB.
+        </div>
     </div>
 </body>
 </html>
