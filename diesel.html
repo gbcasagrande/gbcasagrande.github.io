@@ -2,55 +2,58 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Links Rápidos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Controle de Diesel ⛽️</title>
+    
+    <!-- Fonte Nunito -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para os ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         /* Estilo geral */
         body {
             font-family: 'Nunito', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             background: #0d1117;
             color: #c9d1d9;
             margin: 0;
             text-align: center;
+            min-height: 100vh;
+            overflow-y: auto; /* Permite rolagem */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
 
         .container {
             background: #161b22;
             padding: 30px;
             border-radius: 15px;
-            text-align: center;
             width: 90%;
             max-width: 600px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             border: 1px solid #30363d;
+            margin-bottom: 20px;
         }
 
         h1 {
-            margin-bottom: 20px;
             font-size: 24px;
             font-weight: 700;
-            color: #58a6ff; /* Cor do título */
+            color: #58a6ff;
         }
 
         input {
-            width: 80%;
+            width: 100%;
             padding: 8px;
             margin-bottom: 15px;
             border: 2px solid #ccc;
             border-radius: 8px;
             font-size: 1em;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        input:focus {
-            border-color: #2563eb;
-            outline: none;
+            background: #0d1117;
+            color: #c9d1d9;
+            text-align: center;
         }
 
         button {
@@ -71,134 +74,101 @@
         }
 
         .result {
-            margin-top: 30px; /* Aumentando o espaço superior */
             padding: 20px;
             font-size: 1.2em;
-            background-color: #161b22; /* Cor de fundo igual ao layout */
-            color: #ffffff; /* Cor do texto branco */
+            background-color: #161b22;
+            color: #ffffff;
             display: none;
-            border: 2px solid #30363d; /* Borda ajustada */
+            border: 2px solid #30363d;
             border-radius: 8px;
+            margin-top: 20px;
         }
 
-        /* Rodapé */
-        .footer {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #8b949e;
-            text-align: center;
-        }
-
-        .footer span {
-            color: #58a6ff;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .footer span:hover {
-            text-decoration: underline;
-        }
-
-        .footer p {
-            margin: 5px 0;
-        }
-
-        /* Ícones sociais */
         .social-icons {
             margin-top: 10px;
             display: flex;
             justify-content: center;
-            align-items: center;
         }
 
-        .social-icons span {
-            margin: 0 10px;
-            cursor: pointer;
+        .social-icons a {
+            margin: 0 15px;
+            font-size: 24px;
+            color: #c9d1d9;
+            text-decoration: none;
+            transition: color 0.3s;
         }
 
-        .social-icons img {
-            width: 30px;
-            height: 30px;
-            transition: 0.3s;
-            border: none; /* Garantindo que não tenha borda */
-            background: none; /* Garantindo que não tenha fundo */
+        .social-icons a:hover {
+            color: #58a6ff;
         }
 
-        .social-icons img:hover {
-            opacity: 0.7;
-        }
-
-        /* Novo estilo para o ícone ao lado de "Home" */
-        .tools-icon {
-            vertical-align: middle;
-            margin-right: 8px;
-            width: 30px; /* Aumentado em 50% */
-            height: 30px; /* Aumentado em 50% */
-        }
-
-        /* Estilo do ícone "Home" no topo */
         .tools-container {
             display: flex;
             justify-content: center;
-            margin-top: 20px; /* Ajustando a margem superior */
+            margin-bottom: 20px;
             width: 100%;
         }
 
-        /* Estilo do texto "Home" */
         .tools-text {
             color: #58a6ff;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
-            margin-top: 40px; /* Aumentando o espaço acima do texto */
         }
 
         .tools-text:hover {
             text-decoration: underline;
+        
+        }
+        .tools-icon {
+            vertical-align: middle;
+            margin-right: 8px;
+            width: 30px; /* Aumentado em 50% */
+            height: 30px; /* Aumentado em 50% */
         }
     </style>
 </head>
 <body>
-    <!-- Link "Home" no topo -->
+
+    <!-- Link "Home" atualizado para funcionar em mais navegadores -->
     <div class="tools-container">
-        <a href="/" class="tools-text"># inicio</a>
+        <a href="javascript:window.location.href='/'" class="tools-text">Início</a>
     </div>
 
     <div class="container">
-        <img class="tools-icon" src="https://cdn-icons-png.flaticon.com/128/18472/18472616.png" alt="Outras Ferramentas">
-        <h1>Controle de Diesel ⛽️</h1>
+       
+        <h1>Controle de Diesel <i class="fa-solid fa-gas-pump"></i></h1>
+
         <form onsubmit="calculateFuel(event)">
-            <label for="height">Altura de Diesel na régua:</label>
-            <input type="number" id="height" placeholder="Ex: 123" required>
-
-            <label for="lastMeasurement">Quantidade de litros na última medição (opcional):</label>
-            <input type="number" id="lastMeasurement" placeholder="Ex: 5000">
-
-            <!-- Valores predefinidos e ocultos -->
             <input type="hidden" id="radius" value="80">
             <input type="hidden" id="length" value="300">
             <input type="hidden" id="capacity" value="6000">
 
-            <button type="submit">Calcular</button>
+            <label for="height"><i class="fa-solid fa-arrows-alt-v"></i> Altura na régua atual</label>
+            <input type="number" id="height" placeholder="Ex: 123" required>
+
+            <label for="lastMeasurement"><i class="fa-solid fa-clock"></i> Litros anterior (calcular consumo)</label>
+            <input type="number" id="lastMeasurement" placeholder="Ex: 5000">
+
+            <button type="submit"> Calcular</button>
         </form>
 
         <div class="result" id="result">
             <p id="output"></p>
         </div>
 
-        <!-- Rodapé -->
         <div class="footer">
-            <p>Desenvolvido por <strong>GB</strong> &bull; 2025</p>
-            <p><span onclick="window.open('http://gbcasagrande.github.io', '_blank');">gbcasagrande.github.io</span></p>
+           
+            <p> <i class="fa-brands fa-connectdevelop"></i> Desenvolvido por GB </p>
+            <p><a href="http://gbcasagrande.github.io" target="_blank">gbcasagrande.github.io</a></p>
             <div class="social-icons">
-                <span onclick="window.open('https://instagram.com/gbcasagrande', '_blank');">
-                    <img src="https://cdn-icons-png.flaticon.com/128/15713/15713420.png" alt="Instagram">
-                </span>
-                <span onclick="window.location.href = 'mailto:gabrielcasagrande@pm.me';">
-                    <img src="https://cdn-icons-png.flaticon.com/128/9068/9068642.png" alt="E-mail">
-                </span>
+                <a href="https://instagram.com/gbcasagrande" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="mailto:gabrielcasagrande@pm.me">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -207,11 +177,10 @@
         function calculateFuel(event) {
             event.preventDefault();
 
-            // Obtém os valores
             const r = parseFloat(document.getElementById('radius').value);
             const L = parseFloat(document.getElementById('length').value);
-            const h = parseFloat(document.getElementById('height').value);
             const capacity = parseFloat(document.getElementById('capacity').value);
+            const h = parseFloat(document.getElementById('height').value);
             const lastMeasurement = parseFloat(document.getElementById('lastMeasurement').value);
 
             if (isNaN(h) || h > 2 * r || h <= 0) {
@@ -226,24 +195,22 @@
             // Cálculo da porcentagem
             const percentage = (volume / capacity) * 100;
 
-            // Mensagem do resultado
-            let resultMessage = `Seu tanque está com <strong>${volume.toFixed(2)} litros</strong> de diesel, atualmente está em <strong>${percentage.toFixed(2)}%</strong>.`;
+            let resultMessage = `Está em <strong>${percentage.toFixed(2)}%</strong> com <strong>${volume.toFixed(2)} litros</strong>.`;
 
-            // Cálculo do consumo, se aplicável
+
+            const totalWithGenerators = volume + 600;
+            resultMessage += `<br>+600 litros na reserva<br><strong>${totalWithGenerators.toFixed(2)} litros</strong> de combustível no total.`;
+
+            
             if (!isNaN(lastMeasurement) && lastMeasurement > 0) {
                 const consumption = lastMeasurement - volume;
-                resultMessage += ` Foi gasto <strong>${Math.abs(consumption).toFixed(2)} litros</strong> desde a última medição.`;
+                resultMessage += `<br>● Houve um consumo de <strong>${Math.abs(consumption).toFixed(2)} litros</strong>`;
             }
-
-            // Adiciona a informação sobre os geradores
-            const totalWithGenerators = volume + 600; // Adicionando 600 litros
-            resultMessage += `<br><br>Com mais 600 litros no reservatório dos geradores, você tem um total de <strong>${totalWithGenerators.toFixed(2)} litros</strong> de combustível.`;
-
-            // Exibe o resultado com borda
+                
             document.getElementById('output').innerHTML = resultMessage;
-            const resultDiv = document.getElementById('result');
-            resultDiv.style.display = 'block'; // Mostra a área de resultado
+            document.getElementById('result').style.display = 'block';
         }
     </script>
+
 </body>
 </html>
