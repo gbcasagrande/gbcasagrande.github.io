@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Calculo de Tanque</title>
+    
+    <!-- Fonte Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            margin: 0;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #161b22;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid #30363d;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #58a6ff;
+            margin-bottom: 20px;
+        }
+
+        .form-group, .row {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #c9d1d9;
+        }
+
+        .input-large, .input-small {
+            width: 90%;
+            padding: 10px;
+            border: 2px solid #30363d;
+            border-radius: 20px;
+            font-size: 1.2em;
+            background: #21262d;
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        button {
+            width: 60%;
+            padding: 12px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+        }
+
+        .result {
+            padding: 20px;
+            font-size: 1.2em;
+            background-color: #21262d;
+            color: #c9d1d9;
+            border-radius: 10px;
+            border: 1px solid #30363d;
+            margin-top: 20px;
+            width: 100%;
+            display: none;
+        }
+
+        canvas {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+  
+
+    <div class="container">
+          
+ <div class="tools-container">
+        <a href="/" target="_blank">
+                    <i class="fa-solid fa-house" style="color: #ffffff;"></i>
+                </a></div>
+     <h1>Calculo de Tanque</h1>
+
+        <form onsubmit="calculateFuel(event)">
+            <div class="form-group">
+                <label for="height">Altura do combustível (cm)</label>
+                <input type="number" id="height" class="input-large" placeholder="Ex: 123" required>
+                
+                <label for="lastMeasurement">Quantidade anterior (L)</label>
+                <input type="number" id="lastMeasurement" class="input-large" placeholder="Ex: 5000">
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="radius">Raio</label>
+                    <input id="radius" class="input-small" value="80">
+                </div>
+                <div>
+                    <label for="length">Comprimento</label>
+                    <input id="length" class="input-small" value="300">
+                </div>
+                <div>
+                    <label for="capacity">Capacidade (L)</label>
+                    <input id="capacity" class="input-small" value="6000">
+                </div>
+            </div>
+
+            <button type="submit">Calcular</button>
+        </form>
+
+        <div class="result" id="result">
+            <p id="output"></p>
+            <canvas id="volumeChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let volumeChart;
+
+        function calculateFuel(event) {
+            event.preventDefault();
+
+            const r = parseFloat(document.getElementById('radius').value);
+            const L = parseFloat(document.getElementById('length').value);
+            const capacity = parseFloat(document.getElementById('capacity').value);
+            const h = parseFloat(document.getElementById('height').value);
+            const lastMeasurement = parseFloat(document.getElementById('lastMeasurement').value);
+
+            if (isNaN(h) || h > 2 * r || h <= 0) {
+                displayResult("A altura inserida não pode ser maior que a altura total do tanque.", true);
+                return;
+            }
+
+            const A = (r * r * Math.acos((r - h) / r)) - ((r - h) * Math.sqrt(2 * r * h - h * h));
+            const volume = (A * L) / 1000;
+            const percentage = (volume / capacity) * 100;
+
+            let resultMessage = `Seu tanque contém <strong>${volume.toFixed(2)} litros,</strong> equivalente a ${percentage.toFixed(2)}% da capacidade total.`;
+
+            if (!isNaN(lastMeasurement) && lastMeasurement > 0) {
+                const consumption = lastMeasurement - volume;
+                resultMessage += `<p> Desde a última medição, foram consumidos <strong>${Math.abs(consumption).toFixed(2)} litros</strong>.`;
+            }
+
+            displayResult(resultMessage);
+            renderChart(capacity, volume);
+        }
+
+        function displayResult(message, isError = false) {
+            const resultDiv = document.getElementById('result');
+            document.getElementById('output').innerHTML = message;
+            resultDiv.style.display = 'block';
+        }
+
+        function renderChart(totalVolume, currentVolume) {
+            const ctx = document.getElementById('volumeChart').getContext('2d');
+
+            if (volumeChart) volumeChart.destroy();
+
+            volumeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Capacidade do Tanque (L)'],
+                    datasets: [{
+                        label: 'Volume Atual',
+                        data: [currentVolume],
+                        backgroundColor: '#4CAF50'
+                    }, {
+                        label: 'Capacidade Total',
+                        data: [totalVolume],
+                        backgroundColor: '#30363d'
+                    }]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true } } }
+            });
+        }
+    </script>
+
+</body>
+</html>
