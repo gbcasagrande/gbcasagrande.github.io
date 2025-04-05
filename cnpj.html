@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consulta CNPJ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-4 text-center text-gray-800">Consulta CNPJ</h1>
+    
+    <div class="mb-4">
+      <label for="cnpj" class="block text-sm font-medium text-gray-700">Digite o CNPJ</label>
+      <input type="text" id="cnpj" placeholder="00.000.000/0000-00"
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+    </div>
+
+    <button onclick="consultarCNPJ()"
+      class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Consultar</button>
+
+    <div id="resultado" class="mt-6 hidden">
+      <h2 class="text-lg font-semibold mb-2 text-gray-700">Resultado:</h2>
+      <div class="bg-gray-50 p-4 rounded-lg text-sm overflow-x-auto whitespace-pre-line font-mono text-gray-800" id="resposta"></div>
+
+      <!-- Mapa -->
+      <div id="mapa" class="mt-6 w-full h-64 rounded-lg overflow-hidden hidden">
+        <iframe
+          id="mapaIframe"
+          width="100%"
+          height="100%"
+          frameborder="0"
+          style="border:0"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Máscara automática ao digitar o CNPJ
+    document.getElementById('cnpj').addEventListener('input', function (e) {
+      let valor = e.target.value.replace(/\D/g, '');
+      if (valor.length > 14) valor = valor.slice(0, 14);
+
+      valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+      valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+      valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+      valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+
+      e.target.value = valor;
+    });
+
+    // Validação matemática do CNPJ
+    function validarCNPJ(cnpj) {
+      cnpj = cnpj.replace(/[^\d]+/g, '');
+
+      if (cnpj.length !== 14) return false;
+      if (/^(\d)\1+$/.test(cnpj)) return false;
+
+      let tamanho = cnpj.length - 2;
+      let numeros = cnpj.substring(0, tamanho);
+      let digitos = cnpj.substring(tamanho);
+      let soma = 0;
+      let pos = tamanho - 7;
+
+      for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+      }
+
+      let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+      if (resultado != digitos.charAt(0)) return false;
+
+      tamanho += 1;
+      numeros = cnpj.substring(0, tamanho);
+      soma = 0;
+      pos = tamanho - 7;
+
+      for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+      }
+
+      resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+      if (resultado != digitos.charAt(1)) return false;
+
+      return true;
+    }
+
+    // Consulta ReceitaWS e exibe resultado + mapa
+    async function consultarCNPJ() {
+      const cnpjInput = document.getElementById('cnpj');
+      const cnpj = cnpjInput.value;
+      const resposta = document.getElementById('resposta');
+      const resultado = document.getElementById('resultado');
+      const mapaIframe = document.getElementById('mapaIframe');
+      const mapaDiv = document.getElementById('mapa');
+
+      if (!validarCNPJ(cnpj)) {
+        resposta.textContent = 'CNPJ inválido.';
+        resultado.classList.remove('hidden');
+        mapaDiv.classList.add('hidden');
+        return;
+      }
+
+      resposta.textContent = 'Consultando...';
+      resultado.classList.remove('hidden');
+      mapaDiv.classList.add('hidden');
+
+      try {
+        const response = await fetch(`https://www.receitaws.com.br/v1/cnpj/${cnpj.replace(/\D/g, '')}`);
+        const data = await response.json();
+
+        if (data.status === 'ERROR') {
+          resposta.textContent = `Erro: ${data.message}`;
+          mapaDiv.classList.add('hidden');
+        } else {
+          const endereco = `${data.logradouro}, ${data.numero} - ${data.bairro}, ${data.municipio} - ${data.uf}`;
+          resposta.textContent = 
+`Nome: ${data.nome}
+Fantasia: ${data.fantasia}
+Situação: ${data.situacao}
+Abertura: ${data.abertura}
+Atividade Principal: ${data.atividade_principal?.[0]?.text}
+UF: ${data.uf}
+Município: ${data.municipio}
+Endereço: ${endereco}`;
+
+          // Exibe o mapa
+          const enderecoEncode = encodeURIComponent(endereco);
+          const chave = 'AIzaSyCxRuU6L3RrwLUl1XWd7xSdRTxlzAddIGo';
+          mapaIframe.src = `https://www.google.com/maps/embed/v1/place?key=${chave}&q=${enderecoEncode}`;
+          mapaDiv.classList.remove('hidden');
+        }
+      } catch (error) {
+        resposta.textContent = 'Erro ao consultar CNPJ.';
+        mapaDiv.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+  </html>
