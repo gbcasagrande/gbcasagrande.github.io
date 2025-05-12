@@ -1,266 +1,244 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Senhas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* Estilo geral */
-        body {
-            font-family: 'Nunito', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #0d1117;
-            color: #c9d1d9;
-            margin: 0;
-            text-align: center;
-        }
-
-        .container {
-            background: #161b22;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            border: 1px solid #30363d;
-        }
-
-        h1 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: 700;
-            color: #58a6ff; /* Cor do título */
-        }
-
-        .input-field {
-            width: 80%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            font-size: 1em;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-            color: white;
-            background-color: #333;
-        }
-
-        .input-field:focus {
-            border-color: #2563eb;
-            outline: none;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            margin: 20px 0;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        button:hover {
-            background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
-        }
-
-        .result {
-            margin-top: 30px; /* Aumentando o espaço superior */
-            padding: 20px;
-            font-size: 1.2em;
-            background-color: #161b22; /* Cor de fundo igual ao layout */
-            color: #ffffff; /* Cor do texto branco */
-            display: none;
-            border: 2px solid #30363d; /* Borda ajustada */
-            border-radius: 8px;
-        }
-
-        /* Rodapé */
-        .footer {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #8b949e;
-            text-align: center;
-        }
-
-        .footer span {
-            color: #58a6ff;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .footer span:hover {
-            text-decoration: underline;
-        }
-
-        .footer p {
-            margin: 5px 0;
-        }
-
-        /* Link "Home" no topo */
-        .tools-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        .tools-text {
-            color: #58a6ff;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .tools-text:hover {
-            text-decoration: underline;
-        }
-
-        /* Ícones sociais */
-        .social-icons {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .social-icons span {
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-        .social-icons img {
-            width: 30px;
-            height: 30px;
-            transition: 0.3s;
-            border: none; /* Garantindo que não tenha borda */
-            background: none; /* Garantindo que não tenha fundo */
-        }
-
-        .social-icons img:hover {
-            opacity: 0.7;
-        }
-
-        /* Ícone de mais ferramentas */
-        .tools-icon {
-            vertical-align: middle;
-            margin-right: 8px;
-            width: 30px; /* Aumentado em 50% */
-            height: 30px; /* Aumentado em 50% */
-        }
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gerador de Senhas</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 30px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      color: #00d9ff;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input[type="range"], input[type="text"], select {
+      width: 100%;
+      margin-top: 5px;
+      appearance: none;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1em;
+      outline: none;
+    }
+    input[type="range"] {
+      height: 6px;
+      background: linear-gradient(90deg, #00d9ff, #9c27b0);
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 10px #00d9ff;
+      border: 2px solid #9c27b0;
+      cursor: pointer;
+    }
+    .toggle-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin-top: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .toggle-option:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .toggle-label {
+      font-weight: 500;
+      font-size: 0.95em;
+    }
+    .toggle-value {
+      font-weight: bold;
+      color: #0f0;
+    }
+    .toggle-value.no {
+      color: #f44336;
+    }
+    button {
+      background: linear-gradient(90deg, #00d9ff, #9c27b0);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      font-size: 1em;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      width: 100%;
+    }
+    button:hover {
+      transform: scale(1.03);
+    }
+    .password-box {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-size: 1.2em;
+      word-break: break-all;
+      border: 1px solid #00d9ff;
+    }
+    @media (max-width: 480px) {
+      .glass { padding: 20px; }
+      h1 { font-size: 1.4em; }
+    }
+  </style>
 </head>
 <body>
+   
+   
+  <div class="glass">
+    <h1>Gerador de Senhas 🔒</h1>
 
-    <!-- Link "Home" no topo -->
-    <div class="tools-container">
-        <a href="/" class="tools-text"># voltar</a>
+    <label for="length">Comprimento: <span id="lengthValue">16</span> caracteres</label>
+    <input type="range" id="length" min="4" max="64" value="16" oninput="updateLengthLabel()" />
+
+    <div class="checkboxes">
+      <div class="toggle-option" onclick="toggle('uppercase')">
+        <span class="toggle-label">Letras Maiúsculas</span>
+        <span id="uppercase" class="toggle-value">Sim</span>
+      </div>
+      <div class="toggle-option" onclick="toggle('lowercase')">
+        <span class="toggle-label">Letras Minúsculas</span>
+        <span id="lowercase" class="toggle-value">Sim</span>
+      </div>
+      <div class="toggle-option" onclick="toggle('numbers')">
+        <span class="toggle-label">Números</span>
+        <span id="numbers" class="toggle-value">Sim</span>
+      </div>
+      <div class="toggle-option" onclick="toggle('symbols')">
+        <span class="toggle-label">Símbolos</span>
+        <span id="symbols" class="toggle-value">Sim</span>
+      </div>
     </div>
 
-    <!-- Ícone de "Mais Ferramentas" -->
-    <div class="tools-container">
-       
-    </div>
+    <label for="customWord">Palavra fixa:</label>
+    <input type="text" id="customWord" placeholder="Ex: Gabriel" />
 
-    <div class="container">
-         <img class="tools-icon" src="https://cdn-icons-png.flaticon.com/128/18472/18472616.png" alt="Outras Ferramentas">
-    
-        <h1>Gerador de Senhas</h1>
-        <form onsubmit="gerarSenha(event)">
-            <label for="comprimento">Número de Caracteres:</label>
-            <input type="range" id="comprimento" min="10" max="50" value="15" oninput="atualizarValor()">
-            <br>
-            <span id="valorComprimento">15</span> caracteres
-            <br><br>
+    <label for="position">Posição da palavra:</label>
+    <select id="position">
+      <option value="left">Esquerda</option>
+      <option value="center">Centro</option>
+      <option value="right">Direita</option>
+    </select>
 
-            <label><input type="checkbox" id="incluirNumeros" checked> Incluir Números</label>
-            <br>
-            <label><input type="checkbox" id="incluirLetras" checked> Incluir Letras</label>
-            <br>
-            <label><input type="checkbox" id="incluirMaiusculas" checked> Incluir Maiúsculas</label>
-            <br>
-            <label><input type="checkbox" id="incluirMinusculas" checked> Incluir Minúsculas</label>
-            <br>
-            <label><input type="checkbox" id="incluirSimbolos" checked> Incluir Símbolos</label>
-            <br>
-            <br>
+    <div id="result" class="password-box">Sua senha aparecerá aqui...</div>
 
-            <button type="submit">Gerar Senha</button>
-        </form>
+     <button onclick="generatePassword()">Gerar Senha</button>
+    <button onclick="copyPassword()">Copiar</button>
 
-        <div class="result" id="result">
-            <input type="text" id="output" class="input-field" readonly>
-            <br><br>
-            <button onclick="copiarSenha()">Copiar Senha</button>
-        </div>
+  </div>
+  <script>
+    function updateLengthLabel() {
+      document.getElementById("lengthValue").textContent = document.getElementById("length").value;
+    }
 
-        <!-- Rodapé -->
-        <div class="footer">
-            <p>Desenvolvido por <strong>GB</strong> &bull; 2025</p>
-            <p><span onclick="window.open('http://gbcasagrande.github.io', '_blank');">gbcasagrande.github.io</span></p>
+    function toggle(id) {
+      const el = document.getElementById(id);
+      if (el.textContent === "Sim") {
+        el.textContent = "Não";
+        el.classList.add("no");
+      } else {
+        el.textContent = "Sim";
+        el.classList.remove("no");
+      }
+    }
 
-            <!-- Ícones de Redes Sociais -->
-            <div class="social-icons">
-                <span onclick="window.open('https://instagram.com/gbcasagrande', '_blank');">
-                    <img src="https://cdn-icons-png.flaticon.com/128/15713/15713420.png" alt="Instagram">
-                </span>
-                <span onclick="window.location.href = 'mailto:gabrielcasagrande@pm.me';">
-                    <img src="https://cdn-icons-png.flaticon.com/128/9068/9068642.png" alt="E-mail">
-                </span>
-            </div>
-        </div>
-    </div>
+    function generatePassword() {
+      const length = parseInt(document.getElementById("length").value);
+      const useUpper = document.getElementById("uppercase").textContent === "Sim";
+      const useLower = document.getElementById("lowercase").textContent === "Sim";
+      const useNumbers = document.getElementById("numbers").textContent === "Sim";
+      const useSymbols = document.getElementById("symbols").textContent === "Sim";
+      const word = document.getElementById("customWord").value || "";
+      const position = document.getElementById("position").value;
 
-    <script>
-        function atualizarValor() {
-            document.getElementById("valorComprimento").textContent = document.getElementById("comprimento").value;
-        }
+      const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const lower = "abcdefghijklmnopqrstuvwxyz";
+      const numbers = "0123456789";
+      const symbols = "!@#$%^&*()_+{}[]|<>?/.,~";
 
-        function gerarSenha(event) {
-            event.preventDefault();
+      let allChars = "";
+      if (useUpper) allChars += upper;
+      if (useLower) allChars += lower;
+      if (useNumbers) allChars += numbers;
+      if (useSymbols) allChars += symbols;
 
-            const comprimento = document.getElementById("comprimento").value;
-            const incluirNumeros = document.getElementById("incluirNumeros").checked;
-            const incluirLetras = document.getElementById("incluirLetras").checked;
-            const incluirMaiusculas = document.getElementById("incluirMaiusculas").checked;
-            const incluirMinusculas = document.getElementById("incluirMinusculas").checked;
-            const incluirSimbolos = document.getElementById("incluirSimbolos").checked;
+      if (!allChars) {
+        document.getElementById("result").textContent = "Selecione ao menos uma opção!";
+        return;
+      }
 
-            let caracteres = "";
-            if (incluirNumeros) caracteres += "0123456789";
-            if (incluirLetras) {
-                if (incluirMaiusculas) caracteres += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                if (incluirMinusculas) caracteres += "abcdefghijklmnopqrstuvwxyz";
-            }
-            if (incluirSimbolos) caracteres += "!@#$%^&*()_+[]{}|;:,.<>?/~";
-            
-            let senha = "";
-            for (let i = 0; i < comprimento; i++) {
-                senha += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-            }
+      let passLength = Math.max(0, length - word.length);
+      let generated = "";
+      for (let i = 0; i < passLength; i++) {
+        generated += allChars[Math.floor(Math.random() * allChars.length)];
+      }
 
-            document.getElementById("output").value = senha; // Exibe a senha no input
-            const resultDiv = document.getElementById('result');
-            resultDiv.style.display = 'block'; // Mostra a área de resultado
-        }
+      let finalPassword = "";
+      if (position === "left") {
+        finalPassword = word + generated;
+      } else if (position === "right") {
+        finalPassword = generated + word;
+      } else {
+        let half = Math.floor(generated.length / 2);
+        finalPassword = generated.slice(0, half) + word + generated.slice(half);
+      }
 
-        function copiarSenha() {
-            const senha = document.getElementById("output");
-            senha.select();
-            document.execCommand("copy");
-            alert("Senha copiada!");
-        }
-    </script>
+      document.getElementById("result").textContent = finalPassword;
+    }
+
+    function copyPassword() {
+      const password = document.getElementById("result").textContent;
+      if (password && password !== "Sua senha aparecerá aqui..." && password !== "Selecione ao menos uma opção!") {
+        navigator.clipboard.writeText(password);
+        alert("Senha copiada!");
+      }
+    }
+
+    updateLengthLabel();
+  </script>
 </body>
 </html>
