@@ -1,142 +1,175 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Links Rápidos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* Estilo geral */
-        body {
-            font-family: 'Nunito', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #0d1117;
-            color: #c9d1d9;
-            margin: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfólio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        .container {
-            background: #161b22;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            border: 1px solid #30363d;
-        }
+    body {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #0d1117, #1f2937);
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      animation: fadeIn 0.8s ease-in-out;
+    }
 
-        h1 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: 700;
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
+    .container {
+      background: rgba(22, 27, 34, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      border: 1px solid #30363d;
+      transition: transform 0.3s ease;
+    }
 
-        li {
-            margin: 10px 0;
-        }
+    .container:hover {
+      transform: translateY(-4px);
+    }
 
-        a {
-            display: block;
-            text-decoration: none;
-            color: #c9d1d9;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 12px;
-            background: #21262d;
-            border-radius: 12px;
-            transition: 0.3s;
-            border: 1px solid #30363d;
-        }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 5px;
+      color: #58a6ff;
+    }
 
-        a:hover {
-            background: #30363d;
-        }
+    .subtitle {
+      margin-bottom: 25px;
+      font-size: 1rem;
+      color: #8b949e;
+    }
 
-        /* Rodapé */
-        .footer {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #8b949e;
-            text-align: center;
-        }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
 
-        .footer span {
-            color: #58a6ff;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
+    li {
+      margin: 12px 0;
+    }
 
-        .footer span:hover {
-            text-decoration: underline;
-        }
+    a {
+      display: block;
+      text-decoration: none;
+      padding: 14px;
+      background: linear-gradient(145deg, #21262d, #1c1f26);
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      color: #c9d1d9;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
 
-        .footer p {
-            margin: 5px 0;
-        }
+    a:hover {
+      background: #2d333b;
+      box-shadow: 0 0 10px #58a6ff88;
+      transform: scale(1.02);
+    }
 
-        /* Ícones sociais */
-        .social-icons {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .footer {
+      margin-top: 30px;
+      font-size: 0.875rem;
+      color: #8b949e;
+    }
 
-        .social-icons span {
-            margin: 0 10px;
-            cursor: pointer;
-        }
+    .footer span {
+      color: #58a6ff;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        .social-icons img {
-            width: 30px;
-            height: 30px;
-            transition: 0.3s;
-            border: none; /* Garantindo que não tenha borda */
-            background: none; /* Garantindo que não tenha fundo */
-        }
+    .footer span:hover {
+      text-decoration: underline;
+    }
 
-        .social-icons img:hover {
-            opacity: 0.7;
-        }
-    </style>
+    .footer p {
+      margin: 6px 0;
+    }
+
+    .social-icons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .social-icons img {
+      width: 32px;
+      height: 32px;
+      filter: grayscale(100%);
+      transition: transform 0.3s, filter 0.3s;
+    }
+
+    .social-icons img:hover {
+      transform: scale(1.1);
+      filter: grayscale(0%);
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px 20px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .subtitle {
+        font-size: 0.95rem;
+      }
+
+      a {
+        font-size: 0.95rem;
+        padding: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>⬇️</h1>
-        <ul>
-            <li><a href="/calculo">Calculo de Tanque</a></li>
-            <li><a href="/qr">Gerar QR Code</a></li>
-            <li><a href="/senha">Gerar Senha Segura</a></li>
-            <li><a href="/megasena">Gerar números para Mega Sena</a></li>
-            <li><a href="#">em breve</a></li>
-            <li><a href="#">em breve</a></li>
-            <li><a href="#">em breve</a></li>
-            <li><a href="#">em breve</a></li>
-            
-        </ul>
-        <div class="footer">
-            <p>Desenvolvido por <strong>GB</strong> &bull; 2025</p>
-            <p><span onclick="window.open('http://gbcasagrande.github.io', '_blank');">gbcasagrande.github.io</span></p>
-            <div class="social-icons">
-                <span onclick="window.open('https://instagram.com/gbcasagrande', '_blank');">
-                    <img src="https://cdn-icons-png.flaticon.com/128/15713/15713420.png" alt="Instagram">
-                </span>
-                <span onclick="window.location.href = 'mailto:gabrielcasagrande@pm.me';">
-                    <img src="https://cdn-icons-png.flaticon.com/128/9068/9068642.png" alt="E-mail">
-                </span>
-            </div>
-        </div>
+  <div class="container">
+    <h1>Portfólio</h1>
+    <p class="subtitle">Uma coleção de ferramentas e utilitários desenvolvidos para facilitar tarefas do dia a dia.</p>
+    <ul>
+      <li><a href="/calculo">Cálculo de Tanque</a></li>
+      <li><a href="/qr">Gerar QR Code</a></li>
+      <li><a href="/senha">Gerar Senha Segura</a></li>
+      <li><a href="/megasena">Mega Sena</a></li>
+      <li><a href="#">Em breve</a></li>
+      <li><a href="#">Em breve</a></li>
+      <li><a href="#">Em breve</a></li>
+      <li><a href="#">Em breve</a></li>
+    </ul>
+    <div class="footer">
+      <p>Desenvolvido por <strong>GB</strong></p>
+      <p><span onclick="window.open('http://gbcasagrande.github.io', '_blank');">gbcasagrande.github.io</span></p>
+      <div class="social-icons">
+        <span onclick="window.open('https://instagram.com/gbcasagrande', '_blank');">
+          <img src="https://cdn-icons-png.flaticon.com/128/15713/15713420.png" alt="Instagram">
+        </span>
+        <span onclick="window.location.href = 'mailto:gabrielcasagrande@pm.me';">
+          <img src="https://cdn-icons-png.flaticon.com/128/9068/9068642.png" alt="E-mail">
+        </span>
+      </div>
     </div>
+  </div>
 </body>
 </html>
