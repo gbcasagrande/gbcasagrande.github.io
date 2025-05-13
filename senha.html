@@ -4,173 +4,260 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gerador de Senhas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; }
     body {
-      margin: 0; padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      background-size: 400% 400%;
-      animation: gradientBG 20s ease infinite;
-      color: #fff;
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #0d1117, #1f2937);
+      color: #e0e0e0;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
     }
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .glass {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 30px;
-      max-width: 420px;
-      width: 100%;
+
+    .container {
+      background: rgba(22, 27, 34, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
       text-align: center;
+      max-width: 480px;
+      width: 100%;
+      border: 1px solid #30363d;
+      position: relative;
     }
+
     h1 {
       font-size: 1.8em;
       margin-bottom: 20px;
-      color: #00d9ff;
+      color: #58a6ff;
     }
+
     label {
       display: block;
       margin: 10px 0 5px;
       font-weight: bold;
     }
+
     input[type="range"], input[type="text"], select {
       width: 100%;
       margin-top: 5px;
-      appearance: none;
       padding: 8px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.1);
       border: none;
       border-radius: 8px;
       color: #fff;
       font-size: 1em;
       outline: none;
     }
+
     input[type="range"] {
       height: 6px;
-      background: linear-gradient(90deg, #00d9ff, #9c27b0);
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
     }
+
     input[type="range"]::-webkit-slider-thumb {
       appearance: none;
       width: 20px;
       height: 20px;
       border-radius: 50%;
       background: #fff;
-      box-shadow: 0 0 10px #00d9ff;
-      border: 2px solid #9c27b0;
+      box-shadow: 0 0 10px #3b82f6;
+      border: 2px solid #3b82f6;
       cursor: pointer;
     }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 10px #3b82f6;
+      border: 2px solid #3b82f6;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-track {
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      height: 6px;
+      border-radius: 3px;
+    }
+
     .toggle-option {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 8px;
       padding: 10px 15px;
       margin-top: 8px;
       cursor: pointer;
       transition: background 0.2s ease;
     }
+
     .toggle-option:hover {
       background: rgba(255, 255, 255, 0.2);
     }
+
     .toggle-label {
       font-weight: 500;
       font-size: 0.95em;
     }
+
     .toggle-value {
       font-weight: bold;
       color: #0f0;
     }
+
     .toggle-value.no {
       color: #f44336;
     }
+
     button {
-      background: linear-gradient(90deg, #00d9ff, #9c27b0);
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
       color: white;
       border: none;
       padding: 10px 20px;
       margin-top: 15px;
-      margin-bottom: 10px;
       font-size: 1em;
       border-radius: 30px;
       cursor: pointer;
       transition: transform 0.2s ease;
       width: 100%;
     }
+
     button:hover {
       transform: scale(1.03);
     }
+
     .password-box {
       background: rgba(0, 0, 0, 0.3);
       padding: 15px;
       border-radius: 10px;
       margin-top: 15px;
       font-size: 1.2em;
-      word-break: break-all;
-      border: 1px solid #00d9ff;
+      word-break: break-word;
+      border: 1px solid #3b82f6;
     }
+
     @media (max-width: 480px) {
-      .glass { padding: 20px; }
-      h1 { font-size: 1.4em; }
+      .container { padding: 25px 20px; }
+      h1 { font-size: 1.6rem; }
     }
+
+    /* Adicionando a borda ao redor da palavra-chave e posições */
+    .keyword-section {
+      border: 2px solid #3b82f6;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 15px;
+      background-color: rgba(0, 0, 0, 0.0);
+    }
+
+    .position-option {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+    .position-option i {
+      font-size: 1.6em;
+      cursor: pointer;
+      color: #3b82f6;
+      transition: color 0.3s;
+    }
+
+    .position-option i:hover {
+      color: #58a6ff;
+    }
+
+    /* Ícone de Voltar */
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 2em;
+      color: #58a6ff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-btn:hover {
+      color: #3b82f6;
+    }
+
+    /* Rodapé fixo */
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: #a1a1a1;
+      font-size: 0.9em;
+    }
+
   </style>
 </head>
 <body>
-   
-   
-  <div class="glass">
-    <h1>Gerador de Senhas 🔒</h1>
+  <!-- Ícone de Voltar -->
+
+
+  <div class="container">
+      <div class="back-btn">
+    <i class="fas fa-arrow-left" onclick="goBack()"></i>
+  </div>
+    <h1>Gerador de Senhas</h1>
 
     <label for="length">Comprimento: <span id="lengthValue">16</span> caracteres</label>
     <input type="range" id="length" min="4" max="64" value="16" oninput="updateLengthLabel()" />
 
-    <div class="checkboxes">
-      <div class="toggle-option" onclick="toggle('uppercase')">
-        <span class="toggle-label">Letras Maiúsculas</span>
-        <span id="uppercase" class="toggle-value">Sim</span>
-      </div>
-      <div class="toggle-option" onclick="toggle('lowercase')">
-        <span class="toggle-label">Letras Minúsculas</span>
-        <span id="lowercase" class="toggle-value">Sim</span>
-      </div>
-      <div class="toggle-option" onclick="toggle('numbers')">
-        <span class="toggle-label">Números</span>
-        <span id="numbers" class="toggle-value">Sim</span>
-      </div>
-      <div class="toggle-option" onclick="toggle('symbols')">
-        <span class="toggle-label">Símbolos</span>
-        <span id="symbols" class="toggle-value">Sim</span>
+    <div class="toggle-option" onclick="toggle('uppercase')">
+      <span class="toggle-label">Letras Maiúsculas</span>
+      <span id="uppercase" class="toggle-value">Sim</span>
+    </div>
+    <div class="toggle-option" onclick="toggle('lowercase')">
+      <span class="toggle-label">Letras Minúsculas</span>
+      <span id="lowercase" class="toggle-value">Sim</span>
+    </div>
+    <div class="toggle-option" onclick="toggle('numbers')">
+      <span class="toggle-label">Números</span>
+      <span id="numbers" class="toggle-value">Sim</span>
+    </div>
+    <div class="toggle-option" onclick="toggle('symbols')">
+      <span class="toggle-label">Símbolos</span>
+      <span id="symbols" class="toggle-value">Sim</span>
+    </div>
+
+    <!-- Seção de Palavra Fixa e Posição -->
+    <div class="keyword-section">
+      <label for="customWord">Palavra personalizada:</label>
+      <input type="text" id="customWord" placeholder="Ex: Pass" />
+
+      <label for="position">Posição da palavra:</label>
+      <div class="position-option">
+        <i class="fas fa-align-left" onclick="setPosition('left')"></i>
+        <i class="fas fa-align-center" onclick="setPosition('center')"></i>
+        <i class="fas fa-align-right" onclick="setPosition('right')"></i>
       </div>
     </div>
 
-    <label for="customWord">Palavra fixa:</label>
-    <input type="text" id="customWord" placeholder="Ex: Gabriel" />
-
-    <label for="position">Posição da palavra:</label>
-    <select id="position">
-      <option value="left">Esquerda</option>
-      <option value="center">Centro</option>
-      <option value="right">Direita</option>
-    </select>
-
     <div id="result" class="password-box">Sua senha aparecerá aqui...</div>
 
-     <button onclick="generatePassword()">Gerar Senha</button>
+    <button onclick="generatePassword()">Gerar Senha</button>
     <button onclick="copyPassword()">Copiar</button>
-
   </div>
+
+
   <script>
+    let position = 'left';
+
     function updateLengthLabel() {
       document.getElementById("lengthValue").textContent = document.getElementById("length").value;
     }
@@ -186,6 +273,25 @@
       }
     }
 
+    function setPosition(newPosition) {
+      position = newPosition;
+      document.querySelectorAll('.position-option i').forEach(icon => {
+        icon.style.color = '#3b82f6'; // Reset color
+      });
+
+      switch(position) {
+        case 'left':
+          document.querySelector('.fa-align-left').style.color = '#58a6ff';
+          break;
+        case 'center':
+          document.querySelector('.fa-align-center').style.color = '#58a6ff';
+          break;
+        case 'right':
+          document.querySelector('.fa-align-right').style.color = '#58a6ff';
+          break;
+      }
+    }
+
     function generatePassword() {
       const length = parseInt(document.getElementById("length").value);
       const useUpper = document.getElementById("uppercase").textContent === "Sim";
@@ -193,7 +299,6 @@
       const useNumbers = document.getElementById("numbers").textContent === "Sim";
       const useSymbols = document.getElementById("symbols").textContent === "Sim";
       const word = document.getElementById("customWord").value || "";
-      const position = document.getElementById("position").value;
 
       const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       const lower = "abcdefghijklmnopqrstuvwxyz";
@@ -238,7 +343,11 @@
       }
     }
 
-    updateLengthLabel();
+    function goBack() {
+      window.history.back(); // Volta para a página anterior
+    }
+
+    setPosition('left');
   </script>
 </body>
-</html>
+  </html>
