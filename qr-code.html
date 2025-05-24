@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gerador de QR Code</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .card {
+      background-color: #161b22;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      display: inline-block;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #238636;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    #qrcode {
+      margin-top: 20px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 6px;
+      border: none;
+      width: 300px;
+    }
+    #loading {
+      display: none;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Gerador de QR Code</h2>
+
+    <input type="text" id="text" placeholder="Digite um link ou texto para gerar QR Code" />
+    <br/>
+    <button onclick="generateQRCode()">Gerar QR Code</button>
+    <div id="loading">Gerando QR Code...</div>
+    <div id="qrcode"></div>
+    <button id="saveBtn" onclick="saveQRCode()" style="display:none;">Salvar QR Code (Full HD)</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <script>
+    let lastText = "";
+
+    function generateQRCode() {
+      const text = document.getElementById("text").value;
+      if (text.trim() === "") return;
+      lastText = text;
+      const qrDiv = document.getElementById("qrcode");
+      qrDiv.innerHTML = "";
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("saveBtn").style.display = "none";
+
+      setTimeout(() => {
+        new QRCode(qrDiv, {
+          text: text,
+          width: 300,
+          height: 300,
+          colorDark: "#ffffff",
+          colorLight: "#0d1117",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("saveBtn").style.display = "inline-block";
+      }, 500);
+    }
+
+    function saveQRCode() {
+      // Criar um canvas separado para exportar em alta resolução
+      const canvas = document.createElement("canvas");
+      canvas.width = 1080;
+      canvas.height = 1080;
+      const context = canvas.getContext("2d");
+
+      const qrTemp = new QRCode(document.createElement("div"), {
+        text: lastText,
+        width: 1080,
+        height: 1080,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      setTimeout(() => {
+        const tempCanvas = qrTemp._oDrawing._elCanvas;
+        const downloadLink = document.createElement("a");
+        downloadLink.href = tempCanvas.toDataURL("image/png");
+        downloadLink.download = "qrcode_fullhd.png";
+        downloadLink.click();
+      }, 500); // tempo para renderizar o QR temporário
+    }
+  </script>
+</body>
+</html>
