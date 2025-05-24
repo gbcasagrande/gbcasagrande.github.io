@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gerador de CPF Válido</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .card {
+      background-color: #161b22;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      display: inline-block;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #238636;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    #cpf {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: #0d1117;
+      padding: 10px;
+      border: 2px dashed #238636;
+      border-radius: 8px;
+      user-select: all;
+    }
+    .copiado {
+      color: #3fb950;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Gerador de CPF Válido</h2>
+    <button onclick="gerarCPF()">Gerar CPF</button>
+
+    <div id="cpf"></div>
+    <button onclick="copiarCPF()" id="copiarBtn" style="display:none;">Copiar CPF</button>
+    <div id="copiado" class="copiado"></div>
+  </div>
+
+  <script>
+    function gerarCPF() {
+      // Gera os 9 primeiros dígitos aleatórios
+      let cpf = [];
+      for (let i = 0; i < 9; i++) {
+        cpf.push(Math.floor(Math.random() * 10));
+      }
+
+      // Calcula o primeiro dígito verificador
+      let soma = 0;
+      for (let i = 0; i < 9; i++) {
+        soma += cpf[i] * (10 - i);
+      }
+      let resto = soma % 11;
+      let digito1 = resto < 2 ? 0 : 11 - resto;
+      cpf.push(digito1);
+
+      // Calcula o segundo dígito verificador
+      soma = 0;
+      for (let i = 0; i < 10; i++) {
+        soma += cpf[i] * (11 - i);
+      }
+      resto = soma % 11;
+      let digito2 = resto < 2 ? 0 : 11 - resto;
+      cpf.push(digito2);
+
+      // Formata CPF com pontos e hífen
+      const cpfFormatado = cpf.join('').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+
+      document.getElementById("cpf").textContent = cpfFormatado;
+      document.getElementById("copiarBtn").style.display = "inline-block";
+      document.getElementById("copiado").textContent = "";
+    }
+
+    function copiarCPF() {
+      const cpf = document.getElementById("cpf").textContent;
+      navigator.clipboard.writeText(cpf).then(() => {
+        document.getElementById("copiado").textContent = "CPF copiado!";
+      });
+    }
+  </script>
+</body>
+</html>
