@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gerador de Código de Barras</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .card {
+      background-color: #161b22;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      display: inline-block;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #238636;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 6px;
+      border: none;
+      width: 300px;
+    }
+    #loading {
+      display: none;
+      margin-top: 15px;
+    }
+    #preview-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .preview-box {
+      background-color: transparent;
+      padding: 0;
+      width: auto;
+      height: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Gerador de Código de Barras</h2>
+    <input type="text" id="text" placeholder="Digite um valor para o código de barras" />
+    <br />
+    <button onclick="generateBarcode()">Gerar Código</button>
+    <div id="loading">Gerando código de barras...</div>
+
+    <div id="preview-container">
+      <div class="preview-box">
+        <svg id="barcode"></svg>
+      </div>
+    </div>
+
+    <button id="saveBtn" onclick="saveBarcode()" style="display:none;">Salvar Código (HD)</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <script>
+    function generateBarcode() {
+      const text = document.getElementById("text").value;
+      if (text.trim() === "") return;
+
+      const svg = document.getElementById("barcode");
+      svg.innerHTML = "";
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("saveBtn").style.display = "none";
+
+      setTimeout(() => {
+        JsBarcode(svg, text, {
+          format: "CODE128",
+          lineColor: "#ffffff",
+          background: "transparent",
+          width: 2,
+          height: 100,
+          displayValue: true,
+          fontOptions: "bold",
+          fontSize: 18
+        });
+
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("saveBtn").style.display = "inline-block";
+      }, 500);
+    }
+
+    function saveBarcode() {
+      const svg = document.getElementById("barcode");
+      const serializer = new XMLSerializer();
+      const svgBlob = new Blob([serializer.serializeToString(svg)], {type:"image/svg+xml"});
+      const url = URL.createObjectURL(svgBlob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "codigo_de_barras.svg";
+      link.click();
+
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
