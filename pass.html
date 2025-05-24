@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gerador de Senhas</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .card {
+      background-color: #161b22;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      display: inline-block;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #238636;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 6px;
+      border: none;
+      width: 100px;
+    }
+    #senha {
+      margin-top: 20px;
+      font-size: 20px;
+      word-break: break-all;
+      background-color: #0d1117;
+      padding: 10px;
+      border: 2px dashed #238636;
+      border-radius: 8px;
+    }
+    .copiado {
+      color: #3fb950;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Gerador de Senhas Seguras</h2>
+    <label for="length">Tamanho:</label>
+    <input type="number" id="length" min="4" max="64" value="16" />
+    <br />
+    <button onclick="gerarSenha()">Gerar Senha</button>
+
+    <div id="senha"></div>
+    <button onclick="copiarSenha()" id="copiarBtn" style="display:none;">Copiar Senha</button>
+    <div id="copiado" class="copiado"></div>
+  </div>
+
+  <script>
+    function gerarSenha() {
+      const length = parseInt(document.getElementById("length").value);
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*?";
+      let senha = "";
+      for (let i = 0; i < length; i++) {
+        senha += charset.charAt(Math.floor(Math.random() * charset.length));
+      }
+
+      document.getElementById("senha").textContent = senha;
+      document.getElementById("copiarBtn").style.display = "inline-block";
+      document.getElementById("copiado").textContent = "";
+    }
+
+    function copiarSenha() {
+      const senha = document.getElementById("senha").textContent;
+      navigator.clipboard.writeText(senha).then(() => {
+        document.getElementById("copiado").textContent = "Senha copiada!";
+      });
+    }
+  </script>
+</body>
+</html>
