@@ -49,11 +49,10 @@
       background-color: #0056b3;
     }
 
-    /* Etiqueta ajustável */
     .etiqueta {
       display: flex;
       align-items: center;
-      border: 2px solid #000;
+      /* border removida */
       padding: 10px;
       margin-top: 20px;
       border-radius: 6px;
@@ -61,7 +60,6 @@
       box-sizing: border-box;
       max-width: 100%;
       min-height: 120px;
-      /* Altura automática */
     }
 
     .etiqueta canvas {
@@ -152,7 +150,6 @@
           etiqueta.style.width = maxWidth + 'px';
         }
 
-        // Exibe o botão de download
         downloadBtn.style.display = 'block';
       });
     }
