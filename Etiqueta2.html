@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gerador de Etiquetas em PDF</title>
+
+  <!-- Bibliotecas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border-radius: 6px;
+    }
+
+    input[type="file"] {
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .etiqueta {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      background: white;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .etiqueta canvas {
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    .texto-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .textoEtiqueta {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    #preview {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Importar Excel e Gerar PDF com Etiquetas</h2>
+    <input type="file" id="excelFile" accept=".xlsx" />
+    <button onclick="processarExcel()">Gerar PDF</button>
+
+    <div id="preview"></div>
+  </div>
+
+  <script>
+    async function processarExcel() {
+      const fileInput = document.getElementById('excelFile');
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Selecione um arquivo Excel (.xlsx).");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+        if (!jsonData.length || !jsonData[0].Código || !jsonData[0].Nome) {
+          alert("O Excel deve conter colunas chamadas 'Código' e 'Nome'.");
+          return;
+        }
+
+        const etiquetasImagens = [];
+
+        for (const item of jsonData) {
+          const div = await criarEtiqueta(item.Código, item.Nome);
+          const img = await html2canvas(div).then(canvas => canvas.toDataURL("image/png"));
+          etiquetasImagens.push(img);
+        }
+
+        gerarPDF(etiquetasImagens);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function criarEtiqueta(codigo, nome) {
+      return new Promise((resolve, reject) => {
+        const div = document.createElement('div');
+        div.className = 'etiqueta';
+
+        const canvas = document.createElement('canvas');
+        const textoInfo = document.createElement('div');
+        textoInfo.className = 'texto-info';
+
+        const texto = document.createElement('div');
+        texto.className = 'textoEtiqueta';
+        texto.textContent = `${codigo} - ${nome}`;
+
+        textoInfo.appendChild(texto);
+        div.appendChild(canvas);
+        div.appendChild(textoInfo);
+        document.body.appendChild(div); // necessário para renderização do html2canvas
+
+        QRCode.toCanvas(canvas, `${codigo}:${nome}`, { width: 80, margin: 1 }, function(err) {
+          if (err) {
+            reject(err);
+          } else {
+            setTimeout(() => {
+              resolve(div);
+              div.style.display = 'none'; // ocultar após captura
+            }, 300); // aguarda renderização
+          }
+        });
+      });
+    }
+
+    function gerarPDF(imagens) {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+
+      imagens.forEach((imgData, index) => {
+        if (index > 0) pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 15, 20, 180, 40);
+      });
+
+      pdf.save("etiquetas.pdf");
+    }
+  </script>
+</body>
+</html>
