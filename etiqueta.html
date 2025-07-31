@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gerador de Etiqueta com QR Code</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    label, input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Etiqueta ajustável */
+    .etiqueta {
+      display: flex;
+      align-items: center;
+      border: 2px solid #000;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 6px;
+      background: white;
+      box-sizing: border-box;
+      max-width: 100%;
+      min-height: 120px;
+      /* Altura automática */
+    }
+
+    .etiqueta canvas {
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+      flex-shrink: 0;
+    }
+
+    .texto-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      flex: 1;
+    }
+
+    .textoEtiqueta {
+      font-size: 1.2rem;
+      font-weight: bold;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      max-width: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Gerador de Etiqueta QR Code</h2>
+
+    <label for="codigo">Código:</label>
+    <input type="text" id="codigo" placeholder="Ex: ABC123" />
+
+    <label for="nome">Nome (até 40 caracteres):</label>
+    <input type="text" id="nome" maxlength="40" placeholder="Ex: Parafuso Sextavado de Aço 8mm" />
+
+    <button onclick="gerarEtiqueta()">Gerar Etiqueta</button>
+    <button id="downloadBtn" style="display:none; margin-top:10px;" onclick="baixarEtiqueta()">Baixar como PNG</button>
+
+    <div class="etiqueta" id="etiqueta" style="display: none;">
+      <canvas id="qrcodeCanvas"></canvas>
+      <div class="texto-info">
+        <div class="textoEtiqueta" id="textoEtiqueta"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function gerarEtiqueta() {
+      const codigo = document.getElementById('codigo').value.trim();
+      let nome = document.getElementById('nome').value.trim();
+
+      if (!codigo || !nome) {
+        alert("Preencha o código e o nome!");
+        return;
+      }
+
+      if (nome.length > 40) {
+        nome = nome.substring(0, 40);
+      }
+
+      const conteudoQR = `${codigo}:${nome}`;
+      const textoExibido = `${codigo} - ${nome}`;
+
+      const canvas = document.getElementById('qrcodeCanvas');
+      const textoDiv = document.getElementById('textoEtiqueta');
+      const etiqueta = document.getElementById('etiqueta');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      QRCode.toCanvas(canvas, conteudoQR, { width: 80, margin: 1 }, function (error) {
+        if (error) {
+          console.error(error);
+          alert("Erro ao gerar QR Code");
+          return;
+        }
+
+        textoDiv.textContent = textoExibido;
+
+        etiqueta.style.display = 'flex';
+
+        etiqueta.style.width = 'auto';
+        etiqueta.style.height = 'auto';
+
+        const maxWidth = 480;
+        if (etiqueta.offsetWidth > maxWidth) {
+          etiqueta.style.width = maxWidth + 'px';
+        }
+
+        // Exibe o botão de download
+        downloadBtn.style.display = 'block';
+      });
+    }
+
+    function baixarEtiqueta() {
+      const etiqueta = document.getElementById('etiqueta');
+
+      html2canvas(etiqueta).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'etiqueta.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        alert('Erro ao gerar imagem para download.');
+        console.error(err);
+      });
+    }
+  </script>
+</body>
+</html>
