@@ -78,6 +78,16 @@
       font-weight: bold;
     }
 
+    #downloadLink {
+      display: none;
+      margin-top: 10px;
+      background-color: #007bff;
+    }
+
+    #downloadLink:hover {
+      background-color: #0056b3;
+    }
+
     #preview {
       display: none;
     }
@@ -88,6 +98,8 @@
     <h2>Importar Excel e Gerar PDF com Etiquetas</h2>
     <input type="file" id="excelFile" accept=".xlsx" />
     <button onclick="processarExcel()">Gerar PDF</button>
+
+    <a id="downloadLink" download="etiquetas.pdf">Baixar PDF</a>
 
     <div id="preview"></div>
   </div>
@@ -142,7 +154,7 @@
         textoInfo.appendChild(texto);
         div.appendChild(canvas);
         div.appendChild(textoInfo);
-        document.body.appendChild(div); // necessário para renderização do html2canvas
+        document.body.appendChild(div); // necessário para renderizar com html2canvas
 
         QRCode.toCanvas(canvas, `${codigo}:${nome}`, { width: 80, margin: 1 }, function(err) {
           if (err) {
@@ -151,7 +163,7 @@
             setTimeout(() => {
               resolve(div);
               div.style.display = 'none'; // ocultar após captura
-            }, 300); // aguarda renderização
+            }, 300);
           }
         });
       });
@@ -163,10 +175,17 @@
 
       imagens.forEach((imgData, index) => {
         if (index > 0) pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 15, 20, 180, 40);
+        pdf.addImage(imgData, 'PNG', 15, 30, 180, 40);
       });
 
-      pdf.save("etiquetas.pdf");
+      // Gera o PDF como blob e cria link para download
+      const pdfBlob = pdf.output("blob");
+      const url = URL.createObjectURL(pdfBlob);
+
+      const link = document.getElementById('downloadLink');
+      link.href = url;
+      link.style.display = 'block';
+      link.textContent = "Baixar PDF com Etiquetas";
     }
   </script>
 </body>
