@@ -10,20 +10,22 @@
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
-      background-color: #121212;
+      background-color: #0d1117;
+      color: #e0e0e0;
     }
 
     .container {
       max-width: 420px;
-      margin: auto;
-      background-color: #fff;
-      border-radius: 0 0 16px 16px;
+      margin: 40px auto;
+      background-color: #161b22;
+      border-radius: 12px;
       padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
     }
 
     .header {
       text-align: center;
-      color: #007bff;
+      color: #58a6ff;
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 20px;
@@ -32,19 +34,22 @@
     .tabs {
       display: flex;
       margin-bottom: 20px;
+      background: #21262d;
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     .tab {
       flex: 1;
       text-align: center;
       padding: 10px;
-      background: #eee;
       cursor: pointer;
-      border-radius: 8px 8px 0 0;
+      color: #c9d1d9;
+      transition: 0.2s;
     }
 
     .tab.active {
-      background: #007bff;
+      background: #1f6feb;
       color: white;
     }
 
@@ -56,28 +61,51 @@
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
-      color: #333;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      color: #c9d1d9;
       font-size: 14px;
     }
 
+    input, select {
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      font-size: 14px;
+      background: #0d1117;
+      color: #e0e0e0;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #58a6ff;
+    }
+
+    .error {
+      border-color: red;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
     button {
+      text-align: center;
       width: 100%;
       padding: 12px;
-      background-color: #007bff;
+      background-color: #1f6feb;
       color: white;
       border: none;
       font-weight: bold;
       font-size: 16px;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: 10px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #388bfd;
     }
 
     .qrcode-container {
@@ -86,30 +114,68 @@
     }
 
     #qrcode {
-      margin-top: 10px;
+      display: none;
+    }
+
+    #qrcode img {
+      padding: 10px;
+      background: #fff;
+      border-radius: 0;
+      display: inline-block;
+    }
+
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #1f6feb;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     .download-btn {
       display: none;
       margin-top: 15px;
-      font-size: 20px;
-      color: #007bff;
+      font-size: 15px;
+      font-weight: bold;
+      color: #58a6ff;
       cursor: pointer;
+      text-decoration: underline;
     }
 
     .footer {
       margin-top: 30px;
       font-size: 12px;
       text-align: center;
-      color: #666;
+      color: #8b949e;
     }
 
     .hidden {
       display: none;
     }
 
-    #form-wifi {
-      margin-top: 10px;
+    /* Ícone de olho no campo de senha */
+    .toggle-eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #c9d1d9;
+      width: 10%;
+    }
+
+    /* Ajuste do input com ícone de olho */
+    #group-senha input {
+      padding-right: 35px;
+      width: 84%;
     }
   </style>
 </head>
@@ -121,28 +187,34 @@
 
     <div class="tabs">
       <div class="tab active" onclick="trocarTipo('texto')">Texto / Link</div>
-      <div class="tab" onclick="trocarTipo('wifi')">Wi-Fi</div>
+      <div class="tab" onclick="trocarTipo('wifi')">Rede Wi-Fi</div>
     </div>
 
     <div id="form-texto">
       <div class="form-group">
         <label for="qr-texto">Texto ou link</label>
         <input type="text" id="qr-texto" placeholder="Digite o conteúdo para gerar QR Code">
+        <div class="error-message hidden" id="error-qr-texto">Este campo não pode ficar vazio</div>
       </div>
     </div>
 
     <div id="form-wifi" class="hidden">
-      <div class="form-group">
+      <div class="form-group" id="group-ssid">
         <label for="ssid">Nome da Rede (SSID)</label>
         <input type="text" id="ssid" placeholder="Nome da rede Wi-Fi">
+        <div class="error-message hidden" id="error-ssid">Este campo não pode ficar vazio</div>
       </div>
-      <div class="form-group">
+      <div class="form-group" id="group-senha">
         <label for="senha">Senha</label>
-        <input type="text" id="senha" placeholder="Senha da rede Wi-Fi">
+        <div style="position: relative;">
+          <input type="password" id="senha" placeholder="Senha da rede Wi-Fi">
+          <i class="fas fa-eye toggle-eye" id="toggle-senha"></i>
+        </div>
+        <div class="error-message hidden" id="error-senha">Este campo não pode ficar vazio</div>
       </div>
       <div class="form-group">
         <label for="tipo">Tipo de segurança</label>
-        <select id="tipo">
+        <select id="tipo" onchange="toggleSenha()">
           <option value="WPA">WPA/WPA2</option>
           <option value="WEP">WEP</option>
           <option value="nopass">Sem senha</option>
@@ -153,14 +225,15 @@
     <button onclick="gerarQRCode()">Gerar QR Code</button>
 
     <div class="qrcode-container">
+      <div class="loader" id="loader"></div>
       <div id="qrcode"></div>
-      <div class="download-btn" id="download-btn" onclick="baixarQRCode()" title="Baixar QR Code">
-        <i class="fas fa-download"></i>
+      <div class="download-btn" id="download-btn" onclick="baixarQRCode()">
+        Baixar QR Code
       </div>
     </div>
 
     <div class="footer">
-      QR Code gerado com base no conteúdo inserido.
+     Não guardamos nenhuma informação inserida.
     </div>
   </div>
 
@@ -174,49 +247,100 @@
 
       document.getElementById('form-texto').classList.toggle('hidden', tipo !== 'texto');
       document.getElementById('form-wifi').classList.toggle('hidden', tipo !== 'wifi');
-      document.getElementById("qrcode").innerHTML = "";
-      document.getElementById("download-btn").style.display = "none";
+      document.getElementById('qrcode').innerHTML = "";
+      document.getElementById('qrcode').style.display = "none";
+      document.getElementById('download-btn').style.display = "none";
+    }
+
+    function toggleSenha() {
+      const tipo = document.getElementById('tipo').value;
+      const groupSenha = document.getElementById('group-senha');
+      groupSenha.classList.toggle('hidden', tipo === 'nopass');
     }
 
     function gerarQRCode() {
       let conteudo = "";
+      let valid = true;
+
+      clearErrors();
 
       if (modoAtual === "texto") {
-        conteudo = document.getElementById('qr-texto').value.trim();
-        if (!conteudo) return alert("Digite o texto ou link.");
+        const campo = document.getElementById('qr-texto');
+        if (!campo.value.trim()) {
+          setError(campo, 'error-qr-texto');
+          valid = false;
+        } else {
+          conteudo = campo.value.trim();
+        }
       } else {
-        const ssid = document.getElementById('ssid').value.trim();
-        const senha = document.getElementById('senha').value.trim();
+        const ssidCampo = document.getElementById('ssid');
+        const senhaCampo = document.getElementById('senha');
         const tipo = document.getElementById('tipo').value;
 
-        if (!ssid) return alert("Digite o nome da rede (SSID).");
+        if (!ssidCampo.value.trim()) {
+          setError(ssidCampo, 'error-ssid');
+          valid = false;
+        }
 
-        conteudo = `WIFI:T:${tipo};S:${ssid};P:${senha};;`;
+        if (tipo !== 'nopass' && !senhaCampo.value.trim()) {
+          setError(senhaCampo, 'error-senha');
+          valid = false;
+        }
+
+        conteudo = `WIFI:T:${tipo};S:${ssidCampo.value.trim()};P:${senhaCampo.value.trim()};;`;
       }
 
-      document.getElementById("qrcode").innerHTML = "";
-      document.getElementById("download-btn").style.display = "none";
+      if (!valid) return;
 
-      new QRCode(document.getElementById("qrcode"), {
-        text: conteudo,
-        width: 256,
-        height: 256
-      });
+      document.getElementById('qrcode').innerHTML = "";
+      document.getElementById('qrcode').style.display = "none";
+      document.getElementById('download-btn').style.display = "none";
+
+      document.getElementById('loader').style.display = "block";
 
       setTimeout(() => {
-        document.getElementById("download-btn").style.display = "inline-block";
-      }, 300);
+        new QRCode(document.getElementById('qrcode'), {
+          text: conteudo,
+          width: 256,
+          height: 256
+        });
+
+        document.getElementById('loader').style.display = "none";
+        document.getElementById('qrcode').style.display = "block";
+        document.getElementById('download-btn').style.display = "block";
+      }, 1200);
+    }
+
+    function setError(campo, mensagemId) {
+      campo.classList.add('error');
+      document.getElementById(mensagemId).classList.remove('hidden');
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+      document.querySelectorAll('.error-message').forEach(el => el.classList.add('hidden'));
     }
 
     function baixarQRCode() {
-      const img = document.querySelector("#qrcode img");
-      if (!img) return alert("QR Code ainda não gerado.");
+      const img = document.querySelector('#qrcode img');
+      if (!img) return;
 
       const link = document.createElement('a');
       link.href = img.src;
-      link.download = "qr-code.png";
+      link.download = 'qr-code.png';
       link.click();
     }
+
+    // Mostrar/ocultar senha com clique no olho
+    const senhaCampo = document.getElementById('senha');
+    const toggleSenhaIcon = document.getElementById('toggle-senha');
+    let senhaVisivel = false;
+
+    toggleSenhaIcon.addEventListener('click', () => {
+      senhaVisivel = !senhaVisivel;
+      senhaCampo.type = senhaVisivel ? 'text' : 'password';
+      toggleSenhaIcon.classList.toggle('fa-eye-slash', senhaVisivel);
+    });
   </script>
 </body>
 </html>
