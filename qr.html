@@ -4,213 +4,110 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gerador de QR Code</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background-color: #0d1117;
-      color: #e0e0e0;
-    }
-
-    .container {
-      max-width: 420px;
-      margin: 40px auto;
-      background-color: #161b22;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
-    }
-
-    .header {
-      text-align: center;
-      color: #58a6ff;
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    .tabs {
-      display: flex;
-      margin-bottom: 20px;
-      background: #21262d;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 10px;
-      cursor: pointer;
-      color: #c9d1d9;
-      transition: 0.2s;
-    }
-
-    .tab.active {
-      background: #1f6feb;
-      color: white;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #c9d1d9;
-      font-size: 14px;
-    }
-
-    input, select {
-      width: 90%;
-      padding: 10px;
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      font-size: 14px;
-      background: #0d1117;
-      color: #e0e0e0;
-    }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: #58a6ff;
-    }
-
-    .error {
-      border-color: red;
-    }
-
-    .error-message {
-      color: red;
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
-    button {
-      text-align: center;
-      width: 100%;
-      padding: 12px;
-      background-color: #1f6feb;
-      color: white;
-      border: none;
-      font-weight: bold;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    button:hover {
-      background-color: #388bfd;
-    }
-
-    .qrcode-container {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    #qrcode {
-      display: none;
-    }
-
-    #qrcode img {
-      padding: 10px;
-      background: #fff;
-      border-radius: 0;
-      display: inline-block;
-    }
-
-    .loader {
-      border: 6px solid #f3f3f3;
-      border-top: 6px solid #1f6feb;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-      display: none;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .download-btn {
-      display: none;
-      margin-top: 15px;
-      font-size: 15px;
-      font-weight: bold;
-      color: #58a6ff;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-
-    .footer {
-      margin-top: 30px;
-      font-size: 12px;
-      text-align: center;
-      color: #8b949e;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    /* Ícone de olho no campo de senha */
-    .toggle-eye {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #c9d1d9;
-      width: 10%;
-    }
-
-    /* Ajuste do input com ícone de olho */
-    #group-senha input {
-      padding-right: 35px;
-      width: 84%;
-    }
+    body { font-family: sans-serif; background: #0d1117; color: #e0e0e0; margin:0; }
+    .container { max-width: 420px; margin: 40px auto; background: #161b22; border-radius: 12px; padding: 20px; }
+    .tabs { display: flex; margin-bottom: 20px; }
+    .tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; background: #21262d; color:#c9d1d9; }
+    .tab.active { background: #1f6feb; color:white; }
+    .form-group { margin-bottom: 15px; }
+    label { display:block; margin-bottom:5px; }
+    input, select { width: 90%; padding:10px; border-radius:6px; border:none; background:#0d1117; color:#e0e0e0; }
+    button { width:100%; padding:12px; background:#1f6feb; color:white; border:none; border-radius:8px; cursor:pointer; margin-top:10px; }
+    #qrcode { text-align:center; margin-top:20px; display:none; }
+    .download-btn { display:none; margin-top:10px; text-align:center; cursor:pointer; color:#58a6ff; text-decoration:underline; }
+    .hidden { display:none; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <i class="fas fa-qrcode"></i> Gerador de QR Code
-    </div>
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" onclick="trocarTipo('texto')">Texto / Link</div>
+    <div class="tab" onclick="trocarTipo('wifi')">Rede Wi-Fi</div>
+  </div>
 
-    <div class="tabs">
-      <div class="tab active" onclick="trocarTipo('texto')">Texto / Link</div>
-      <div class="tab" onclick="trocarTipo('wifi')">Rede Wi-Fi</div>
+  <div id="form-texto">
+    <div class="form-group">
+      <label for="qr-texto">Texto ou link</label>
+      <input type="text" id="qr-texto" placeholder="Digite o conteúdo">
     </div>
+  </div>
 
-    <div id="form-texto">
-      <div class="form-group">
-        <label for="qr-texto">Texto ou link</label>
-        <input type="text" id="qr-texto" placeholder="Digite o conteúdo para gerar QR Code">
-        <div class="error-message hidden" id="error-qr-texto">Este campo não pode ficar vazio</div>
-      </div>
+  <div id="form-wifi" class="hidden">
+    <div class="form-group">
+      <label for="ssid">Nome da Rede (SSID)</label>
+      <input type="text" id="ssid" placeholder="Nome da rede Wi-Fi">
     </div>
+    <div class="form-group" id="group-senha">
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" placeholder="Senha da rede Wi-Fi">
+    </div>
+    <div class="form-group">
+      <label for="tipo">Tipo de segurança</label>
+      <select id="tipo" onchange="toggleSenha()">
+        <option value="WPA">WPA/WPA2</option>
+        <option value="WEP">WEP</option>
+        <option value="nopass">Sem senha</option>
+      </select>
+    </div>
+  </div>
 
-    <div id="form-wifi" class="hidden">
-      <div class="form-group" id="group-ssid">
-        <label for="ssid">Nome da Rede (SSID)</label>
-        <input type="text" id="ssid" placeholder="Nome da rede Wi-Fi">
-        <div class="error-message hidden" id="error-ssid">Este campo não pode ficar vazio</div>
-      </div>
-      <div class="form-group" id="group-senha">
-        <label for="senha">Senha</label>
-        <div style="position: relative;">
-          <input type="password" id="senha" placeholder="Senha da rede Wi-Fi">
-          <i class="fas fa-eye toggle-eye" id="toggle-senha"></i>
-        </div>
-        <div class="error-message hidden" id="error-senha">Este campo não pode ficar vazio</div>
+  <button onclick="gerarQRCode()">Gerar QR Code</button>
+
+  <div id="qrcode"></div>
+  <div class="download-btn" id="download-btn" onclick="baixarQRCode()">Baixar QR Code</div>
+</div>
+
+<script>
+let modoAtual = 'texto';
+
+function trocarTipo(tipo){
+  modoAtual = tipo;
+  document.querySelectorAll('.tab').forEach((t,i)=> t.classList.remove('active'));
+  document.querySelectorAll('.tab')[tipo==='texto'?0:1].classList.add('active');
+  document.getElementById('form-texto').classList.toggle('hidden', tipo!=='texto');
+  document.getElementById('form-wifi').classList.toggle('hidden', tipo!=='wifi');
+  document.getElementById('qrcode').innerHTML=''; document.getElementById('qrcode').style.display='none';
+  document.getElementById('download-btn').style.display='none';
+}
+
+function toggleSenha(){
+  const tipo = document.getElementById('tipo').value;
+  document.getElementById('group-senha').classList.toggle('hidden', tipo==='nopass');
+}
+
+function gerarQRCode(){
+  let conteudo='';
+  if(modoAtual==='texto'){
+    conteudo = document.getElementById('qr-texto').value.trim();
+    if(!conteudo){ alert("Digite algo para gerar QR Code"); return; }
+  } else {
+    const ssid = document.getElementById('ssid').value.trim();
+    const tipo = document.getElementById('tipo').value;
+    const senha = document.getElementById('senha').value.trim();
+    if(!ssid){ alert("Digite o SSID"); return; }
+    if(tipo!=='nopass' && !senha){ alert("Digite a senha"); return; }
+    conteudo = `WIFI:T:${tipo};S:${ssid};P:${senha};;`;
+  }
+
+  document.getElementById('qrcode').innerHTML='';
+  new QRCode(document.getElementById('qrcode'), {text:conteudo,width:256,height:256,correctLevel:QRCode.CorrectLevel.H});
+  document.getElementById('qrcode').style.display='block';
+  document.getElementById('download-btn').style.display='block';
+}
+
+function baixarQRCode(){
+  const img = document.querySelector('#qrcode img');
+  if(!img){ alert("QR Code não gerado ainda."); return; }
+  const link = document.createElement('a');
+  link.href = img.src;
+  link.download = 'qrcode.png';
+  link.click();
+}
+</script>
+</body>
+</html>        <div class="error-message hidden" id="error-senha">Este campo não pode ficar vazio</div>
       </div>
       <div class="form-group">
         <label for="tipo">Tipo de segurança</label>
