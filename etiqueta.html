@@ -1,172 +1,180 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Gerador de Etiqueta com QR Code</title>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
-      padding: 30px;
-      display: flex;
-      justify-content: center;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gerador de Etiqueta com QR Code</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    .container {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 500px;
-    }
+<style>
+* { box-sizing: border-box; }
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #fff;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    min-height:100vh;
+    padding:20px;
+}
+.container {
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    max-width: 500px;
+    width: 100%;
+}
+h2 { text-align:center; margin-bottom:20px; color:#ff9800; }
 
-    label, input, button {
-      display: block;
-      width: 100%;
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
+label { display:block; margin-bottom:5px; font-weight:500; }
+input {
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #333;
+    background:#2c2c2c;
+    color:#fff;
+    margin-bottom:10px;
+    font-size:16px;
+    outline:none;
+}
+button {
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#ff9800;
+    color:#121212;
+    font-size:18px;
+    cursor:pointer;
+    margin-bottom:10px;
+    transition:0.3s;
+}
+button:hover { background:#e68900; }
 
-    input {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
+.etiqueta {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 15px;
+    background: #2c2c2c;
+    border: 2px solid #ff9800;
+    box-sizing: border-box;
+    width: fit-content;
+    max-width: 100%;
+}
+.etiqueta canvas {
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+    flex-shrink:0;
+}
+.texto-info {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    flex:1;
+}
+.textoEtiqueta {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color:#fff;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
 
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .etiqueta {
-      display: flex;
-      align-items: center;
-      /* border removida */
-      padding: 10px;
-      margin-top: 20px;
-      border-radius: 6px;
-      background: white;
-      box-sizing: border-box;
-      max-width: 100%;
-      min-height: 120px;
-    }
-
-    .etiqueta canvas {
-      width: 80px;
-      height: 80px;
-      margin-right: 20px;
-      flex-shrink: 0;
-    }
-
-    .texto-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      overflow-wrap: break-word;
-      word-break: break-word;
-      flex: 1;
-    }
-
-    .textoEtiqueta {
-      font-size: 1.2rem;
-      font-weight: bold;
-      white-space: normal;
-      overflow: visible;
-      text-overflow: clip;
-      max-width: none;
-    }
-  </style>
+.download-btn {
+    display:none;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#ff9800;
+    color:#121212;
+    font-size:16px;
+    cursor:pointer;
+    text-align:center;
+    transition:0.3s;
+}
+.download-btn:hover { background:#e68900; }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>Gerador de Etiqueta QR Code</h2>
 
-    <label for="codigo">Código:</label>
-    <input type="text" id="codigo" placeholder="Ex: ABC123" />
+<div class="container">
+  <h2><i class="fas fa-tag"></i> Gerador de Etiqueta QR Code</h2>
 
-    <label for="nome">Nome (até 40 caracteres):</label>
-    <input type="text" id="nome" maxlength="40" placeholder="Ex: Parafuso Sextavado de Aço 8mm" />
+  <label for="codigo"><i class="fas fa-barcode"></i> Código:</label>
+  <input type="text" id="codigo" placeholder="Ex: ABC123" />
 
-    <button onclick="gerarEtiqueta()">Gerar Etiqueta</button>
-    <button id="downloadBtn" style="display:none; margin-top:10px;" onclick="baixarEtiqueta()">Baixar como PNG</button>
+  <label for="nome"><i class="fas fa-box"></i> Nome (até 40 caracteres):</label>
+  <input type="text" id="nome" maxlength="40" placeholder="Ex: Parafuso Sextavado de Aço 8mm" />
 
-    <div class="etiqueta" id="etiqueta" style="display: none;">
-      <canvas id="qrcodeCanvas"></canvas>
-      <div class="texto-info">
-        <div class="textoEtiqueta" id="textoEtiqueta"></div>
-      </div>
+  <button onclick="gerarEtiqueta()"><i class="fas fa-qrcode"></i> Gerar Etiqueta</button>
+  <button id="downloadBtn" class="download-btn" onclick="baixarEtiqueta()"><i class="fas fa-download"></i> Baixar como PNG</button>
+
+  <div class="etiqueta" id="etiqueta" style="display:none;">
+    <canvas id="qrcodeCanvas"></canvas>
+    <div class="texto-info">
+      <div class="textoEtiqueta" id="textoEtiqueta"></div>
     </div>
   </div>
+</div>
 
-  <script>
-    function gerarEtiqueta() {
-      const codigo = document.getElementById('codigo').value.trim();
-      let nome = document.getElementById('nome').value.trim();
+<script>
+function gerarEtiqueta() {
+  const codigo = document.getElementById('codigo').value.trim();
+  let nome = document.getElementById('nome').value.trim();
 
-      if (!codigo || !nome) {
-        alert("Preencha o código e o nome!");
-        return;
-      }
+  if(!codigo || !nome){
+    alert("Preencha o código e o nome!");
+    return;
+  }
 
-      if (nome.length > 40) {
-        nome = nome.substring(0, 40);
-      }
+  if(nome.length > 40) nome = nome.substring(0,40);
 
-      const conteudoQR = `${codigo}:${nome}`;
-      const textoExibido = `${codigo} - ${nome}`;
+  const conteudoQR = `${codigo}:${nome}`;
+  const textoExibido = `${codigo} - ${nome}`;
 
-      const canvas = document.getElementById('qrcodeCanvas');
-      const textoDiv = document.getElementById('textoEtiqueta');
-      const etiqueta = document.getElementById('etiqueta');
-      const downloadBtn = document.getElementById('downloadBtn');
+  const canvas = document.getElementById('qrcodeCanvas');
+  const textoDiv = document.getElementById('textoEtiqueta');
+  const etiqueta = document.getElementById('etiqueta');
+  const downloadBtn = document.getElementById('downloadBtn');
 
-      QRCode.toCanvas(canvas, conteudoQR, { width: 80, margin: 1 }, function (error) {
-        if (error) {
-          console.error(error);
-          alert("Erro ao gerar QR Code");
-          return;
-        }
-
-        textoDiv.textContent = textoExibido;
-
-        etiqueta.style.display = 'flex';
-
-        etiqueta.style.width = 'auto';
-        etiqueta.style.height = 'auto';
-
-        const maxWidth = 480;
-        if (etiqueta.offsetWidth > maxWidth) {
-          etiqueta.style.width = maxWidth + 'px';
-        }
-
-        downloadBtn.style.display = 'block';
-      });
+  QRCode.toCanvas(canvas, conteudoQR, { width: 80, margin: 1 }, function(error){
+    if(error){
+      console.error(error);
+      alert("Erro ao gerar QR Code");
+      return;
     }
+    textoDiv.textContent = textoExibido;
+    etiqueta.style.display = 'flex';
+    downloadBtn.style.display = 'block';
+  });
+}
 
-    function baixarEtiqueta() {
-      const etiqueta = document.getElementById('etiqueta');
+function baixarEtiqueta(){
+  const etiqueta = document.getElementById('etiqueta');
+  html2canvas(etiqueta).then(canvas=>{
+    const link = document.createElement('a');
+    link.download = 'etiqueta.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }).catch(err=>{
+    alert('Erro ao gerar imagem para download.');
+    console.error(err);
+  });
+}
+</script>
 
-      html2canvas(etiqueta).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'etiqueta.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      }).catch(err => {
-        alert('Erro ao gerar imagem para download.');
-        console.error(err);
-      });
-    }
-  </script>
 </body>
 </html>
