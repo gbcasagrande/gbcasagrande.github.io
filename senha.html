@@ -1,353 +1,254 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gerador de Senhas</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #0d1117, #1f2937);
-      color: #e0e0e0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-      position: relative;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Senhas</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+}
+.container {
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #30363d;
+}
+h1 {
+    color: #ff9800;
+    margin-bottom: 25px;
+}
+label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+input[type="range"], input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    background: #2c2c2c;
+    color: #fff;
+    margin-bottom: 10px;
+    outline: none;
+    font-size: 1em;
+    transition: border 0.3s;
+}
+.toggle-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2c2c2c;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.toggle-option:hover { background: #3a3a3a; }
+.toggle-label { font-weight: 500; }
+.toggle-value { font-weight: bold; color: #0f0; }
+.toggle-value.no { color: #f44336; }
 
-    .container {
-      background: rgba(22, 27, 34, 0.95);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-      text-align: center;
-      max-width: 480px;
-      width: 100%;
-      border: 1px solid #30363d;
-      position: relative;
-    }
+.password-box {
+    background: #2c2c2c;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+    font-size: 1.2em;
+    word-break: break-word;
+    border: 2px solid #ff9800;
+}
 
-    h1 {
-      font-size: 1.8em;
-      margin-bottom: 20px;
-      color: #58a6ff;
-    }
+.copy-message {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    background: #1e2a1e;
+}
 
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
+button {
+    background: #ff9800;
+    color: #121212;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+    width: 100%;
+    transition: 0.3s;
+}
+button:hover { background: #e68900; }
 
-    input[type="range"], input[type="text"], select {
-      width: 100%;
-      margin-top: 5px;
-      padding: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 1em;
-      outline: none;
-    }
-
-    input[type="range"] {
-      height: 6px;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 10px #3b82f6;
-      border: 2px solid #3b82f6;
-      cursor: pointer;
-    }
-
-    input[type="range"]::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 10px #3b82f6;
-      border: 2px solid #3b82f6;
-      cursor: pointer;
-    }
-
-    input[type="range"]::-moz-range-track {
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
-      height: 6px;
-      border-radius: 3px;
-    }
-
-    .toggle-option {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 10px 15px;
-      margin-top: 8px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .toggle-option:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .toggle-label {
-      font-weight: 500;
-      font-size: 0.95em;
-    }
-
-    .toggle-value {
-      font-weight: bold;
-      color: #0f0;
-    }
-
-    .toggle-value.no {
-      color: #f44336;
-    }
-
-    button {
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 15px;
-      font-size: 1em;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      width: 100%;
-    }
-
-    button:hover {
-      transform: scale(1.03);
-    }
-
-    .password-box {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-      font-size: 1.2em;
-      word-break: break-word;
-      border: 1px solid #3b82f6;
-    }
-
-    @media (max-width: 480px) {
-      .container { padding: 25px 20px; }
-      h1 { font-size: 1.6rem; }
-    }
-
-    /* Adicionando a borda ao redor da palavra-chave e posições */
-    .keyword-section {
-      border: 2px solid #3b82f6;
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 15px;
-      background-color: rgba(0, 0, 0, 0.0);
-    }
-
-    .position-option {
-      display: flex;
-      justify-content: space-evenly;
-      margin-top: 10px;
-      margin-bottom: 15px;
-    }
-
-    .position-option i {
-      font-size: 1.6em;
-      cursor: pointer;
-      color: #3b82f6;
-      transition: color 0.3s;
-    }
-
-    .position-option i:hover {
-      color: #58a6ff;
-    }
-
-    /* Ícone de Voltar */
-    .back-btn {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 2em;
-      color: #58a6ff;
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-
-    .back-btn:hover {
-      color: #3b82f6;
-    }
-
-    /* Rodapé fixo */
-    .footer {
-      position: fixed;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      color: #a1a1a1;
-      font-size: 0.9em;
-    }
-
-  </style>
+.keyword-section {
+    border: 2px solid #ff9800;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 15px;
+}
+.position-option {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+.position-option i {
+    font-size: 1.6em;
+    cursor: pointer;
+    color: #ff9800;
+    transition: color 0.3s;
+}
+.position-option i:hover { color: #ffc107; }
+</style>
 </head>
 <body>
-  <!-- Ícone de Voltar -->
 
-
-  <div class="container">
-      <div class="back-btn">
-    <i class="fas fa-arrow-left" onclick="goBack()"></i>
-  </div>
-    <h1>Gerador de Senhas</h1>
+<div class="container">
+    <h1><i class="fas fa-key"></i> Gerador de Senhas</h1>
 
     <label for="length">Comprimento: <span id="lengthValue">16</span> caracteres</label>
-    <input type="range" id="length" min="4" max="64" value="16" oninput="updateLengthLabel()" />
+    <input type="range" id="length" min="4" max="64" value="16" oninput="updateLengthLabel()">
 
     <div class="toggle-option" onclick="toggle('uppercase')">
-      <span class="toggle-label">Letras Maiúsculas</span>
-      <span id="uppercase" class="toggle-value">Sim</span>
+        <span class="toggle-label">Letras Maiúsculas</span>
+        <span id="uppercase" class="toggle-value">Sim</span>
     </div>
     <div class="toggle-option" onclick="toggle('lowercase')">
-      <span class="toggle-label">Letras Minúsculas</span>
-      <span id="lowercase" class="toggle-value">Sim</span>
+        <span class="toggle-label">Letras Minúsculas</span>
+        <span id="lowercase" class="toggle-value">Sim</span>
     </div>
     <div class="toggle-option" onclick="toggle('numbers')">
-      <span class="toggle-label">Números</span>
-      <span id="numbers" class="toggle-value">Sim</span>
+        <span class="toggle-label">Números</span>
+        <span id="numbers" class="toggle-value">Sim</span>
     </div>
     <div class="toggle-option" onclick="toggle('symbols')">
-      <span class="toggle-label">Símbolos</span>
-      <span id="symbols" class="toggle-value">Sim</span>
+        <span class="toggle-label">Símbolos</span>
+        <span id="symbols" class="toggle-value">Sim</span>
     </div>
 
-    <!-- Seção de Palavra Fixa e Posição -->
     <div class="keyword-section">
-      <label for="customWord">Palavra personalizada:</label>
-      <input type="text" id="customWord" placeholder="Ex: Pass" />
+        <label for="customWord">Palavra personalizada (opcional):</label>
+        <input type="text" id="customWord" placeholder="Ex: Pass">
 
-      <label for="position">Posição da palavra:</label>
-      <div class="position-option">
-        <i class="fas fa-align-left" onclick="setPosition('left')"></i>
-        <i class="fas fa-align-center" onclick="setPosition('center')"></i>
-        <i class="fas fa-align-right" onclick="setPosition('right')"></i>
-      </div>
+        <label for="position">Posição da palavra:</label>
+        <div class="position-option">
+            <i class="fas fa-align-left" onclick="setPosition('left')"></i>
+            <i class="fas fa-align-center" onclick="setPosition('center')"></i>
+            <i class="fas fa-align-right" onclick="setPosition('right')"></i>
+        </div>
     </div>
 
     <div id="result" class="password-box">Sua senha aparecerá aqui...</div>
+    <div id="copyMessage" class="copy-message">Senha copiada!</div>
 
     <button onclick="generatePassword()">Gerar Senha</button>
     <button onclick="copyPassword()">Copiar</button>
-  </div>
+</div>
 
+<script>
+let position = 'left';
 
-  <script>
-    let position = 'left';
+function updateLengthLabel() {
+    document.getElementById("lengthValue").textContent = document.getElementById("length").value;
+}
 
-    function updateLengthLabel() {
-      document.getElementById("lengthValue").textContent = document.getElementById("length").value;
-    }
-
-    function toggle(id) {
-      const el = document.getElementById(id);
-      if (el.textContent === "Sim") {
+function toggle(id) {
+    const el = document.getElementById(id);
+    if(el.textContent === "Sim"){
         el.textContent = "Não";
         el.classList.add("no");
-      } else {
+    } else {
         el.textContent = "Sim";
         el.classList.remove("no");
-      }
     }
+}
 
-    function setPosition(newPosition) {
-      position = newPosition;
-      document.querySelectorAll('.position-option i').forEach(icon => {
-        icon.style.color = '#3b82f6'; // Reset color
-      });
+function setPosition(newPosition) {
+    position = newPosition;
+    document.querySelectorAll('.position-option i').forEach(icon => icon.style.color = '#ff9800');
+    if(position==='left') document.querySelector('.fa-align-left').style.color='#ffc107';
+    if(position==='center') document.querySelector('.fa-align-center').style.color='#ffc107';
+    if(position==='right') document.querySelector('.fa-align-right').style.color='#ffc107';
+}
 
-      switch(position) {
-        case 'left':
-          document.querySelector('.fa-align-left').style.color = '#58a6ff';
-          break;
-        case 'center':
-          document.querySelector('.fa-align-center').style.color = '#58a6ff';
-          break;
-        case 'right':
-          document.querySelector('.fa-align-right').style.color = '#58a6ff';
-          break;
-      }
-    }
+function generatePassword() {
+    const length = parseInt(document.getElementById("length").value);
+    const useUpper = document.getElementById("uppercase").textContent === "Sim";
+    const useLower = document.getElementById("lowercase").textContent === "Sim";
+    const useNumbers = document.getElementById("numbers").textContent === "Sim";
+    const useSymbols = document.getElementById("symbols").textContent === "Sim";
+    const word = document.getElementById("customWord").value || "";
 
-    function generatePassword() {
-      const length = parseInt(document.getElementById("length").value);
-      const useUpper = document.getElementById("uppercase").textContent === "Sim";
-      const useLower = document.getElementById("lowercase").textContent === "Sim";
-      const useNumbers = document.getElementById("numbers").textContent === "Sim";
-      const useSymbols = document.getElementById("symbols").textContent === "Sim";
-      const word = document.getElementById("customWord").value || "";
+    const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lower = "abcdefghijklmnopqrstuvwxyz";
+    const numbers = "0123456789";
+    const symbols = "!@#$%^&*()_+{}[]|<>?/.,~";
 
-      const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      const lower = "abcdefghijklmnopqrstuvwxyz";
-      const numbers = "0123456789";
-      const symbols = "!@#$%^&*()_+{}[]|<>?/.,~";
+    let allChars = "";
+    if (useUpper) allChars += upper;
+    if (useLower) allChars += lower;
+    if (useNumbers) allChars += numbers;
+    if (useSymbols) allChars += symbols;
 
-      let allChars = "";
-      if (useUpper) allChars += upper;
-      if (useLower) allChars += lower;
-      if (useNumbers) allChars += numbers;
-      if (useSymbols) allChars += symbols;
-
-      if (!allChars) {
+    if (!allChars) {
         document.getElementById("result").textContent = "Selecione ao menos uma opção!";
         return;
-      }
+    }
 
-      let passLength = Math.max(0, length - word.length);
-      let generated = "";
-      for (let i = 0; i < passLength; i++) {
+    let passLength = Math.max(0, length - word.length);
+    let generated = "";
+    for (let i = 0; i < passLength; i++) {
         generated += allChars[Math.floor(Math.random() * allChars.length)];
-      }
+    }
 
-      let finalPassword = "";
-      if (position === "left") {
-        finalPassword = word + generated;
-      } else if (position === "right") {
-        finalPassword = generated + word;
-      } else {
+    let finalPassword = "";
+    if (position === "left") finalPassword = word + generated;
+    else if (position === "right") finalPassword = generated + word;
+    else {
         let half = Math.floor(generated.length / 2);
         finalPassword = generated.slice(0, half) + word + generated.slice(half);
-      }
-
-      document.getElementById("result").textContent = finalPassword;
     }
 
-    function copyPassword() {
-      const password = document.getElementById("result").textContent;
-      if (password && password !== "Sua senha aparecerá aqui..." && password !== "Selecione ao menos uma opção!") {
+    document.getElementById("result").textContent = finalPassword;
+}
+
+function copyPassword() {
+    const password = document.getElementById("result").textContent;
+    if(password && password !== "Sua senha aparecerá aqui..." && password !== "Selecione ao menos uma opção!") {
         navigator.clipboard.writeText(password);
-        alert("Senha copiada!");
-      }
-    }
 
-    function goBack() {
-      window.history.back(); // Volta para a página anterior
-    }
+        const msg = document.getElementById("copyMessage");
+        msg.style.display = "block";  // mostra a mensagem
 
-    setPosition('left');
-  </script>
+        setTimeout(() => {
+            msg.style.display = "none"; // esconde após 2 segundos
+        }, 2000);
+    }
+}
+
+setPosition('left');
+</script>
 </body>
-  </html>
+</html>
