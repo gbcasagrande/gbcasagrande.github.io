@@ -61,6 +61,8 @@ input, select {
     outline:none;
     transition:0.3s;
 }
+input.error { border-color: #ff4d4d; }
+.error-message { font-size:12px; color:#ff4d4d; margin-bottom:10px; display:none; }
 button {
     width:100%;
     padding:12px;
@@ -103,6 +105,21 @@ button:hover { background:#e68900; }
 .download-btn:hover { background:#e68900; }
 .hidden { display:none; }
 .input-group i { margin-right: 8px; color:#ff9800; }
+
+/* Spinner flutuante sem fundo nem borda */
+.spinner {
+     border: 6px solid #2c2c2c;
+    border-top: 6px solid #ff9800;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 </style>
 </head>
 <body>
@@ -110,29 +127,31 @@ button:hover { background:#e68900; }
 <div class="container">
   <h1><i class="fas fa-qrcode"></i> Gerador de QR Code</h1>
 
-  <!-- Abas internas -->
   <div class="tabs">
     <div class="tab active" onclick="trocarTipo('texto')">Texto / Link</div>
     <div class="tab" onclick="trocarTipo('wifi')">Rede Wi-Fi</div>
   </div>
 
-  <!-- Formulário Texto/Link -->
+  <!-- Texto/Link -->
   <div id="form-texto">
     <div class="input-group">
       <label for="qr-texto"><i class="fas fa-link"></i> Texto ou link</label>
       <input type="text" id="qr-texto" placeholder="Digite o conteúdo">
+      <div class="error-message" id="erro-texto">Digite algo para gerar o QR Code.</div>
     </div>
   </div>
 
-  <!-- Formulário Wi-Fi -->
+  <!-- Wi-Fi -->
   <div id="form-wifi" class="hidden">
     <div class="input-group">
       <label for="ssid"><i class="fas fa-wifi"></i> Nome da Rede (SSID)</label>
       <input type="text" id="ssid" placeholder="Nome da rede Wi-Fi">
+      <div class="error-message" id="erro-ssid">Digite o SSID da rede.</div>
     </div>
     <div class="input-group" id="group-senha">
       <label for="senha"><i class="fas fa-lock"></i> Senha</label>
       <input type="password" id="senha" placeholder="Senha da rede Wi-Fi">
+      <div class="error-message" id="erro-senha">Digite a senha da rede.</div>
     </div>
     <div class="input-group">
       <label for="tipo"><i class="fas fa-shield-alt"></i> Tipo de segurança</label>
@@ -146,6 +165,10 @@ button:hover { background:#e68900; }
 
   <button onclick="gerarQRCode()"><i class="fas fa-qrcode"></i> Gerar QR Code</button>
 
+  <!-- Spinner flutuante -->
+  <div id="spinner" class="spinner hidden"></div>
+
+  <!-- Contêiner do QR Code -->
   <div id="qrcode-wrapper">
     <div id="qrcode"></div>
     <button class="download-btn" id="download-btn" onclick="baixarQRCode()"><i class="fas fa-download"></i> Download PNG</button>
@@ -161,32 +184,49 @@ function trocarTipo(tipo){
   document.querySelectorAll('.tabs .tab')[tipo==='texto'?0:1].classList.add('active');
   document.getElementById('form-texto').classList.toggle('hidden',tipo!=='texto');
   document.getElementById('form-wifi').classList.toggle('hidden',tipo!=='wifi');
+
+  ['qr-texto','ssid','senha'].forEach(id => document.getElementById(id).classList.remove('error'));
+  ['erro-texto','erro-ssid','erro-senha'].forEach(id => document.getElementById(id).style.display='none');
   document.getElementById('qrcode').innerHTML='';
   document.getElementById('qrcode-wrapper').style.display='none';
 }
 
 function toggleSenha(){
-  const tipo=document.getElementById('tipo').value;
-  document.getElementById('group-senha').classList.toggle('hidden',tipo==='nopass');
+  document.getElementById('group-senha').classList.toggle('hidden', document.getElementById('tipo').value==='nopass');
 }
 
 function gerarQRCode(){
-  let conteudo='';
+  ['qr-texto','ssid','senha'].forEach(id => document.getElementById(id).classList.remove('error'));
+  ['erro-texto','erro-ssid','erro-senha'].forEach(id => document.getElementById(id).style.display='none');
+
+  let conteudo=''; let temErro=false;
+
   if(modoAtual==='texto'){
-    conteudo=document.getElementById('qr-texto').value.trim();
-    if(!conteudo){ alert("Digite algo para gerar QR Code"); return; }
+    const texto = document.getElementById('qr-texto').value.trim();
+    if(!texto){ document.getElementById('qr-texto').classList.add('error'); document.getElementById('erro-texto').style.display='block'; temErro=true; }
+    else conteudo = texto;
   } else {
     const ssid=document.getElementById('ssid').value.trim();
     const tipo=document.getElementById('tipo').value;
     const senha=document.getElementById('senha').value.trim();
-    if(!ssid){ alert("Digite o SSID"); return; }
-    if(tipo!=='nopass' && !senha){ alert("Digite a senha"); return; }
-    conteudo=`WIFI:T:${tipo};S:${ssid};P:${senha};;`;
+    if(!ssid){ document.getElementById('ssid').classList.add('error'); document.getElementById('erro-ssid').style.display='block'; temErro=true; }
+    if(tipo!=='nopass' && !senha){ document.getElementById('senha').classList.add('error'); document.getElementById('erro-senha').style.display='block'; temErro=true; }
+    if(!temErro) conteudo=`WIFI:T:${tipo};S:${ssid};P:${senha};;`;
   }
 
+  if(temErro) return;
+
   document.getElementById('qrcode').innerHTML='';
-  new QRCode(document.getElementById('qrcode'), {text:conteudo,width:256,height:256,correctLevel:QRCode.CorrectLevel.H});
-  document.getElementById('qrcode-wrapper').style.display='block';
+  document.getElementById('spinner').classList.remove('hidden');
+  document.getElementById('qrcode-wrapper').style.display='none';
+  document.getElementById('download-btn').style.display='none';
+
+  setTimeout(()=>{
+    document.getElementById('spinner').classList.add('hidden');
+    document.getElementById('qrcode-wrapper').style.display='block';
+    new QRCode(document.getElementById('qrcode'), {text:conteudo,width:256,height:256,correctLevel:QRCode.CorrectLevel.H});
+    document.getElementById('download-btn').style.display='block';
+  }, 3000);
 }
 
 function baixarQRCode(){
