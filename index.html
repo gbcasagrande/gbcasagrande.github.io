@@ -1,175 +1,85 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portfólio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #0d1117, #1f2937);
-      color: #e0e0e0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      animation: fadeIn 0.8s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.98); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .container {
-      background: rgba(22, 27, 34, 0.95);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-      text-align: center;
-      max-width: 500px;
-      width: 100%;
-      border: 1px solid #30363d;
-      transition: transform 0.3s ease;
-    }
-
-    .container:hover {
-      transform: translateY(-4px);
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 5px;
-      color: #58a6ff;
-    }
-
-    .subtitle {
-      margin-bottom: 25px;
-      font-size: 1rem;
-      color: #8b949e;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    li {
-      margin: 12px 0;
-    }
-
-    a {
-      display: block;
-      text-decoration: none;
-      padding: 14px;
-      background: linear-gradient(145deg, #21262d, #1c1f26);
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      color: #c9d1d9;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    a:hover {
-      background: #2d333b;
-      box-shadow: 0 0 10px #58a6ff88;
-      transform: scale(1.02);
-    }
-
-    .footer {
-      margin-top: 30px;
-      font-size: 0.875rem;
-      color: #8b949e;
-    }
-
-    .footer span {
-      color: #58a6ff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .footer span:hover {
-      text-decoration: underline;
-    }
-
-    .footer p {
-      margin: 6px 0;
-    }
-
-    .social-icons {
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-    }
-
-    .social-icons img {
-      width: 32px;
-      height: 32px;
-      filter: grayscale(100%);
-      transition: transform 0.3s, filter 0.3s;
-    }
-
-    .social-icons img:hover {
-      transform: scale(1.1);
-      filter: grayscale(0%);
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 25px 20px;
-      }
-
-      h1 {
-        font-size: 1.6rem;
-      }
-
-      .subtitle {
-        font-size: 0.95rem;
-      }
-
-      a {
-        font-size: 0.95rem;
-        padding: 12px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home - Ferramentas</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+body {
+    background-color: #121212;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+}
+.container {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+}
+h1 {
+    color: #ff9800;
+    margin-bottom: 30px;
+}
+.menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+.menu a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1e1e1e;
+    padding: 25px 15px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.3s;
+    border: 2px solid #30363d;
+}
+.menu a:hover {
+    background: #2c2c2c;
+    border-color: #ff9800;
+    color: #ff9800;
+}
+.menu a i {
+    font-size: 2em;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+.menu a:hover i {
+    transform: scale(1.2);
+    color: #ff9800;
+}
+footer {
+    margin-top: 40px;
+    font-size: 0.9em;
+    color: #888;
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Portfólio</h1>
-    <p class="subtitle">Uma coleção de ferramentas e utilitários desenvolvidos para facilitar tarefas do dia a dia.</p>
-    <ul>
-      <li><a href="/calculo">Cálculo de Tanque</a></li>
-      <li><a href="/qr">Gerar QR Code</a></li>
-      <li><a href="/senha">Gerar Senha Segura</a></li>
-      <li><a href="/megasena">Mega Sena</a></li>
-      <li><a href="#">Em breve</a></li>
-      <li><a href="#">Em breve</a></li>
-      <li><a href="#">Em breve</a></li>
-      <li><a href="#">Em breve</a></li>
-    </ul>
-    <div class="footer">
-      <p>Desenvolvido por <strong>GB</strong></p>
-      <p><span onclick="window.open('http://gbcasagrande.github.io', '_blank');">gbcasagrande.github.io</span></p>
-      <div class="social-icons">
-        <span onclick="window.open('https://instagram.com/gbcasagrande', '_blank');">
-          <img src="https://cdn-icons-png.flaticon.com/128/15713/15713420.png" alt="Instagram">
-        </span>
-        <span onclick="window.location.href = 'mailto:gabrielcasagrande@pm.me';">
-          <img src="https://cdn-icons-png.flaticon.com/128/9068/9068642.png" alt="E-mail">
-        </span>
-      </div>
+<div class="container">
+    <h1><i class="fas fa-tools"></i> Ferramentas</h1>
+    <div class="menu">
+        <a href="/calculadora"><i class="fas fa-calculator"></i> Calculadora v1</a>
+        <a href="/calculadora2"><i class="fas fa-calculator"></i> Calculadora v2</a>
+        <a href="/qr"><i class="fas fa-qrcode"></i> QR Code</a>
+        <a href="/etiqueta"><i class="fas fa-tag"></i> Etiqueta</a>
+        <a href="/senha"><i class="fas fa-key"></i> Senha</a>
+        <a href="/codigo-de-barras"><i class="fas fa-barcode"></i> Código de Barras</a>
     </div>
-  </div>
+    <footer>
+        &copy; 2025 Ferramentas Web | Todos os direitos reservados
+    </footer>
+</div>
 </body>
 </html>
