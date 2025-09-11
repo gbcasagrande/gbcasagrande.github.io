@@ -40,10 +40,14 @@ input {
     border:1px solid #333;
     background:#2c2c2c;
     color:#fff;
-    margin-bottom:10px;
+    margin-bottom:5px;
     font-size:16px;
     outline:none;
+    transition:0.3s;
 }
+input.error { border-color: #ff4d4d; }
+.error-message { font-size:12px; color:#ff4d4d; margin-bottom:10px; display:none; }
+
 button {
     width:100%;
     padding:12px;
@@ -115,9 +119,11 @@ button:hover { background:#e68900; }
 
   <label for="codigo"><i class="fas fa-barcode"></i> Código:</label>
   <input type="text" id="codigo" placeholder="Ex: ABC123" />
+  <div class="error-message" id="erro-codigo">O código é obrigatório.</div>
 
   <label for="nome"><i class="fas fa-box"></i> Nome (até 40 caracteres):</label>
   <input type="text" id="nome" maxlength="40" placeholder="Ex: Parafuso Sextavado de Aço 8mm" />
+  <div class="error-message" id="erro-nome">O nome é obrigatório.</div>
 
   <button onclick="gerarEtiqueta()"><i class="fas fa-qrcode"></i> Gerar Etiqueta</button>
   <button id="downloadBtn" class="download-btn" onclick="baixarEtiqueta()"><i class="fas fa-download"></i> Baixar como PNG</button>
@@ -133,17 +139,29 @@ button:hover { background:#e68900; }
 <script>
 function gerarEtiqueta() {
   const codigo = document.getElementById('codigo').value.trim();
-  let nome = document.getElementById('nome').value.trim();
+  const nome = document.getElementById('nome').value.trim();
 
-  if(!codigo || !nome){
-    alert("Preencha o código e o nome!");
-    return;
+  let temErro = false;
+
+  // Reset de erros
+  ['codigo','nome'].forEach(id => document.getElementById(id).classList.remove('error'));
+  ['erro-codigo','erro-nome'].forEach(id => document.getElementById(id).style.display='none');
+
+  if(!codigo){
+    document.getElementById('codigo').classList.add('error');
+    document.getElementById('erro-codigo').style.display='block';
+    temErro = true;
   }
+  if(!nome){
+    document.getElementById('nome').classList.add('error');
+    document.getElementById('erro-nome').style.display='block';
+    temErro = true;
+  }
+  if(temErro) return;
 
-  if(nome.length > 40) nome = nome.substring(0,40);
-
-  const conteudoQR = `${codigo}:${nome}`;
-  const textoExibido = `${codigo} - ${nome}`;
+  const nomeFinal = nome.length > 40 ? nome.substring(0,40) : nome;
+  const conteudoQR = `${codigo}:${nomeFinal}`;
+  const textoExibido = `${codigo} - ${nomeFinal}`;
 
   const canvas = document.getElementById('qrcodeCanvas');
   const textoDiv = document.getElementById('textoEtiqueta');
