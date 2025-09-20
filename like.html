@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Enviar Likes — LKTeam API</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#7c3aed;--muted:#94a3b8;--success:#10b981;--danger:#ef4444}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;background:linear-gradient(180deg,#071024 0%,#071223 100%);color:#e6eef8}
+    .card{width:min(760px,96%);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.02));border:1px solid rgba(255,255,255,0.04);padding:20px;border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+    h1{margin:0 0 8px;font-size:20px}
+    p.lead{margin:0 0 18px;color:var(--muted)}
+    form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="text"],select,input[type="number"]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    .full{grid-column:1/-1}
+    .actions{display:flex;gap:8px;align-items:center}
+    button{background:var(--accent);color:white;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;display:flex;align-items:center;gap:6px}
+    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+    button[disabled]{opacity:.6;cursor:not-allowed}
+    .status{margin-top:12px}
+    .ok{color:var(--success)}
+    .err{color:var(--danger)}
+    .progress{width:100%;height:6px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;margin-top:10px;display:none}
+    .progress-bar{height:100%;width:0;background:var(--accent);animation:loading 2s linear infinite}
+    @keyframes loading{0%{width:0}50%{width:70%}100%{width:100%}}
+    .api-result{margin-top:12px;padding:12px;border-radius:8px;background:#020617;display:none}
+    .api-result div{margin:4px 0;}
+    .api-result i{margin-right:6px;color:var(--accent)}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <h1>Enviar Likes — LKTeam API</h1>
+    <p class="lead">Preencha seu <strong>UID</strong>, escolha a <strong>região</strong> e a <strong>quantidade</strong> de likes. O botão monta e envia a requisição para a API.</p>
+    <form id="likeForm" autocomplete="off">
+      <div>
+        <label for="uid">Seu ID (uid)</label>
+        <input id="uid" name="uid" type="text" inputmode="numeric" pattern="[0-9]+" placeholder="ex: 123456789" required />
+      </div>
+
+      <div>
+        <label for="region">Região</label>
+        <select id="region" name="region" required>
+          <option value="">Selecione...</option>
+          <option>ME</option>
+          <option>SG</option>
+          <option>BD</option>
+          <option>TH</option>
+          <option>VN</option>
+          <option>US</option>
+          <option>BR</option>
+          <option>SAC</option>
+          <option>NA</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="count">Quantidade de likes</label>
+        <input id="count" name="count" type="number" min="1" max="100000" value="1" required />
+      </div>
+
+      <div class="full actions">
+        <button id="sendBtn" type="submit"><i class="fa-solid fa-paper-plane"></i>Enviar Likes</button>
+        <button id="saveBtn" type="button" class="secondary"><i class="fa-solid fa-floppy-disk"></i>Salvar configurações</button>
+      </div>
+
+      <div class="full">
+        <label>Resposta</label>
+        <div class="progress" id="progress"><div class="progress-bar"></div></div>
+        <div id="apiResult" class="api-result"></div>
+      </div>
+    </form>
+
+    <div class="status" id="status"></div>
+  </main>
+
+  <script>
+    const BASE = 'https://likes-api-lkteam-v3.onrender.com/like';
+    const allowed = ['ME','SG','BD','TH','VN','US','BR','SAC','NA'];
+
+    const form = document.getElementById('likeForm');
+    const uidEl = document.getElementById('uid');
+    const regionEl = document.getElementById('region');
+    const countEl = document.getElementById('count');
+    const apiResult = document.getElementById('apiResult');
+    const statusEl = document.getElementById('status');
+    const sendBtn = document.getElementById('sendBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const progress = document.getElementById('progress');
+
+    function buildUrl(uid, region, count){
+      const u = new URL(BASE);
+      if(uid) u.searchParams.set('uid', uid);
+      if(region) u.searchParams.set('region', region);
+      if(count) u.searchParams.set('count', count);
+      return u.toString();
+    }
+
+    function validate(){
+      const uid = uidEl.value.trim();
+      const region = regionEl.value.trim();
+      const count = Number(countEl.value);
+      if(!uid) return 'UID é obrigatório.';
+      if(!/^\d+$/.test(uid)) return 'UID deve conter apenas dígitos.';
+      if(!allowed.includes(region)) return 'Região inválida.';
+      if(!Number.isInteger(count) || count < 1) return 'Quantidade deve ser um número inteiro positivo.';
+      return null;
+    }
+
+    window.addEventListener('DOMContentLoaded', ()=>{
+      try{
+        const saved = JSON.parse(localStorage.getItem('likes-config')||'{}');
+        if(saved.uid) uidEl.value = saved.uid;
+        if(saved.region) regionEl.value = saved.region;
+        if(saved.count) countEl.value = saved.count;
+      }catch(e){}
+    });
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      statusEl.textContent='';
+      apiResult.style.display='none';
+      const err = validate();
+      if(err){ apiResult.style.display='block'; apiResult.textContent = err; return; }
+
+      const uid = uidEl.value.trim();
+      const region = regionEl.value.trim();
+      const count = countEl.value.trim();
+      const url = buildUrl(uid,region,count);
+
+      sendBtn.disabled = true; saveBtn.disabled = true;
+      progress.style.display='block';
+      apiResult.textContent = '';
+
+      try{
+        const res = await fetch(url);
+        const data = await res.json();
+        apiResult.style.display='block';
+
+        if(res.ok){
+          // Tratamento do erro específico da API
+          if(data.error === "Unable to fetch account info before sending likes"){
+            apiResult.innerHTML = `
+              <div class="err"><i class="fa-solid fa-triangle-exclamation"></i>
+              Não foi possível obter informações da conta. Talvez a região esteja indisponível ou o UID esteja incorreto.</div>
+            `;
+            statusEl.innerHTML = '<div class="err"><i class="fa-solid fa-circle-xmark"></i> Erro ao obter informações da conta.</div>';
+          }
+          else if(data.likes_added === 0){
+            apiResult.innerHTML = `
+              <div class="err"><i class="fa-solid fa-circle-exclamation"></i> 
+              Conta já recebeu likes hoje, tente novamente mais tarde.</div>
+            `;
+            statusEl.innerHTML = '<div class="err"><i class="fa-solid fa-ban"></i> Nenhum like foi adicionado.</div>';
+          } else {
+            apiResult.innerHTML = `
+              <div><i class="fa-solid fa-user"></i><strong>Nome:</strong> ${data.name}</div>
+              <div><i class="fa-solid fa-id-card"></i><strong>UID:</strong> ${data.uid}</div>
+              <div><i class="fa-solid fa-globe"></i><strong>Região:</strong> ${data.region}</div>
+              <div><i class="fa-solid fa-thumbs-up"></i><strong>Likes antes:</strong> ${data.likes_before}</div>
+              <div><i class="fa-solid fa-thumbs-up"></i><strong>Likes adicionados:</strong> ${data.likes_added}</div>
+              <div><i class="fa-solid fa-thumbs-up"></i><strong>Likes depois:</strong> ${data.likes_after}</div>
+              <div><i class="fa-solid fa-triangle-exclamation"></i><strong>Falhas:</strong> ${data.failed_likes}</div>
+              <div><i class="fa-solid fa-medal"></i><strong>Nível:</strong> ${data.level}</div>
+            `;
+            statusEl.innerHTML = '<div class="ok"><i class="fa-solid fa-circle-check"></i> Requisição concluída com sucesso.</div>';
+          }
+        } else {
+          apiResult.textContent = JSON.stringify(data,null,2);
+          statusEl.innerHTML = '<div class="err"><i class="fa-solid fa-circle-xmark"></i> Erro na requisição.</div>';
+        }
+      }catch(err){
+        apiResult.style.display='block';
+        apiResult.textContent = String(err);
+        statusEl.innerHTML = '<div class="err"><i class="fa-solid fa-circle-xmark"></i> Erro ao enviar requisição.</div>';
+      }finally{
+        sendBtn.disabled = false; saveBtn.disabled = false;
+        progress.style.display='none';
+      }
+    });
+
+    saveBtn.addEventListener('click', ()=>{
+      const err = validate();
+      if(err){ apiResult.style.display='block'; apiResult.textContent = err; return; }
+      const cfg = { uid: uidEl.value.trim(), region: regionEl.value.trim(), count: countEl.value.trim() };
+      localStorage.setItem('likes-config', JSON.stringify(cfg));
+      statusEl.innerHTML = '<div class="ok"><i class="fa-solid fa-floppy-disk"></i> Configurações salvas localmente.</div>';
+    });
+  </script>
+</body>
+  </html>
