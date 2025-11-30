@@ -3,56 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <title>Lista de Signos</title>
+
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
     body {
-        font-family: Arial, sans-serif;
-        background: #f5f5f5;
-        padding: 20px;
+        font-family: 'Inter', sans-serif;
+        background: #f0f2f5;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
     }
+
+    .container {
+        width: 100%;
+        max-width: 750px;
+    }
+
     h1 {
         text-align: center;
-        margin-bottom: 30px;
+        font-weight: 600;
+        font-size: 32px;
+        margin-bottom: 40px;
+        color: #222;
     }
+
     .card {
-        background: #fff;
-        padding: 20px;
-        margin-bottom: 15px;
-        border-radius: 14px;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-    }
-    .title {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 8px;
-    }
-    .info {
-        margin: 4px 0;
-    }
-    .btn {
-        display: inline-block;
-        padding: 8px 16px;
-        margin-right: 10px;
-        margin-top: 10px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: bold;
-        background: #007bff;
-        color: #fff;
+        background: white;
+        padding: 22px;
+        border-radius: 18px;
+        margin-bottom: 22px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
         transition: 0.3s;
     }
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    .title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #111;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .icon {
+        width: 26px;
+        height: 26px;
+    }
+
+    .info {
+        font-size: 15px;
+        margin: 3px 0;
+        color: #333;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 18px;
+        margin-right: 10px;
+        margin-top: 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        background: #0069ff;
+        color: white;
+        transition: 0.25s;
+    }
+
     .btn:hover {
-        background: #0056b3;
+        background: #004bcc;
     }
 </style>
 </head>
 <body>
 
+<div class="container">
+
 <h1>Lista de Signos</h1>
+
+<!-- MODELO DE CARD -->
+<!-- Basta duplicar alterando nome, números e links -->
 
 <!-- Capricórnio -->
 <div class="card">
-    <div class="title">Signo de Capricórnio ♑</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/2651.svg">
+        Signo de Capricórnio
+    </div>
     <div class="info">Seguidores: 25.000</div>
     <div class="info">Membros: 31.000</div>
     <a class="btn" href="https://facebook.com/signocapricornio" target="_blank">Página</a>
@@ -61,7 +106,10 @@
 
 <!-- Leão -->
 <div class="card">
-    <div class="title">Signo de Leão ♌</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/264c.svg">
+        Signo de Leão
+    </div>
     <div class="info">Seguidores: 32.000</div>
     <div class="info">Membros: 33.000</div>
     <a class="btn" href="https://facebook.com/sgndeleao" target="_blank">Página</a>
@@ -70,7 +118,10 @@
 
 <!-- Touro -->
 <div class="card">
-    <div class="title">Signo de Touro ♉</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/2649.svg">
+        Signo de Touro
+    </div>
     <div class="info">Seguidores: 12.000</div>
     <div class="info">Membros: 27.000</div>
     <a class="btn" href="https://facebook.com/sgndetouro" target="_blank">Página</a>
@@ -79,7 +130,10 @@
 
 <!-- Virgem -->
 <div class="card">
-    <div class="title">Signo de Virgem ♍</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/264d.svg">
+        Signo de Virgem
+    </div>
     <div class="info">Seguidores: 9.200</div>
     <div class="info">Membros: 19.000</div>
     <a class="btn" href="https://facebook.com/sgndevirgem" target="_blank">Página</a>
@@ -88,7 +142,10 @@
 
 <!-- Peixes -->
 <div class="card">
-    <div class="title">Signo de Peixes ♓</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/2653.svg">
+        Signo de Peixes
+    </div>
     <div class="info">Seguidores: 3.000</div>
     <div class="info">Membros: 21.000</div>
     <a class="btn" href="https://facebook.com/sgndepeixes" target="_blank">Página</a>
@@ -97,7 +154,10 @@
 
 <!-- Libra -->
 <div class="card">
-    <div class="title">Signo de Libra ♎</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/264e.svg">
+        Signo de Libra
+    </div>
     <div class="info">Seguidores: 1.100</div>
     <div class="info">Membros: 20.000</div>
     <a class="btn" href="https://facebook.com/sgndelibra" target="_blank">Página</a>
@@ -106,7 +166,10 @@
 
 <!-- Câncer -->
 <div class="card">
-    <div class="title">Signo de Câncer ♋</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/264b.svg">
+        Signo de Câncer
+    </div>
     <div class="info">Seguidores: 853</div>
     <div class="info">Membros: 17.000</div>
     <a class="btn" href="https://facebook.com/sgndecancer" target="_blank">Página</a>
@@ -115,7 +178,10 @@
 
 <!-- Aquário -->
 <div class="card">
-    <div class="title">Signo de Aquário ♒</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/2652.svg">
+        Signo de Aquário
+    </div>
     <div class="info">Seguidores: 225</div>
     <div class="info">Membros: 21.000</div>
     <a class="btn" href="https://facebook.com/sgndeaquario" target="_blank">Página</a>
@@ -124,7 +190,10 @@
 
 <!-- Gêmeos -->
 <div class="card">
-    <div class="title">Signo de Gêmeos ♊</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/264a.svg">
+        Signo de Gêmeos
+    </div>
     <div class="info">Seguidores: 273</div>
     <div class="info">Membros: 19.000</div>
     <a class="btn" href="https://facebook.com/sgndegemeos" target="_blank">Página</a>
@@ -133,7 +202,10 @@
 
 <!-- Sagitário -->
 <div class="card">
-    <div class="title">Signo de Sagitário ♐</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/2650.svg">
+        Signo de Sagitário
+    </div>
     <div class="info">Seguidores: 35</div>
     <div class="info">Membros: 15.000</div>
     <a class="btn" href="https://facebook.com/sgndesagitario" target="_blank">Página</a>
@@ -142,7 +214,10 @@
 
 <!-- Escorpião -->
 <div class="card">
-    <div class="title">Signo de Escorpião ♏</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/264f.svg">
+        Signo de Escorpião
+    </div>
     <div class="info">Seguidores: 79</div>
     <div class="info">Membros: 8.700</div>
     <a class="btn" href="https://facebook.com/sgndeescorpiao" target="_blank">Página</a>
@@ -151,12 +226,17 @@
 
 <!-- Áries -->
 <div class="card">
-    <div class="title">Signo de Áries ♈</div>
+    <div class="title">
+        <img class="icon" src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/2648.svg">
+        Signo de Áries
+    </div>
     <div class="info">Seguidores: 76</div>
     <div class="info">Membros: 18.000</div>
     <a class="btn" href="https://facebook.com/sgndearies" target="_blank">Página</a>
     <a class="btn" href="https://www.facebook.com/groups/1255234615364337" target="_blank">Grupo</a>
 </div>
 
+</div>
+
 </body>
-        </html>
+</html>
