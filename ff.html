@@ -52,6 +52,12 @@ button {
   background:#00c3ff;
 }
 
+.desc {
+  font-size:13px;
+  opacity:0.85;
+  margin-top:5px;
+}
+
 .info, .resultado {
   margin-top:15px;
   padding:15px;
@@ -92,28 +98,37 @@ button {
 <h2>Calculadora de XP Free Fire</h2>
 
 <div class="toggle">
-  <button id="btnApi" class="active" onclick="modoAPI()">UID</button>
-  <button id="btnManual" onclick="modoManual()">XP</button>
+  <button id="btnApi" class="active" onclick="modoAPI()">API</button>
+  <button id="btnManual" onclick="modoManual()">Manual</button>
 </div>
 
 <!-- MODO API -->
 <div id="api">
   <input id="uid" placeholder="UID do jogador">
+  <div class="desc">Busca automática pelo UID.</div>
+
   <select id="server">
     <option value="ind">IND</option>
     <option value="br">BR</option>
   </select>
+  <div class="desc">Selecione a região da conta do jogador.</div>
+
   <button onclick="buscarJogador()">Buscar jogador</button>
+  <div class="desc">Carrega os dados do jogador e calcula o XP restante automaticamente.</div>
 </div>
 
 <!-- MODO MANUAL -->
 <div id="manual" class="hidden">
   <input id="xpManual" placeholder="Digite o XP total">
+  <div class="desc">
+    Use esta opção se não quiser buscar dados pela API.
+    Basta informar o XP total do jogador.
+  </div>
 </div>
 
 <div id="loading">
   <div class="loader"></div>
-  <p>Identificando usuário..</p>
+  <p>Carregando dados...</p>
 </div>
 
 <div id="playerInfo" class="info hidden"></div>
@@ -149,99 +164,104 @@ let nivelAtual = 1;
 
 /* UTIL */
 function detectarNivel(xp){
-  let n=1;
+  let nivel = 1;
   for(let i in tabelaXP){
-    if(xp>=tabelaXP[i]) n=parseInt(i);
+    if(xp >= tabelaXP[i]) nivel = parseInt(i);
   }
-  return n;
+  return nivel;
 }
 
 function limpar(){
-  xpJogador=0;
-  nivelAtual=1;
-  playerInfo.innerHTML="";
+  xpJogador = 0;
+  nivelAtual = 1;
+  playerInfo.innerHTML = "";
   playerInfo.classList.add("hidden");
   resultado.classList.add("hidden");
   nivelDesejado.classList.add("hidden");
   labelNivel.classList.add("hidden");
-  loading.style.display="none";
+  loading.style.display = "none";
 }
 
 /* NÍVEIS */
 function popularNiveis(){
-  nivelDesejado.innerHTML="";
-  for(let i=nivelAtual+1;i<=100;i++){
-    nivelDesejado.innerHTML+=`<option value="${i}">Level ${i}</option>`;
+  nivelDesejado.innerHTML = "";
+  for(let i = nivelAtual + 1; i <= 100; i++){
+    nivelDesejado.innerHTML += `<option value="${i}">Level ${i}</option>`;
   }
   labelNivel.classList.remove("hidden");
   nivelDesejado.classList.remove("hidden");
-  nivelDesejado.onchange=e=>calcular(e.target.value);
+  nivelDesejado.onchange = e => calcular(e.target.value);
 }
 
 function calcular(nivel){
-  let falta=tabelaXP[nivel]-xpJogador;
-  if(falta<0)falta=0;
+  let falta = tabelaXP[nivel] - xpJogador;
+  if(falta < 0) falta = 0;
   resultado.classList.remove("hidden");
-  resultado.innerHTML=`
-  <b>Nível desejado:</b> ${nivel}<br>
-  <b>XP faltante:</b><br>
-  ${falta.toLocaleString("pt-BR")} XP`;
+  resultado.innerHTML = `
+    <b>Nível desejado:</b> ${nivel}<br>
+    <b>XP faltante:</b><br>
+    ${falta.toLocaleString("pt-BR")} XP
+  `;
 }
 
 /* API */
 async function buscarJogador(){
   limpar();
-  let id=uid.value.replace(/\D/g,"");
+  let id = uid.value.replace(/\D/g,"");
   if(!id) return alert("Digite o UID");
-  loading.style.display="block";
 
-  try{
-    let res=await fetch(`https://freefire-api-six.vercel.app/get_player_personal_show?server=${server.value}&uid=${id}`);
-    let data=await res.json();
+  loading.style.display = "block";
 
-    setTimeout(()=>{
-      loading.style.display="none";
-      let p=data.basicinfo;
-      xpJogador=parseInt(p.exp);
-      nivelAtual=detectarNivel(xpJogador);
+  try {
+    const res = await fetch(
+      `https://freefire-api-six.vercel.app/get_player_personal_show?server=${server.value}&uid=${id}`
+    );
+    const data = await res.json();
+
+    setTimeout(() => {
+      loading.style.display = "none";
+
+      const info = data.basicinfo;
+      xpJogador = Number(info.exp);
+      nivelAtual = detectarNivel(xpJogador);
 
       playerInfo.classList.remove("hidden");
-      playerInfo.innerHTML=`
-      <b>Nickname:</b> ${p.nickname}<br>
-      <b>Região:</b> ${p.region}<br>
-      <b>Level:</b> ${nivelAtual}<br>
-      <b>XP:</b> ${xpJogador.toLocaleString("pt-BR")}
+      playerInfo.innerHTML = `
+        <b>Nickname:</b> ${info.nickname}<br>
+        <b>Região:</b> ${info.region}<br>
+        <b>Level atual:</b> ${nivelAtual}<br>
+        <b>XP:</b> ${xpJogador.toLocaleString("pt-BR")}
       `;
 
       popularNiveis();
-      calcular(nivelAtual+1);
-    },20);
+      calcular(nivelAtual + 1);
+    }, 2500);
 
-  }catch{
-    loading.style.display="none";
+  } catch {
+    loading.style.display = "none";
     alert("Erro ao buscar dados");
   }
 }
 
 /* MANUAL */
-xpManual.addEventListener("input",e=>{
+xpManual.addEventListener("input", e => {
   limpar();
-  let xp=e.target.value.replace(/\D/g,"");
-  e.target.value=xp;
+  let xp = e.target.value.replace(/\D/g,"");
+  e.target.value = xp;
   if(!xp) return;
 
-  xpJogador=parseInt(xp);
-  nivelAtual=detectarNivel(xpJogador);
+  xpJogador = Number(xp);
+  nivelAtual = detectarNivel(xpJogador);
 
   playerInfo.classList.remove("hidden");
-  playerInfo.innerHTML=`
-  <b>Modo manual</b><br>
-  <b>Level:</b> ${nivelAtual}<br>
-  <b>XP:</b> ${xpJogador.toLocaleString("pt-BR")}
+  playerInfo.innerHTML = `
+    <b>Modo manual</b><br>
+    <b>Level atual:</b> ${nivelAtual}<br>
+    <b>XP informado:</b> ${xpJogador.toLocaleString("pt-BR")}
   `;
 
   popularNiveis();
-  calcular(nivelAtual+1);
+  calcular(nivelAtual + 1);
 });
 
 /* TOGGLE */
@@ -251,7 +271,7 @@ function modoAPI(){
   manual.classList.add("hidden");
   btnApi.classList.add("active");
   btnManual.classList.remove("active");
-  uid.value="";
+  uid.value = "";
 }
 
 function modoManual(){
@@ -260,9 +280,9 @@ function modoManual(){
   api.classList.add("hidden");
   btnManual.classList.add("active");
   btnApi.classList.remove("active");
-  xpManual.value="";
+  xpManual.value = "";
 }
 </script>
 
 </body>
-</html>
+  </html>
