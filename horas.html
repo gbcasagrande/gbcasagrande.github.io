@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horas Restantes</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #0f0f0f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+    background: #1f1f1f;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    color: #fff;
+}
+
+h1 {
+    text-align: center;
+    color: #f59e0b;
+    margin-bottom: 22px;
+    font-size: clamp(20px, 5vw, 26px);
+}
+
+label {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #e5e5e5;
+}
+
+input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: none;
+    background: #2f2f2f;
+    color: #fff;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: 2px solid #f59e0b;
+}
+
+.resultado-horas {
+    margin-top: 22px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #2a2a2a;
+    text-align: center;
+    font-size: clamp(15px, 4vw, 18px);
+    border: 2px solid #ffffff;
+}
+
+.resultado-horas span {
+    color: #f59e0b;
+    font-weight: bold;
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 360px) {
+    .container {
+        padding: 18px;
+    }
+
+    input {
+        padding: 11px;
+        font-size: 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>⏰️ Horas Restantes</h1>
+
+    <label for="inicio">Data e hora inicial</label>
+    <input type="datetime-local" id="inicio">
+
+    <label for="fim">Data e hora final</label>
+    <input type="datetime-local" id="fim">
+
+    <div class="resultado-horas" id="resultado" style="display:none;">
+        <span id="horasRestantes"></span>
+    </div>
+</div>
+
+<script>
+const inicioInput = document.getElementById("inicio");
+const fimInput = document.getElementById("fim");
+const resultado = document.getElementById("resultado");
+const horasRestantesSpan = document.getElementById("horasRestantes");
+
+function formatLocalDatetime(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    const h = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+    return `${y}-${m}-${d}T${h}:${min}`;
+}
+
+inicioInput.value = formatLocalDatetime(new Date());
+
+function calcularHoras() {
+    if (!inicioInput.value || !fimInput.value) return;
+
+    const inicio = new Date(inicioInput.value);
+    const fim = new Date(fimInput.value);
+
+    let diffMs = fim - inicio;
+
+    if (diffMs <= 0) {
+        horasRestantesSpan.textContent = "0 horas";
+    } else {
+        const totalMinutos = Math.floor(diffMs / 60000);
+        const horas = Math.floor(totalMinutos / 60);
+        const minutos = totalMinutos % 60;
+
+        let texto = "";
+        if (horas > 0) texto += `${horas} hora${horas > 1 ? "s" : ""}`;
+        if (horas > 0 && minutos > 0) texto += " ";
+        if (minutos > 0) texto += `${minutos} minuto${minutos > 1 ? "s" : ""}`;
+
+        horasRestantesSpan.textContent = texto || "0 minutos";
+    }
+
+    resultado.style.display = "block";
+}
+
+inicioInput.addEventListener("change", calcularHoras);
+fimInput.addEventListener("change", calcularHoras);
+</script>
+
+</body>
+</html>
