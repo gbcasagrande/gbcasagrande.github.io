@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora de Datas</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top, #222 0%, #000 70%);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CARD */
+.container {
+    background: #1c1c1c;
+    padding: 26px;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+}
+
+/* TÍTULO */
+h2 {
+    text-align: center;
+    margin-bottom: 22px;
+    color: #f59e0b;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* LABELS */
+.label {
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+    color: #e5e7eb;
+}
+
+/* INPUTS */
+input, select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    margin-bottom: 16px;
+    background: #2a2a2a;
+    color: #ffffff;
+}
+
+input::placeholder {
+    color: #9ca3af;
+}
+
+input:focus, select:focus {
+    outline: 2px solid #f59e0b;
+}
+
+/* RESULTADO */
+.resultado {
+    margin-top: 8px;
+    padding: 14px;
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.resultado:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.7);
+}
+
+#calendarHidden {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>📅 Calculadora de Datas</h2>
+
+    <label class="label">Data inicial</label>
+    <input type="date" id="dataInicial">
+
+    <label class="label">Quantidade de dias</label>
+    <input type="number" id="quantidadeDias" min="0" placeholder="Ex: 10">
+
+    <label class="label">Tipo de contagem</label>
+    <select id="tipoDias">
+        <option value="corridos">Dias corridos</option>
+        <option value="uteis">Dias úteis</option>
+    </select>
+
+    <div class="resultado" id="resultado">
+        Informe os dados para calcular
+    </div>
+
+    <input type="date" id="calendarHidden">
+</div>
+
+<script>
+const dataInicialInput = document.getElementById("dataInicial");
+const quantidadeDiasInput = document.getElementById("quantidadeDias");
+const tipoDiasSelect = document.getElementById("tipoDias");
+const resultadoDiv = document.getElementById("resultado");
+const calendarHidden = document.getElementById("calendarHidden");
+
+let dataFinalISO = null;
+
+// Data atual sem bug de fuso
+dataInicialInput.value = new Date().toISOString().split("T")[0];
+
+function toISO(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+}
+
+function calcularDataFinal() {
+    const qtd = parseInt(quantidadeDiasInput.value);
+    if (isNaN(qtd)) {
+        resultadoDiv.textContent = "Informe a quantidade de dias";
+        dataFinalISO = null;
+        return;
+    }
+
+    let data = new Date(dataInicialInput.value + "T00:00:00");
+
+    if (tipoDiasSelect.value === "corridos") {
+        data.setDate(data.getDate() + qtd);
+    } else {
+        let adicionados = 0;
+        while (adicionados < qtd) {
+            data.setDate(data.getDate() + 1);
+            const dia = data.getDay();
+            if (dia !== 0 && dia !== 6) adicionados++;
+        }
+    }
+
+    dataFinalISO = toISO(data);
+    resultadoDiv.textContent = "Data final: " + data.toLocaleDateString("pt-BR");
+    calendarHidden.value = dataFinalISO;
+}
+
+// Abrir calendário ao clicar
+resultadoDiv.addEventListener("click", () => {
+    if (!dataFinalISO) return;
+    calendarHidden.showPicker
+        ? calendarHidden.showPicker()
+        : calendarHidden.focus();
+});
+
+// Atualização automática
+[dataInicialInput, quantidadeDiasInput, tipoDiasSelect].forEach(el => {
+    el.addEventListener("input", calcularDataFinal);
+});
+</script>
+
+</body>
+</html>
