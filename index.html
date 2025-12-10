@@ -6,8 +6,10 @@
 <title>Home - Ferramentas</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+
 body {
     background-color: #121212;
     color: #fff;
@@ -17,20 +19,24 @@ body {
     min-height: 100vh;
     padding: 20px;
 }
+
 .container {
-    max-width: 800px;
+    max-width: 900px;
     width: 100%;
     text-align: center;
 }
+
 h1 {
     color: #ff9800;
     margin-bottom: 30px;
 }
+
 .menu {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
 }
+
 .menu a {
     display: flex;
     flex-direction: column;
@@ -45,20 +51,24 @@ h1 {
     transition: 0.3s;
     border: 2px solid #30363d;
 }
+
 .menu a:hover {
     background: #2c2c2c;
     border-color: #ff9800;
     color: #ff9800;
 }
+
 .menu a i {
     font-size: 2em;
     margin-bottom: 10px;
     transition: 0.3s;
 }
+
 .menu a:hover i {
     transform: scale(1.2);
     color: #ff9800;
 }
+
 footer {
     margin-top: 40px;
     font-size: 0.9em;
@@ -66,17 +76,35 @@ footer {
 }
 </style>
 </head>
+
 <body>
 <div class="container">
     <h1><i class="fas fa-tools"></i> Ferramentas</h1>
+
     <div class="menu">
+        <!-- Calculadoras -->
         <a href="/calculo"><i class="fas fa-calculator"></i> Calculadora v1</a>
         <a href="/calculo2"><i class="fas fa-calculator"></i> Calculadora v2</a>
+        <a href="/cal"><i class="fas fa-square-root-variable"></i> Calculadora Simples</a>
+
+        <!-- Datas e tempo -->
+        <a href="/calculadora-de-datas"><i class="fas fa-calendar-days"></i> Datas</a>
+        <a href="/horas"><i class="fas fa-clock"></i> Cálculo de Horas</a>
+
+        <!-- Geradores -->
+        <a href="/senha"><i class="fas fa-key"></i> Gerador de Senhas</a>
         <a href="/qr"><i class="fas fa-qrcode"></i> QR Code</a>
-        <a href="/etiqueta"><i class="fas fa-tag"></i> Etiqueta</a>
-        <a href="/senha"><i class="fas fa-key"></i> Senha</a>
         <a href="/codigo-de-barras"><i class="fas fa-barcode"></i> Código de Barras</a>
+        <a href="/etiqueta"><i class="fas fa-tag"></i> Etiquetas</a>
+
+        <!-- Outros -->
+        <a href="/velha"><i class="fas fa-hashtag"></i> Jogo da Velha</a>
+        <a href="/like"><i class="fas fa-thumbs-up"></i> Likes</a>
+        <a href="/cara"><i class="fas fa-face-smile"></i> Cara ou Coroa</a>
+        <a href="/ff"><i class="fas fa-fire"></i> Free Fire</a>
+        
     </div>
+
     <footer>
         &copy; 2025 Ferramentas Web | Todos os direitos reservados
     </footer>
