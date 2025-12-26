@@ -5,42 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calculadora de Datas</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+
 <style>
 * {
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 body {
-    background: radial-gradient(circle at top, #222 0%, #000 70%);
+    background-color: #0b1320;
     min-height: 100vh;
     margin: 0;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 16px;
+    align-items: flex-start;
+    padding: 80px 16px 16px;
+    color: #fff;
 }
 
-/* CARD */
+/* Botão topo centralizado */
+.top-actions {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.top-actions a {
+    background: #0a58ca;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.top-actions a:hover {
+    background: #084298;
+}
+
+/* Card */
 .container {
-    background: #1c1c1c;
-    padding: clamp(18px, 4vw, 26px);
+    background: #111a2e;
+    padding: 26px;
     width: 100%;
     max-width: 420px;
-    border-radius: 16px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
 
-/* TÍTULO */
 h2 {
     text-align: center;
     margin-bottom: 22px;
-    color: #f59e0b;
-    font-size: clamp(20px, 5vw, 26px);
-    font-weight: bold;
+    color: #4da3ff;
+    font-size: 24px;
+    font-weight: 700;
 }
 
-/* LABELS */
+/* Labels */
 .label {
     font-size: 14px;
     margin-bottom: 6px;
@@ -48,64 +74,61 @@ h2 {
     color: #e5e7eb;
 }
 
-/* INPUTS */
+/* Inputs */
 input, select {
     width: 100%;
-    padding: clamp(10px, 3vw, 12px);
+    padding: 12px;
     border-radius: 10px;
-    border: none;
-    font-size: clamp(14px, 4vw, 15px);
+    border: 1px solid #1e2a44;
+    font-size: 15px;
     margin-bottom: 16px;
-    background: #2a2a2a;
+    background: #0f172a;
     color: #ffffff;
 }
 
-input::placeholder {
+input:focus, select:focus {
+    outline: 2px solid #0a58ca;
+}
+
+/* Resultado */
+.resultado {
+    margin-top: 14px;
+    padding: 18px 16px 14px;
+    background: #0f172a;
+    border: 2px solid #0a58ca;
+    border-radius: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.resultado-data {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.resultado-metricas {
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 500;
     color: #9ca3af;
 }
 
-input:focus, select:focus {
-    outline: 2px solid #f59e0b;
-}
-
-/* RESULTADO */
-.resultado {
-    margin-top: 10px;
-    padding: 14px;
-    background: linear-gradient(135deg, #f59e0b, #fbbf24);
-    border-radius: 12px;
-    text-align: center;
-    font-weight: bold;
-    color: #000;
-    font-size: clamp(14px, 4vw, 16px);
-    cursor: pointer;
-    user-select: none;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.resultado:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.7);
-}
-
-/* CALENDÁRIO OCULTO */
+/* Calendário oculto */
 #calendarHidden {
     position: absolute;
     opacity: 0;
     pointer-events: none;
 }
-
-/* Telas muito pequenas */
-@media (max-width: 360px) {
-    .container {
-        border-radius: 14px;
-    }
-}
 </style>
 </head>
 
 <body>
+
+<div class="top-actions">
+    <a href="#">Ver mais ferramentas</a>
+</div>
 
 <div class="container">
     <h2>📅 Calculadora de Datas</h2>
@@ -123,7 +146,10 @@ input:focus, select:focus {
     </select>
 
     <div class="resultado" id="resultado">
-        Informe os dados para calcular
+        <div class="resultado-data" id="resultadoData">
+            
+        </div>
+        <div class="resultado-metricas" id="resultadoMetricas"></div>
     </div>
 
     <input type="date" id="calendarHidden">
@@ -133,7 +159,8 @@ input:focus, select:focus {
 const dataInicialInput = document.getElementById("dataInicial");
 const quantidadeDiasInput = document.getElementById("quantidadeDias");
 const tipoDiasSelect = document.getElementById("tipoDias");
-const resultadoDiv = document.getElementById("resultado");
+const resultadoData = document.getElementById("resultadoData");
+const resultadoMetricas = document.getElementById("resultadoMetricas");
 const calendarHidden = document.getElementById("calendarHidden");
 
 let dataFinalISO = null;
@@ -151,7 +178,8 @@ function toISO(date) {
 function calcularDataFinal() {
     const qtd = parseInt(quantidadeDiasInput.value);
     if (isNaN(qtd)) {
-        resultadoDiv.textContent = "Informe a quantidade de dias";
+        resultadoData.textContent = "Informe a quantidade de dias";
+        resultadoMetricas.textContent = "";
         dataFinalISO = null;
         return;
     }
@@ -170,12 +198,23 @@ function calcularDataFinal() {
     }
 
     dataFinalISO = toISO(data);
-    resultadoDiv.textContent = "Data final: " + data.toLocaleDateString("pt-BR");
+
+    const diffMs = data - new Date(dataInicialInput.value + "T00:00:00");
+    const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    const semanas = (diffDias / 7).toFixed(1);
+    const meses = (diffDias / 30.44).toFixed(1);
+    const anos = (diffDias / 365.25).toFixed(2);
+
+    resultadoData.textContent = " " + data.toLocaleDateString("pt-BR");
+    resultadoMetricas.textContent =
+        `${semanas} semanas • ${meses} meses • ${anos} anos`;
+
     calendarHidden.value = dataFinalISO;
 }
 
 // Abrir calendário ao clicar no resultado
-resultadoDiv.addEventListener("click", () => {
+document.getElementById("resultado").addEventListener("click", () => {
     if (!dataFinalISO) return;
     calendarHidden.showPicker
         ? calendarHidden.showPicker()
